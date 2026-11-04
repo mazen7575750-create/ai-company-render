@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: ai-company
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: "echo no-deps"
+    startCommand: "node server.mjs"
+    healthCheckPath: /api/ping
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: LOOP_MS
+        value: "30000"
+      - key: OWNER_TOKEN
+        sync: false
