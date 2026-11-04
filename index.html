@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>شركة الذكاء المستقلة — المقر الرئيسي</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏢</text></svg>">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#05080f;color:#e9eefb;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif}
+#gl{position:fixed;inset:0;touch-action:none}
+#gl canvas{display:block}
+#loader{position:fixed;inset:0;z-index:60;background:radial-gradient(1000px 600px at 50% 35%,#14264d,#05080f 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:20px;transition:opacity .7s}
+#loader.done{opacity:0;pointer-events:none}
+.spin{width:46px;height:46px;border-radius:50%;border:3px solid rgba(140,180,255,.2);border-top-color:#ffd94d;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+#hint{position:fixed;bottom:16px;right:50%;transform:translateX(50%);z-index:15;background:rgba(8,14,28,.72);border:1px solid rgba(140,180,255,.18);color:#c7d5f2;font-size:11.5px;padding:8px 14px;border-radius:99px;pointer-events:none;opacity:0;transition:opacity .8s;max-width:92vw;text-align:center;backdrop-filter:blur(8px)}
+#hint.show{opacity:1}
+/* بطاقة فحص موظف */
+#inspect{position:fixed;z-index:30;right:10px;left:10px;bottom:10px;max-width:640px;margin:auto;max-height:62vh;overflow:auto;background:rgba(9,15,30,.94);border:1px solid rgba(140,180,255,.28);border-radius:20px;padding:15px;backdrop-filter:blur(14px);box-shadow:0 24px 60px rgba(0,0,0,.6);display:none}
+#inspect.open{display:block}
+/* كمبيوتر المالك — نظام سطح مكتب عائم */
+#os{position:fixed;z-index:50;width:min(95vw,900px);height:min(86vh,760px);right:50%;top:53%;transform:translate(50%,-50%);background:#0a1122;border:1px solid rgba(140,180,255,.35);border-radius:20px;overflow:hidden;display:none;flex-direction:column;box-shadow:0 40px 100px rgba(0,0,0,.75)}
+#os.open{display:flex}
+#osHead{background:linear-gradient(90deg,#1a2c57,#0c1730);padding:9px 12px;display:flex;align-items:center;gap:8px;cursor:grab;user-select:none;touch-action:none}
+.dot3{width:11px;height:11px;border-radius:50%}
+#osBody{flex:1;display:flex;min-height:0}
+#osNav{width:172px;background:#0c1730;border-left:1px solid rgba(140,180,255,.14);padding:9px 7px;overflow:auto;display:flex;flex-direction:column;gap:4px}
+#osNav button{text-align:right;border:0;background:transparent;color:#c3d2f2;padding:9px;border-radius:10px;font-size:12.5px;font-family:inherit;cursor:pointer}
+#osNav button.active{background:#23407c;color:#fff}
+#osMain{flex:1;overflow:auto;padding:14px;min-width:0}
+@media(max-width:680px){#osBody{flex-direction:column}#osNav{width:100%;flex-direction:row;border-left:0;border-bottom:1px solid rgba(140,180,255,.14)}#osNav button{white-space:nowrap}}
+.card{background:#101c38;border:1px solid rgba(140,180,255,.16);border-radius:14px;padding:12px;margin:0 0 10px}
+.small{font-size:11.5px;color:#9db1da;line-height:1.7}.b{font-weight:800}
+button{font-family:inherit}
+.btn{border:1px solid rgba(140,180,255,.35);background:#1f3a75;color:#fff;border-radius:10px;padding:8px 13px;font-size:12.5px;cursor:pointer}
+.btn.green{background:#145c38;border-color:#2bb673}.btn.red{background:#6e2230;border-color:#c04452}.btn.gold{background:#6f5410;border-color:#d9b23a}.btn.gray{background:#263356}
+.btn:disabled{opacity:.5}
+input,select,textarea{width:100%;background:#081127;color:#eef3ff;border:1px solid rgba(140,180,255,.3);border-radius:10px;padding:9px;font-family:inherit;font-size:13px}
+label{font-size:11.5px;color:#aebfe6;display:block;margin:9px 0 4px}
+.row{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.grow{flex:1}.sp{flex:1}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:10.5px;border:1px solid rgba(160,190,255,.25);background:#22365f}
+.badge.ok{background:#145c38}.badge.work{background:#6f5410}.badge.bad{background:#6e2230}.badge.wait{background:#24345c}.badge.review{background:#53307e}
+.bar{height:8px;background:#081127;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}.bar>i{display:block;height:100%;background:linear-gradient(90deg,#4da3ff,#35d07f)}
+pre.doc{white-space:pre-wrap;line-height:1.85;font-family:inherit;font-size:13px;background:#070f22;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+details{background:#0c1730;border-radius:11px;padding:8px 10px;margin:6px 0}summary{cursor:pointer;font-size:12.5px}
+.chat{display:flex;flex-direction:column;gap:8px}.msg{max-width:90%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.75;white-space:pre-wrap;word-break:break-word}
+.msg.me{align-self:flex-start;background:#1e4e91}.msg.ceo{align-self:flex-end;background:#16294f;border:1px solid rgba(217,178,58,.35)}
+.msg .who{font-size:10px;color:#ffd970;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.pick{cursor:pointer}.pick:hover,.pick.sel{border-color:#4da3ff}
+.warn{background:#3a2b05;border:1px solid #d9b23a;border-radius:12px;padding:10px;font-size:12px;line-height:1.8}
+.err{background:#3d1420;border:1px solid #c04452;border-radius:12px;padding:10px;font-size:12px;line-height:1.8}
+.okbox{background:#0e2e1f;border:1px solid #2bb673;border-radius:12px;padding:10px;font-size:12px;line-height:1.8}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px}.kpi .card{text-align:center;margin:0}.kpi b{font-size:20px;display:block}
+table{width:100%;border-collapse:collapse;font-size:11.5px}td,th{border-bottom:1px solid rgba(255,255,255,.08);padding:6px;text-align:right;vertical-align:top}
+#modal{position:fixed;inset:0;z-index:80;background:rgba(2,5,12,.7);display:none;align-items:center;justify-content:center;padding:12px}
+#modal.open{display:flex}#modalBox{width:min(95vw,760px);max-height:88vh;overflow:auto;background:#0b1428;border:1px solid rgba(140,180,255,.3);border-radius:18px;padding:16px}
+#toast{position:fixed;bottom:78px;right:50%;transform:translateX(50%);z-index:100;background:#145c38;color:#fff;padding:9px 15px;border-radius:12px;font-size:12.5px;display:none;box-shadow:0 12px 30px #000;max-width:92vw;text-align:center}
+img.art{width:100%;max-width:520px;display:block;margin:10px auto;border-radius:12px}
+.xbtn{background:transparent;border:1px solid rgba(160,190,255,.3);color:#fff;border-radius:9px;padding:5px 9px;cursor:pointer}
+
+/* ===== هوية بصرية جديدة لكمبيوتر المالك ===== */
+#os{width:min(96vw,980px);height:min(88dvh,800px);top:50%;border-radius:26px;background:linear-gradient(150deg,rgba(18,29,58,.96),rgba(5,9,21,.97) 55%,rgba(12,20,43,.96));border:1px solid rgba(165,200,255,.42);box-shadow:0 34px 110px rgba(0,0,0,.74),0 0 0 1px rgba(255,255,255,.05) inset,0 20px 70px rgba(47,107,255,.18);backdrop-filter:blur(22px) saturate(145%)}
+#os.open{animation:osIn .30s ease both}
+@keyframes osIn{from{opacity:0;filter:blur(7px)}to{opacity:1;filter:blur(0)}}
+#osHead{min-height:60px;padding:10px 14px;background:linear-gradient(90deg,rgba(49,87,176,.34),rgba(105,76,206,.18) 48%,rgba(255,255,255,.035));border-bottom:1px solid rgba(165,200,255,.18)}
+.osBrand{display:flex;align-items:center;gap:10px;min-width:0}
+.osLogo{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;font-size:21px;color:#fff;background:linear-gradient(145deg,#4da3ff,#7357e8 58%,#d4a72c);box-shadow:0 8px 22px rgba(77,163,255,.32),inset 0 1px 0 rgba(255,255,255,.35)}
+.osBrand .t{line-height:1.25}.osBrand .t b{display:block;font-size:14px}.osBrand .t span{display:block;font-size:10.5px;color:#aebfe6;white-space:nowrap}
+.osStatus{font-size:10.5px;color:#dbe7ff;background:rgba(255,255,255,.07);border:1px solid rgba(165,200,255,.2);padding:5px 9px;border-radius:99px;white-space:nowrap}
+#osClock{font-size:11px;color:#aebfe6;white-space:nowrap}
+.winDots{display:flex;gap:6px;margin-inline-start:4px}.winDots i{width:10px;height:10px;border-radius:50%;display:block}
+#osSubbar{height:36px;padding:0 16px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.035);border-bottom:1px solid rgba(165,200,255,.12);font-size:11px;color:#aebfe6}
+#osCrumb{color:#fff;font-weight:800;background:rgba(77,163,255,.14);border:1px solid rgba(77,163,255,.22);padding:4px 9px;border-radius:99px}
+#osBody{background:radial-gradient(760px 430px at 15% -5%,rgba(77,163,255,.13),transparent 58%),radial-gradient(620px 390px at 95% 105%,rgba(212,167,44,.08),transparent 55%)}
+#osNav{width:198px;padding:14px 10px;gap:6px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border-left:1px solid rgba(165,200,255,.13)}
+.osProfile{display:flex;align-items:center;gap:9px;padding:10px;margin-bottom:8px;border:1px solid rgba(165,200,255,.16);border-radius:17px;background:linear-gradient(145deg,rgba(77,163,255,.16),rgba(115,87,232,.10))}
+.osAvatar{width:36px;height:36px;flex:0 0 36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ffd94d,#d69a16);color:#1a1403;font-weight:900;box-shadow:0 7px 18px rgba(212,167,44,.25)}
+.osProfile b{display:block;font-size:12px}.osProfile span{display:block;font-size:10px;color:#aebfe6;margin-top:2px}
+.osNavLabel{font-size:10px;color:#7f93ba;padding:4px 9px 1px;font-weight:800}
+#osNav button{padding:10px 11px;border:1px solid transparent;border-radius:14px;color:#cbd8f5;font-size:12.5px;font-weight:650;transition:background .18s,transform .18s,border-color .18s}
+#osNav button:hover{background:rgba(255,255,255,.07);border-color:rgba(165,200,255,.15);transform:translateX(-2px)}
+#osNav button.active{background:linear-gradient(135deg,#2f6bff,#7357e8);border-color:rgba(255,255,255,.22);color:#fff;box-shadow:0 10px 24px rgba(63,99,235,.28),inset 0 1px 0 rgba(255,255,255,.25)}
+#osMain{padding:20px;scrollbar-width:thin;scrollbar-color:rgba(120,160,255,.45) transparent}
+#osMain::-webkit-scrollbar,#osNav::-webkit-scrollbar,#inspect::-webkit-scrollbar{width:7px;height:7px}
+#osMain::-webkit-scrollbar-thumb,#osNav::-webkit-scrollbar-thumb,#inspect::-webkit-scrollbar-thumb{background:rgba(120,160,255,.38);border-radius:99px}
+#osMain h3{font-size:21px;margin:2px 0 14px;letter-spacing:-.2px}
+#osMain h4{margin:4px 0 9px}
+.card{background:linear-gradient(155deg,rgba(31,48,91,.94),rgba(11,19,40,.94));border:1px solid rgba(150,185,255,.19);border-radius:18px;padding:15px;box-shadow:0 14px 34px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.045)}
+.kpi .card b{font-size:24px;background:linear-gradient(90deg,#fff,#9fd0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{border-radius:12px;padding:9px 14px;font-weight:750;background:linear-gradient(145deg,#2f6bff,#23479f);border-color:rgba(165,200,255,.38);box-shadow:0 8px 20px rgba(18,46,120,.28),inset 0 1px 0 rgba(255,255,255,.2);transition:transform .15s,filter .15s}
+.btn:hover{filter:brightness(1.1)}.btn:active{transform:scale(.97)}
+.btn.green{background:linear-gradient(145deg,#25b873,#11663d)}.btn.red{background:linear-gradient(145deg,#d84a5f,#7c2131)}.btn.gold{background:linear-gradient(145deg,#e4b93c,#8a6410)}.btn.gray{background:linear-gradient(145deg,#3b4d78,#223153)}
+.xbtn{border-radius:11px;padding:7px 10px;background:rgba(255,255,255,.07);border-color:rgba(165,200,255,.25);font-size:11.5px}
+input,select,textarea{background:rgba(3,8,20,.72);border-color:rgba(145,180,255,.25);border-radius:12px;padding:10px;outline:none;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:#6eb2ff;box-shadow:0 0 0 3px rgba(77,163,255,.16)}
+details{background:rgba(4,10,24,.5);border:1px solid rgba(150,185,255,.12);border-radius:14px}
+.badge{padding:3px 9px;font-weight:700}
+pre.doc{background:rgba(3,8,20,.78);border-radius:15px}
+#inspect{border-radius:24px;background:linear-gradient(155deg,rgba(17,29,58,.96),rgba(6,10,23,.96));border-color:rgba(165,200,255,.35);padding:17px;box-shadow:0 28px 75px rgba(0,0,0,.66),inset 0 1px 0 rgba(255,255,255,.05)}
+#modalBox{background:linear-gradient(150deg,#111d3a,#070d1e);border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.72)}
+@media(max-width:680px){
+ #os{width:96vw;height:90dvh;border-radius:23px}.osBrand .t span{display:none}#osClock{display:none}.osStatus{display:none}
+ #osBody{flex-direction:column}#osNav{width:100%;flex-direction:row;align-items:center;overflow-x:auto;overflow-y:hidden;padding:9px;border-left:0;border-bottom:1px solid rgba(165,200,255,.13)}
+ .osProfile{min-width:132px;margin:0}.osNavLabel{display:none}#osNav button{white-space:nowrap;padding:9px 10px}#osMain{padding:14px}
+}
+
+/* ===== واجهة اللاعب والتفاعل والكاميرات ===== */
+#crosshair{position:fixed;left:50%;top:50%;z-index:18;width:18px;height:18px;transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .25s,scale .15s}
+#crosshair.show{opacity:.82}
+#crosshair:before,#crosshair:after{content:"";position:absolute;background:rgba(255,255,255,.92);box-shadow:0 1px 5px rgba(0,0,0,.8);border-radius:99px}
+#crosshair:before{width:2px;height:18px;left:8px;top:0}
+#crosshair:after{width:18px;height:2px;left:0;top:8px}
+#crosshair.active{scale:1.35}
+#crosshair.active:before,#crosshair.active:after{background:#ffd94d}
+#interactPrompt{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translate(-50%,16px);z-index:22;display:flex;align-items:center;gap:9px;max-width:min(92vw,560px);border:1px solid rgba(255,217,77,.55);background:linear-gradient(145deg,rgba(20,28,50,.94),rgba(5,9,20,.94));color:#fff;border-radius:99px;padding:9px 13px 9px 16px;font-size:13px;font-weight:750;box-shadow:0 16px 42px rgba(0,0,0,.55),0 0 26px rgba(255,217,77,.13);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;cursor:pointer}
+#interactPrompt.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#interactPrompt b{display:grid;place-items:center;min-width:34px;height:28px;padding:0 7px;border-radius:99px;background:linear-gradient(145deg,#ffd94d,#d69a16);color:#171106;font-size:11px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+#interactPrompt span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#joyBase{position:fixed;z-index:19;width:118px;height:118px;margin:-59px 0 0 -59px;border:1.5px solid rgba(255,255,255,.32);background:radial-gradient(circle,rgba(255,255,255,.05),rgba(8,14,28,.18) 68%);border-radius:50%;opacity:0;pointer-events:none;transition:opacity .15s;backdrop-filter:blur(2px)}
+#joyBase.show{opacity:1}
+#joyNub{position:absolute;left:50%;top:50%;width:48px;height:48px;border-radius:50%;background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(145,170,220,.75));box-shadow:0 8px 24px rgba(0,0,0,.38),inset 0 1px 0 #fff;transform:translate(-50%,-50%)}
+.summonLayout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:12px;align-items:start}
+.agentSummonGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.agentSummonGrid .card{margin:0}
+.summonChatCard{position:sticky;top:0}
+.summonAvatar{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:15px;background:color-mix(in srgb,var(--ac) 32%,#131f3a);border:1px solid var(--ac);font-size:21px}
+.summonMsgs{max-height:330px;overflow:auto;padding:3px}
+.cctvMain{padding:10px}
+#cctvViewport{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:17px;background:#02050b;border:1px solid rgba(150,190,255,.24)}
+#cctvCanvas{width:100%!important;height:100%!important;display:block;object-fit:cover}
+.cctvTop{position:absolute;z-index:3;top:9px;right:10px;left:10px;display:flex;justify-content:space-between;gap:8px;color:#fff;font-size:11px;text-shadow:0 2px 8px #000;pointer-events:none}
+.cctvTop b{color:#ffdf70}.cctvRec{position:absolute;z-index:3;bottom:9px;left:11px;color:#fff;background:rgba(160,0,22,.78);padding:3px 8px;border-radius:99px;font-size:10px;font-weight:900;letter-spacing:1px;animation:recBlink 1.25s steps(2,start) infinite}
+@keyframes recBlink{50%{opacity:.25}}
+.cctvControls{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:10px}
+.cctvGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:9px}
+.cctvCard{border:1px solid rgba(150,185,255,.2);background:linear-gradient(155deg,rgba(31,48,91,.95),rgba(8,14,30,.97));border-radius:16px;padding:7px;color:#fff;text-align:right;cursor:pointer;overflow:hidden}
+.cctvCard.sel{border-color:#ffd94d;box-shadow:0 0 0 1px rgba(255,217,77,.28),0 12px 30px rgba(0,0,0,.3)}
+.cctvCard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-radius:11px;background:radial-gradient(circle at 50% 30%,#21365f,#040814 72%)}
+.cctvCard span{display:block;padding:7px 3px 2px}.cctvCard b{display:block;font-size:12px}.cctvCard small{display:block;color:#9db1da;margin-top:3px;line-height:1.55}
+@media(max-width:860px){.summonLayout{grid-template-columns:1fr}.summonChatCard{position:static}.cctvGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.cctvCard b{font-size:10.5px}.cctvCard small{display:none}}
+@media(max-width:520px){#interactPrompt{bottom:max(16px,env(safe-area-inset-bottom));font-size:12px}.agentSummonGrid{grid-template-columns:1fr}.cctvControls .btn{padding:7px 9px;font-size:11px}}
+
+/* ===== طلبات المالك: نقطة فقط + اسم بلا خلفية + لانشر تطبيقات ===== */
+#hint{display:none!important}
+#crosshair{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 1px 5px rgba(0,0,0,.8);scale:1}
+#crosshair:before,#crosshair:after{display:none!important}
+#crosshair.active{background:#ffd94d;scale:1.35}
+#lookLabel{position:fixed;left:50%;top:calc(50% + 15px);transform:translateX(-50%);z-index:18;max-width:92vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;font-size:13px;font-weight:750;line-height:1.5;text-shadow:0 1px 4px rgba(0,0,0,.95),0 2px 14px rgba(0,0,0,.75);pointer-events:none;opacity:0;transition:opacity .15s}
+#lookLabel.show{opacity:.97}
+#interactPrompt{display:none!important}
+.winDots{display:none!important}
+#os{border-radius:20px}
+#osBody{position:relative}
+#osSubbar{gap:8px}
+.osAppsBtn{min-width:104px;min-height:30px;border-radius:99px;background:linear-gradient(145deg,#2f6bff,#6548cf);border-color:rgba(190,215,255,.45);font-weight:800}
+#osNav{position:absolute!important;top:0;bottom:0;right:0;width:min(340px,88%)!important;z-index:9;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start;overflow-y:auto!important;overflow-x:hidden!important;padding:14px!important;background:linear-gradient(160deg,rgba(20,32,64,.985),rgba(6,10,23,.985));border-left:1px solid rgba(165,200,255,.24);box-shadow:-22px 0 55px rgba(0,0,0,.42);transform:none;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease,visibility .15s ease}
+#os.apps-open #osNav{transform:none;opacity:1;visibility:visible;pointer-events:auto}
+#osNav .osProfile,#osNav .osNavLabel{grid-column:1/-1;min-width:0}
+#osNav button{min-height:54px;display:flex;align-items:center;justify-content:flex-start;text-align:right;white-space:normal!important;line-height:1.45;border-radius:15px;padding:10px!important}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;text-align:center;line-height:1.45}
+.row>.btn{flex:1 1 148px}
+.cctvControls>.btn{flex:1 1 104px}
+#osHead .xbtn{min-width:74px;min-height:34px}
+#osMain{width:100%}
+@media(max-width:680px){
+ #osBody{flex-direction:row!important}
+ #osNav{width:min(322px,88vw)!important;grid-template-columns:repeat(2,minmax(0,1fr))}
+ #osNav .osProfile{display:flex}
+ #osNav .osNavLabel{display:block}
+ .row>.btn{flex-basis:132px}
+ #lookLabel{font-size:12px}
+}
+
+/* ===== كثافة نوافذ مضغوطة افتراضيًا (يمكن إرجاع الحجم العادي من الإعدادات) ===== */
+#os{width:min(94vw,900px);height:min(84dvh,720px);font-size:13px;border-radius:18px}
+#osHead{min-height:50px;padding:7px 10px}
+.osLogo{width:32px;height:32px;border-radius:11px;font-size:18px}
+.osBrand .t b{font-size:12.5px}.osBrand .t span{font-size:9.5px}
+.osStatus{font-size:9.5px;padding:4px 7px}#osClock{font-size:10px}
+#osHead .xbtn{min-width:62px;min-height:29px;font-size:10.5px;padding:5px 8px}
+#osSubbar{height:31px;padding:0 10px;font-size:10px;gap:7px}
+.osAppsBtn{min-width:92px;min-height:26px;font-size:11px}
+#osMain{padding:13px}
+#osMain h3{font-size:17px;margin:1px 0 10px}
+#osMain h4{font-size:13.5px;margin:2px 0 7px}
+.card{padding:10px;border-radius:14px;margin-bottom:8px}
+.small{font-size:10.5px;line-height:1.55}
+.btn{min-height:32px;padding:6px 10px;font-size:11.5px;border-radius:10px}
+input,select,textarea{font-size:12px;padding:7px 8px;border-radius:10px}
+label{font-size:10.5px;margin:6px 0 3px}
+.badge{font-size:9.5px;padding:2px 7px}
+table{font-size:10.5px}td,th{padding:5px}
+details{padding:6px 8px}summary{font-size:11.5px}
+.msg{font-size:11.5px;line-height:1.6;padding:7px 9px}
+pre.doc{font-size:11.5px;line-height:1.65;padding:9px}
+.kpi{gap:6px}.kpi .card b{font-size:19px}
+#osNav{width:min(300px,86%)!important;padding:10px!important;gap:6px}
+#osNav button{min-height:44px;padding:7px 8px!important;font-size:11.5px;border-radius:12px}
+.osProfile{padding:7px;margin-bottom:4px}.osAvatar{width:30px;height:30px;flex-basis:30px}.osProfile b{font-size:11px}.osProfile span{font-size:9px}.osNavLabel{font-size:9px}
+#inspect{max-width:580px;max-height:56vh;padding:12px;font-size:12.5px;border-radius:18px}
+#modalBox{width:min(94vw,680px);padding:12px;font-size:12.5px;border-radius:18px}
+#toast{font-size:11px;padding:7px 11px}
+.cctvControls{gap:5px}.cctvCard b{font-size:11px}
+@media(max-width:680px){
+ #os{width:94vw;height:84dvh}#osMain{padding:10px}#osMain h3{font-size:16px}
+ #osNav{width:min(290px,84vw)!important}#osNav button{min-height:42px;font-size:11px}
+ .row>.btn{flex-basis:118px}.kpi{grid-template-columns:repeat(auto-fit,minmax(92px,1fr))}
+}
+/* الحجم العادي الاختياري من الإعدادات */
+body.ui-normal #os{width:min(96vw,980px);height:min(88dvh,800px);font-size:16px}
+body.ui-normal #osHead{min-height:60px;padding:10px 14px}
+body.ui-normal #osMain{padding:20px}body.ui-normal #osMain h3{font-size:21px;margin-bottom:14px}
+body.ui-normal .card{padding:15px;margin-bottom:10px}body.ui-normal .small{font-size:11.5px;line-height:1.7}
+body.ui-normal .btn{min-height:38px;padding:9px 14px;font-size:12.5px}
+body.ui-normal input,body.ui-normal select,body.ui-normal textarea{font-size:13px;padding:10px}
+body.ui-normal #osNav{width:min(340px,88%)!important;padding:14px!important}
+body.ui-normal #osNav button{min-height:54px;padding:10px!important;font-size:12.5px}
+body.ui-normal #inspect{max-width:640px;max-height:62vh;padding:17px}
+body.ui-normal #modalBox{width:min(95vw,760px);padding:16px}
+</style>
+</head>
+<body>
+<div id="gl"></div>
+
+<div id="loader">
+  <div style="font-size:44px">🏢</div>
+  <div style="font-weight:900;font-size:19px">شركة الذكاء المستقلة</div>
+  <div class="spin"></div>
+  <div class="small" id="loadTxt">جارٍ تجهيز مقر الشركة الكبير والاتصال بخادمها الحقيقي…</div>
+</div>
+
+<div id="hint"></div>
+<div id="crosshair"></div>
+<div id="lookLabel"></div>
+<div id="joyBase"><div id="joyNub"></div></div>
+<div id="inspect"></div>
+
+<!-- كمبيوتر المالك -->
+<div id="os">
+  <div id="osHead">
+    <div class="osBrand"><div class="osLogo">◈</div><div class="t"><b>كمبيوتر المالك</b><span id="osCoName">الشركة</span></div></div>
+    <span class="osStatus" id="osSrv"></span><div class="sp"></div><span id="osClock"></span>
+    <button class="xbtn" id="osRefresh">⟳ تحديث</button><button class="xbtn" id="osClose">✕ إغلاق</button>
+    <div class="winDots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+  </div>
+  <div id="osSubbar"><button class="xbtn osAppsBtn" id="osAppsBtn" type="button">▦ التطبيقات</button><span id="osCrumb">الرئيسية والإعداد</span><span>نظام إدارة الشركة الخاص بالمالك</span></div>
+  <div id="osBody"><nav id="osNav"></nav><main id="osMain"></main></div>
+</div>
+
+<div id="modal"><div id="modalBox"></div></div>
+<div id="coState" style="position:fixed;top:8px;inset-inline-end:8px;z-index:9999;padding:7px 12px;border-radius:10px;font:600 13px system-ui;background:#1b2233;color:#9fd0ff;border:1px solid #2b3b57;cursor:pointer">⏳</div>
+<div id="toast"></div>
+
+<script>setTimeout(()=>{if(!window.__booted){var t=document.getElementById('loadTxt');if(t)t.textContent='تأخر تحميل مكتبات ثلاثي الأبعاد — تأكد من اتصال الإنترنت عند أول تشغيل ثم أعد تحميل الصفحة.'}},14000);</script>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.min.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+
+/* ================= أدوات واتصال ================= */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const fmtT=ts=>ts?new Date(ts).toLocaleString("ar-EG",{dateStyle:"medium",timeStyle:"short"}):"—";
+function toast(m,ms=3200){const inWindow=$("os")?.classList.contains("open")||$("modal")?.classList.contains("open");if(!inWindow)return;const t=$("toast");t.textContent=m;t.style.display="block";setTimeout(()=>t.style.display="none",ms)}
+let hintTimer=null;
+function hint(){const h=$("hint");if(h){h.textContent="";h.classList.remove("show")}}
+function showModal(html){$("modalBox").innerHTML=html;$("modal").classList.add("open")}
+window.closeModal=()=>$("modal").classList.remove("open");
+$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeModal()});
+
+let cfg={url:"",token:"",timeOverride:false,overrideHour:12,walkSpeed:4.25,mouseSens:1,quality:"clear",uiScale:"compact",lightZones:{}};
+try{cfg={...cfg,...JSON.parse(localStorage.getItem("aic2_cfg")||"{}")}}catch{}
+const SAME_ORIGIN=location.protocol.startsWith("http")?location.origin:"";
+const _isLocalUrl=u=>{try{return["localhost","127.0.0.1","::1"].includes(new URL(u).hostname)}catch{return false}};
+const _isPreviewUrl=u=>{try{return new URL(u).hostname.endsWith(".e2b.app")}catch{return false}};
+function normalizeServerUrl(u){
+  if(SAME_ORIGIN&&/(workers\.dev|pages\.dev)$/.test(location.hostname))return SAME_ORIGIN;
+  u=String(u||"").trim().replace(/\/$/,"");
+  if(SAME_ORIGIN&&(!u||(_isLocalUrl(u)&&!_isLocalUrl(SAME_ORIGIN))||(_isPreviewUrl(u)&&u!==SAME_ORIGIN)))return SAME_ORIGIN;
+  return u;
+}
+cfg.url=normalizeServerUrl(cfg.url);
+const saveCfg=()=>{try{localStorage.setItem("aic2_cfg",JSON.stringify(cfg))}catch{}};
+if(cfg.url)saveCfg();
+function applyUiScale(){document.body.classList.toggle("ui-normal",cfg.uiScale==="normal");document.body.classList.toggle("ui-compact",cfg.uiScale!=="normal")}
+applyUiScale();
+async function _fetchApi(base,path,opt={}){
+  const _timeoutMs=String(opt.method||"GET").toUpperCase()==="GET"?15000:180000;
+  const signal=opt.signal||(typeof AbortSignal!=="undefined"&&AbortSignal.timeout?AbortSignal.timeout(_timeoutMs):undefined);
+  const r=await fetch(String(base).replace(/\/$/,"")+path,{...opt,signal,headers:{'Content-Type':'application/json','x-owner-token':cfg.token||'',...(opt.headers||{})}});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok){const e=new Error(j.error||("HTTP "+r.status));e.status=r.status;e.body=j;throw e}
+  return j;
+}
+async function api(path,opt={}){
+  cfg.url=normalizeServerUrl(cfg.url);
+  if(!cfg.url)throw new Error("لم يُضبط رابط خادم الشركة بعد");
+  try{return await _fetchApi(cfg.url,path,opt)}
+  catch(e){
+    const method=String(opt.method||"GET").toUpperCase();
+    if(method==="GET"&&SAME_ORIGIN&&cfg.url!==SAME_ORIGIN){
+      const out=await _fetchApi(SAME_ORIGIN,path,opt);cfg.url=SAME_ORIGIN;saveCfg();return out;
+    }
+    throw e;
+  }
+}
+
+/* ================= بيانات احتياطية عند انقطاع الخادم (عرض معماري فقط — لا عمل) ================= */
+const FALLBACK=[["هاني","الرئيس التنفيذي","#ffd94d",-1],["سارة الخالدي","بحث واكتشاف الموضوعات","#ff6b81",0],["كريم سمير","استراتيجية المحتوى","#4da3ff",1],["هنا","هيكلة المحتوى","#b388ff",2],["يوسف","كتابة احترافية","#35d07f",3],["مريم","تحرير لغوي","#ffb020",4],["آدم","صياغة بشرية","#ff9f43",5],["رنا","تلخيص","#48dbfb",6],["عمر","توليد الصور","#fd79a8",7],["لينا","توجيه بصري","#e17055",8],["طارق","سيناريو الفيديو","#00cec9",9],["دينا","التعليق الصوتي","#fdcb6e",10],["فادي","خطط المونتاج","#74b9ff",11],["منى","محتوى التواصل","#a29bfe",12],["هاني","تحليل جمهور","#55efc4",13],["ريم","تحليلات أداء","#81ecec",14],["سامي","أبحاث سوق","#fab1a0",15],["زياد","أدوات GitHub","#ffeaa7",16],["على","تطوير برمجيات","#7ed6df",17],["نادية","ضمان جودة","#e77f67",18],["باسم","أتمتة","#cf6a87",19]];
+let view={agents:FALLBACK.map((f,i)=>({id:i===0?"ceo":"a"+i,name:f[0],role:f[1],color:f[2],officeIndex:f[3],isCeo:i===0,configured:false,status:"server_offline",tools:[],memory:[]})),company:{name:"شركة الذكاء المستقلة"},projects:[],pendingApprovals:0};
+let serverOnline=false, osData=null;
+const TOOL_NAMES={web_search:"بحث الويب",web_fetch:"جلب صفحة ويب",docs_search:"بحث المستندات",image_generate:"توليد صورة",js_sandbox:"تنفيذ JavaScript معزول"};
+const STATUS_AR={unconfigured:"غير مهيأ — بلا نموذج",idle:"مهيأ — بانتظار تكليف",working:"ينفّذ مهمة فعلية الآن",awaiting_review:"سلّم وبانتظار مراجعة المدير",in_meeting:"في اجتماع",summoned:"مستدعى لمكتب المالك",server_offline:"الخادم غير متصل",queued:"في الطابور",running:"قيد التنفيذ",under_review:"لدى المدير للمراجعة",approved:"معتمدة",failed:"فاشلة",cancelled:"ملغاة",blocked_unconfigured:"متوقفة: الوكيل غير مهيأ",planning:"المدير يخطط",active:"نشط",completed:"مكتمل",completed_with_issues:"مكتمل مع ملاحظات",waiting_ceo_config:"بانتظار تهيئة المدير",planning_failed:"فشل التخطيط"};
+const statusAr=s=>STATUS_AR[s]||s;
+
+/* ================= تخطيط المبنى الكبير =================
+   مقر مفتوح بمقياس بشري: ٨٤ × ٦٠ مترًا. الشمال (−z) للجناح التنفيذي،
+   والوسط صالة كبائن موظفين واسعة، والجنوب (+z) للبهو والمدخل. */
+const BUILDING={x0:-42,x1:42,z0:-30,z1:30,ceiling:3.52};
+const CUB_COLS=[-32,-16,0,16,32],CUB_ROWS=[-14,-5,4,13];
+const cubicleCenter=i=>({x:CUB_COLS[i%5],z:CUB_ROWS[Math.floor(i/5)]});
+const officeRect=i=>{const c=cubicleCenter(i);return{x0:c.x-3.45,x1:c.x+3.45,z0:c.z-2.65,z1:c.z+2.65,cx:c.x,cz:c.z}};
+const SPECIAL={
+  ceo:{x0:-42,x1:-29,z0:-30,z1:-21,label:"مكتب الرئيس التنفيذي",zone:"ceo"},
+  owner:{x0:-29,x1:-13,z0:-30,z1:-21,label:"مكتب المالك",zone:"owner"},
+  meeting:{x0:-13,x1:12,z0:-30,z1:-21,label:"قاعة الاجتماعات",zone:"meeting"},
+  lounge:{x0:12,x1:27,z0:-30,z1:-21,label:"استراحة الموظفين",zone:"lounge"},
+  security:{x0:27,x1:42,z0:-30,z1:-21,label:"غرفة الأمن والسيرفرات",zone:"security"}
+};
+const deskPos=i=>{const c=cubicleCenter(i);return{x:c.x-0.35,z:c.z-1.62}};
+const chairPos=i=>{const d=deskPos(i);return{x:d.x,z:d.z+0.95}};
+const CEO_DESK={x:-35.5,z:-26.95},CEO_CHAIR={x:-35.5,z:-28.05};
+const OWNER_DESK={x:-20.5,z:-26.95},OWNER_CHAIR={x:-20.5,z:-28.05};
+const ownerSummonSpot=a=>{
+  const slot=Number.isInteger(a?.summon?.slot)?a.summon.slot:Math.max(0,a?.officeIndex??0);
+  return{x:-23.55+(slot%5)*1.52,z:-24.65+Math.floor(slot/5)*0.86,face:Math.PI,key:"owner-summon-"+slot};
+};
+const meetingSeat=i=>{
+  if(i===99)return{x:-6.55,z:-25.5,face:Math.PI/2};
+  const side=i<10?-1:1,idx=i%10;
+  return{x:-4.75+idx*1.04,z:-25.5+side*1.72,face:side<0?0:Math.PI};
+};
+const zoneForOffice=i=>"open"+((Math.floor(i/5)>=2?2:0)+((i%5)>=3?1:0)); // أربعة أرباع لصالة العمل
+
+/* شبكة حركة A* + تنعيم مسار على مخطط الأرضية الحقيقي */
+const CELL=0.8,GX0=BUILDING.x0,GZ0=BUILDING.z0,COLS=Math.ceil((BUILDING.x1-BUILDING.x0)/CELL),ROWSG=Math.ceil((BUILDING.z1-BUILDING.z0)/CELL),blocked=new Uint8Array(COLS*ROWSG);
+const gIdx=(x,z)=>clamp(Math.floor((z-GZ0)/CELL),0,ROWSG-1)*COLS+clamp(Math.floor((x-GX0)/CELL),0,COLS-1);
+function cellCenter(id){return{x:GX0+(id%COLS)*CELL+CELL/2,z:GZ0+Math.floor(id/COLS)*CELL+CELL/2}}
+function cellBlockedAt(x,z){if(x<BUILDING.x0||x>BUILDING.x1||z<BUILDING.z0||z>BUILDING.z1)return true;return!!blocked[gIdx(x,z)]}
+function blockLine(x0,z0,x1,z1){const steps=Math.max(1,Math.ceil(Math.hypot(x1-x0,z1-z0)/0.28));for(let i=0;i<=steps;i++)blocked[gIdx(x0+(x1-x0)*i/steps,z0+(z1-z0)*i/steps)]=1}
+function blockRect(x0,z0,x1,z1){for(let z=Math.min(z0,z1);z<=Math.max(z0,z1)+0.01;z+=CELL/2)for(let x=Math.min(x0,x1);x<=Math.max(x0,x1)+0.01;x+=CELL/2)blocked[gIdx(x,z)]=1}
+function carve(x,z){blocked[gIdx(x,z)]=0}
+function carveRect(x0,z0,x1,z1){for(let z=Math.min(z0,z1);z<=Math.max(z0,z1)+0.01;z+=CELL/2)for(let x=Math.min(x0,x1);x<=Math.max(x0,x1)+0.01;x+=CELL/2)blocked[gIdx(x,z)]=0}
+function roomWalls(r){
+  blockLine(r.x0,r.z0,r.x1,r.z0);blockLine(r.x0,r.z1,r.x1,r.z1);blockLine(r.x0,r.z0,r.x0,r.z1);blockLine(r.x1,r.z0,r.x1,r.z1);
+  const dx=(r.x0+r.x1)/2;carveRect(dx-0.75,r.z1-0.85,dx+0.75,r.z1+0.85);
+}
+Object.values(SPECIAL).forEach(roomWalls);
+function blockCubicle(i){
+  const o=officeRect(i),d=deskPos(i);
+  blockLine(o.x0,o.z0,o.x1,o.z0);
+  blockLine(o.x0,o.z0,o.x0,o.z1-1.05);blockLine(o.x1,o.z0,o.x1,o.z1-1.05);
+  blockRect(d.x-1.45,d.z-0.58,d.x+1.45,d.z+0.58);
+  blockRect(o.cx+1.65,o.z0+0.25,o.cx+3.05,o.z0+1.05); // وحدة تخزين جانبية
+}
+for(let i=0;i<20;i++)blockCubicle(i);
+function nearestFree(x,z){let id=gIdx(x,z);if(!blocked[id])return id;for(let rad=1;rad<11;rad++)for(let dy=-rad;dy<=rad;dy++)for(let dx=-rad;dx<=rad;dx++){const c=id%COLS+dx,r=Math.floor(id/COLS)+dy;if(c>=0&&r>=0&&c<COLS&&r<ROWSG&&!blocked[r*COLS+c])return r*COLS+c}return id}
+function lineClear(ax,az,bx2,bz2){
+  const d=Math.hypot(bx2-ax,bz2-az),n=Math.max(1,Math.ceil(d/0.30));
+  for(let i=1;i<n;i++){const x=ax+(bx2-ax)*i/n,z=az+(bz2-az)*i/n;if(cellBlockedAt(x,z))return false}
+  return true;
+}
+function findPath(sx,sz,tx,tz){
+  const s=nearestFree(sx,sz),g=nearestFree(tx,tz);if(s===g)return[{x:tx,z:tz}];
+  const N=COLS*ROWSG,gScore=new Float32Array(N).fill(Infinity),fScore=new Float32Array(N).fill(Infinity),came=new Int32Array(N).fill(-1),closed=new Uint8Array(N);
+  const gx=g%COLS,gy=Math.floor(g/COLS),h=i=>(Math.abs(i%COLS-gx)+Math.abs(Math.floor(i/COLS)-gy));
+  const heap=[s];gScore[s]=0;fScore[s]=h(s);
+  const push=v=>{heap.push(v);let i=heap.length-1;while(i>0){const p=(i-1)>>1;if(fScore[heap[p]]<=fScore[heap[i]])break;[heap[p],heap[i]]=[heap[i],heap[p]];i=p}};
+  const pop=()=>{const top=heap[0],last=heap.pop();if(heap.length){heap[0]=last;let i=0;for(;;){let l=i*2+1,r=l+1,m=i;if(l<heap.length&&fScore[heap[l]]<fScore[heap[m]])m=l;if(r<heap.length&&fScore[heap[r]]<fScore[heap[m]])m=r;if(m===i)break;[heap[m],heap[i]]=[heap[i],heap[m]];i=m}}return top};
+  let guard=0;
+  while(heap.length&&guard++<N*2){
+    const cur=pop();if(closed[cur])continue;closed[cur]=1;
+    if(cur===g){
+      const raw=[];let n=cur;while(n!==-1){raw.push(cellCenter(n));n=came[n]}raw.reverse();raw.push({x:tx,z:tz});
+      const smooth=[];let at={x:sx,z:sz},idx=0;
+      while(idx<raw.length){
+        let far=idx;for(let j=raw.length-1;j>idx;j--){if(lineClear(at.x,at.z,raw[j].x,raw[j].z)){far=j;break}}
+        smooth.push(raw[far]);at=raw[far];idx=far+1;
+      }
+      return smooth.length?smooth:raw;
+    }
+    const cx=cur%COLS,cy=Math.floor(cur/COLS);
+    for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){
+      const nx=cx+dx,ny=cy+dy;if(nx<0||ny<0||nx>=COLS||ny>=ROWSG)continue;const ni=ny*COLS+nx;if(blocked[ni]||closed[ni])continue;
+      const ng=gScore[cur]+1;if(ng<gScore[ni]){gScore[ni]=ng;fScore[ni]=ng+h(ni);came[ni]=cur;push(ni)}
+    }
+  }
+  return[{x:tx,z:tz}];
+}
+/* ================= مشهد ثلاثي الأبعاد ================= */
+const container=$("gl");
+const IS_MOBILE=matchMedia('(pointer:coarse)').matches||innerWidth<760;
+const LOW_POWER=IS_MOBILE||(navigator.hardwareConcurrency||4)<=4||(navigator.deviceMemory||4)<=3;
+const QUALITY_PROFILES={
+  clear:{start:LOW_POWER?1.85:1.45,max:LOW_POWER?2.10:1.75,min:LOW_POWER?1.45:1.05,targetSide:LOW_POWER?2800:2400,detail:LOW_POWER?27:32,lights:LOW_POWER?3:5},
+  balanced:{start:LOW_POWER?1.45:1.25,max:LOW_POWER?1.70:1.50,min:LOW_POWER?1.10:0.95,targetSide:LOW_POWER?2200:1900,detail:LOW_POWER?24:28,lights:LOW_POWER?2:4},
+  fast:{start:1.00,max:1.20,min:0.75,targetSide:1500,detail:LOW_POWER?20:22,lights:2}
+};
+let QUALITY=QUALITY_PROFILES[cfg.quality]||QUALITY_PROFILES.clear;
+let MAX_PIXEL_RATIO=QUALITY.max,MIN_PIXEL_RATIO=QUALITY.min,pixelRatioCap=QUALITY.start;
+const renderer=new THREE.WebGLRenderer({antialias:!LOW_POWER,stencil:false,powerPreference:"high-performance"});
+function applyQualityProfile(reset=false){
+  QUALITY=QUALITY_PROFILES[cfg.quality]||QUALITY_PROFILES.clear;MAX_PIXEL_RATIO=QUALITY.max;MIN_PIXEL_RATIO=QUALITY.min;
+  pixelRatioCap=clamp(reset?QUALITY.start:pixelRatioCap,MIN_PIXEL_RATIO,MAX_PIXEL_RATIO);
+  const sideFit=QUALITY.targetSide/Math.max(innerWidth,innerHeight,1);
+  renderer.setPixelRatio(Math.max(.5,Math.min(devicePixelRatio||1,pixelRatioCap,sideFit)));renderer.setSize(innerWidth,innerHeight);
+}
+applyQualityProfile(true);
+renderer.shadowMap.enabled=!LOW_POWER;renderer.shadowMap.autoUpdate=false;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;renderer.outputColorSpace=THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x0a1428);scene.fog=new THREE.Fog(0x0a1428,125,300);
+if(!LOW_POWER){const pmrem=new THREE.PMREMGenerator(renderer);scene.environment=pmrem.fromScene(new RoomEnvironment(),0.05).texture;}
+const camera=new THREE.PerspectiveCamera(innerWidth/innerHeight<0.75?94:(innerWidth/innerHeight<1.1?82:71),innerWidth/innerHeight,0.05,320);camera.rotation.order="YXZ";camera.position.set(0,1.62,28.55);
+
+const hemi=new THREE.HemisphereLight(0xbfd8ff,0x3a3226,0.7);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xffffff,2.2);sun.castShadow=true;
+sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-58;sun.shadow.camera.right=58;sun.shadow.camera.top=44;sun.shadow.camera.bottom=-44;sun.shadow.camera.far=160;sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.02;
+scene.add(sun);scene.add(sun.target);
+const nightLights=[];for(let i=0;i<10;i++){const pl=new THREE.PointLight(0xffd9a0,0,24,1.45);pl.position.set(0,2.9,0);scene.add(pl);nightLights.push(pl)}
+const lobbyLight=new THREE.PointLight(0xcfe2ff,0,28,1.45);lobbyLight.position.set(0,2.95,24);scene.add(lobbyLight);scene.add(lobbyLight);
+
+/* خامات وقوام إجرائي */
+function canvasTex(w,h,draw,rep){const c=document.createElement("canvas");c.width=w;c.height=h;draw(c.getContext("2d"),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;if(rep){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rep[0],rep[1])}t.anisotropy=4;return t}
+const woodTex=canvasTex(512,512,(x,w,h)=>{x.fillStyle="#8a5a34";x.fillRect(0,0,w,h);for(let i=0;i<9;i++){x.fillStyle=i%2?"#7d4f2c":"#96683c";x.fillRect(0,i*58,w,56);x.strokeStyle="rgba(40,20,5,.5)";x.beginPath();x.moveTo(0,i*58);x.lineTo(w,i*58);x.stroke();for(let j=0;j<26;j++){x.strokeStyle=`rgba(60,35,10,${.05+Math.random()*.1})`;x.beginPath();const y=i*58+Math.random()*54;x.moveTo(0,y);x.bezierCurveTo(w*.3,y+4,w*.7,y-4,w,y+2);x.stroke()}}},[10,7]);
+const marbleTex=canvasTex(512,512,(x,w,h)=>{x.fillStyle="#d8dce2";x.fillRect(0,0,w,h);for(let i=0;i<40;i++){x.strokeStyle=`rgba(120,130,145,${.08+Math.random()*.15})`;x.lineWidth=1+Math.random()*2;x.beginPath();let px=Math.random()*w,py=0;x.moveTo(px,py);while(py<h){py+=30+Math.random()*40;px+=(Math.random()-.5)*60;x.lineTo(px,py)}x.stroke()}x.strokeStyle="rgba(90,100,115,.35)";x.strokeRect(0,0,w/2,h/2);x.strokeRect(w/2,0,w/2,h/2);x.strokeRect(0,h/2,w/2,h/2);x.strokeRect(w/2,h/2,w/2,h/2)},[8,6]);
+const carpetTex=canvasTex(256,256,(x,w,h)=>{x.fillStyle="#ffffff";x.fillRect(0,0,w,h);for(let i=0;i<9000;i++){x.fillStyle=`rgba(0,0,0,${Math.random()*.09})`;x.fillRect(Math.random()*w,Math.random()*h,2,2)}},[4,2]);
+const shadowTex=canvasTex(128,128,(x,w,h)=>{const g=x.createRadialGradient(64,64,4,64,64,62);g.addColorStop(0,"rgba(0,0,0,.42)");g.addColorStop(1,"rgba(0,0,0,0)");x.fillStyle=g;x.fillRect(0,0,w,h)});
+const M={
+  marble:new THREE.MeshStandardMaterial({map:marbleTex,roughness:.22,metalness:.05}),
+  wood:new THREE.MeshStandardMaterial({map:woodTex,roughness:.55,metalness:.02}),
+  wall:new THREE.MeshStandardMaterial({color:0xe8e4da,roughness:.92}),
+  wallDark:new THREE.MeshStandardMaterial({color:0x2c3648,roughness:.85}),
+  glass:new THREE.MeshPhysicalMaterial({color:0xbfe0ff,roughness:.06,metalness:0,transparent:true,opacity:.18,clearcoat:1,side:THREE.DoubleSide}),
+  frame:new THREE.MeshStandardMaterial({color:0x39445a,roughness:.35,metalness:.75}),
+  deskTop:new THREE.MeshStandardMaterial({color:0x6e4a2c,map:woodTex,roughness:.38,metalness:.05}),
+  black:new THREE.MeshStandardMaterial({color:0x141a26,roughness:.4,metalness:.35}),
+  chrome:new THREE.MeshStandardMaterial({color:0xc8d2e0,roughness:.16,metalness:.95}),
+  fabric:new THREE.MeshStandardMaterial({color:0x33415e,roughness:.95}),
+  fabric2:new THREE.MeshStandardMaterial({color:0x5c4a6e,roughness:.95}),
+  sofa:new THREE.MeshStandardMaterial({color:0x3f5c66,roughness:.92}),
+  plant:new THREE.MeshStandardMaterial({color:0x2e7d46,roughness:.8}),
+  plant2:new THREE.MeshStandardMaterial({color:0x47a55e,roughness:.8}),
+  pot:new THREE.MeshStandardMaterial({color:0x8a8f98,roughness:.6,metalness:.3}),
+  gold:new THREE.MeshStandardMaterial({color:0xc9a227,roughness:.3,metalness:.8}),
+  strip:new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xfff2cf,emissiveIntensity:.25}),
+  lampGlow:new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffd9a0,emissiveIntensity:.15}),
+  shaft:new THREE.MeshBasicMaterial({color:0xffe9b0,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false})
+};
+Object.assign(M,{
+  partition:new THREE.MeshStandardMaterial({color:0xd9d0bf,roughness:.88}),
+  partitionTop:new THREE.MeshStandardMaterial({color:0xe9e7df,roughness:.55,metalness:.04}),
+  carpetDark:new THREE.MeshStandardMaterial({map:carpetTex,color:0x45403c,roughness:1}),
+  cubicleWood:new THREE.MeshStandardMaterial({map:woodTex,color:0xe2a35f,roughness:.42,metalness:.03}),
+  column:new THREE.MeshStandardMaterial({color:0xf0ece2,roughness:.82}),
+  chairBlack:new THREE.MeshStandardMaterial({color:0x15171c,roughness:.92}),
+  windowGlass:new THREE.MeshPhysicalMaterial({color:0xa9cdea,roughness:.04,metalness:.05,transparent:true,opacity:.13,clearcoat:1,side:THREE.DoubleSide}),
+  ceilingGrid:new THREE.MeshBasicMaterial({color:0xc9c2b2}),
+  signDark:new THREE.MeshStandardMaterial({color:0x202a3a,roughness:.42,metalness:.38})
+});
+M.carpetDark.map=carpetTex.clone();M.carpetDark.map.wrapS=M.carpetDark.map.wrapT=THREE.RepeatWrapping;M.carpetDark.map.repeat.set(30,18);M.carpetDark.map.needsUpdate=true;
+const boxGeo=new THREE.BoxGeometry(1,1,1),cylGeo=new THREE.CylinderGeometry(1,1,1,12),sphGeo=new THREE.SphereGeometry(1,12,9);
+function mesh(geo,mat,x,y,z,sx=1,sy=1,sz=1,parent=scene){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
+const bx=(mat,x,y,z,w,h,d,parent)=>mesh(boxGeo,mat,x,y,z,w,h,d,parent);
+const rbx=(mat,x,y,z,w,h,d,r,parent)=>{const m=new THREE.Mesh(new RoundedBoxGeometry(w,h,d,3,r),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;(parent||scene).add(m);return m};
+const cyl=(mat,x,y,z,r,h,parent)=>mesh(cylGeo,mat,x,y,z,r,h,r,parent);
+function _cleanGeoForMerge(src,matrix){
+  let g=src.clone();if(g.index)g=g.toNonIndexed();
+  for(const name of Object.keys(g.attributes))if(!["position","normal","uv"].includes(name))g.deleteAttribute(name);
+  if(!g.attributes.normal)g.computeVertexNormals();
+  if(!g.attributes.uv)g.setAttribute("uv",new THREE.BufferAttribute(new Float32Array(g.attributes.position.count*2),2));
+  g.applyMatrix4(matrix);return g;
+}
+function _mergeGroupList(parent,entries,detail=false){
+  const groups=new Map();
+  for(const e of entries){
+    const key=e.mat.uuid+"|"+(e.cast?1:0)+"|"+(e.receive?1:0);
+    if(!groups.has(key))groups.set(key,{mat:e.mat,cast:e.cast,receive:e.receive,geos:[],src:[]});
+    const gr=groups.get(key);gr.geos.push(e.geo);gr.src.push(e.mesh);
+  }
+  let merged=0,created=0;
+  for(const gr of groups.values()){
+    if(gr.geos.length<2)continue;let geo=null;try{geo=mergeGeometries(gr.geos,false)}catch{}
+    if(!geo)continue;const m=new THREE.Mesh(geo,gr.mat);m.castShadow=gr.cast;m.receiveShadow=gr.receive;if(detail)m.userData.detailCull=true;parent.add(m);created++;merged+=gr.src.length;gr.src.forEach(o=>o.removeFromParent());
+  }
+  return{merged,created};
+}
+function batchGroupMeshes(root,{detail=false,skip=null}={}){
+  if(!root)return;root.updateWorldMatrix(true,true);
+  const inv=new THREE.Matrix4().copy(root.matrixWorld).invert(),tmp=new THREE.Matrix4(),entries=[],meshes=[];
+  root.traverse(o=>{if(o.isMesh)meshes.push(o)});
+  for(const o of meshes){
+    const mat=o.material;if(!mat||Array.isArray(mat)||mat.transparent||mat.visible===false||!o.geometry?.attributes?.position||(skip&&skip(o)))continue;
+    tmp.multiplyMatrices(inv,o.matrixWorld);entries.push({mesh:o,mat,cast:o.castShadow,receive:o.receiveShadow,geo:_cleanGeoForMerge(o.geometry,tmp)});
+  }
+  return _mergeGroupList(root,entries,detail);
+}
+function contactShadow(x,z,w,d,parent){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),new THREE.MeshBasicMaterial({map:shadowTex,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(x,0.012,z);(parent||scene).add(m);return m}
+/* سجلات التفاعل الفيزيائي والعناصر المتحركة داخل المقر */
+const interactables=[],pickMeshes=[],dynamicObjects=[],doorStates=[],lightZones={},blinkMats=[],plantGroups=[],circleColliders=[],boxColliders=[];
+function markDynamic(root){if(root&&!dynamicObjects.includes(root))dynamicObjects.push(root);return root}
+function registerInteractable(root,label,action,opts={}){
+  if(!root)return null;
+  const id=interactables.length;
+  const item={id,root,label,action,maxDistance:opts.maxDistance||3.4,lookLabel:opts.lookLabel||null,labelDistance:opts.labelDistance||opts.maxDistance||3.4};
+  interactables.push(item);
+  root.traverse(o=>{if(o.isMesh)o.userData.interactId=id});
+  pickMeshes.push(root);
+  return item;
+}
+function defineLightZone(id,name=""){
+  if(!lightZones[id])lightZones[id]={id,name:name||id,on:true,mat:null,lights:[],switches:[]};
+  if(name)lightZones[id].name=name;
+  return lightZones[id];
+}
+function zoneMaterial(id){
+  const z=defineLightZone(id);
+  if(!z.mat)z.mat=M.strip.clone();
+  return z.mat;
+}
+
+
+/* أرضيات ومبنى بمقياس بشري لمنظور الشخص الأول */
+const CCTV_CAMERAS=[
+  {id:"entrance",name:"كاميرا ١ — المدخل والاستقبال",pos:[0,3.18,29.0],look:[0,1.05,18],fov:66,pan:0,tilt:0,zoom:1},
+  {id:"westfloor",name:"كاميرا ٢ — صالة الموظفين الغربية",pos:[-39.4,3.18,-19.2],look:[-16,0.75,4],fov:64,pan:0,tilt:0,zoom:1},
+  {id:"eastfloor",name:"كاميرا ٣ — صالة الموظفين الشرقية",pos:[39.4,3.18,-19.2],look:[16,0.75,4],fov:64,pan:0,tilt:0,zoom:1},
+  {id:"exec",name:"كاميرا ٤ — الممر التنفيذي",pos:[0,3.18,-18.65],look:[0,1.05,-29],fov:62,pan:0,tilt:0,zoom:1},
+  {id:"ownerdoor",name:"كاميرا ٥ — أمام مكتب المالك",pos:[-20.5,3.16,-19.25],look:[-20.5,1.0,-29],fov:58,pan:0,tilt:0,zoom:1},
+  {id:"meeting",name:"كاميرا ٦ — قاعة الاجتماعات",pos:[10.9,3.12,-22.0],look:[-2,0.75,-27.2],fov:62,pan:0,tilt:0,zoom:1},
+  {id:"eastwing",name:"كاميرا ٧ — الاستراحة والأمن",pos:[34.5,3.16,-19.25],look:[27,0.95,-28.5],fov:60,pan:0,tilt:0,zoom:1},
+  {id:"outside",name:"كاميرا ٨ — الواجهة الخارجية",pos:[0,4.25,39],look:[0,1.5,29.5],fov:58,pan:0,tilt:0,zoom:1}
+];
+const cctvFixtures={};
+["open0|صالة العمل — الشمال الغربي","open1|صالة العمل — الشمال الشرقي","open2|صالة العمل — الجنوب الغربي","open3|صالة العمل — الجنوب الشرقي","ceo|مكتب الرئيس التنفيذي","owner|مكتب المالك","meeting|قاعة الاجتماعات","lounge|استراحة الموظفين","security|غرفة الأمن والسيرفرات","lobby|البهو والاستقبال"].forEach(x=>{const[id,name]=x.split("|");defineLightZone(id,name)});
+
+const ground=mesh(new THREE.PlaneGeometry(460,460),new THREE.MeshStandardMaterial({color:0x1c2733,roughness:1}),0,-0.08,8);ground.rotation.x=-Math.PI/2;ground.castShadow=false;
+const slab=bx(M.marble,0,-0.045,0,88,0.1,64);slab.castShadow=false;
+const openCarpet=bx(M.carpetDark,0,0.012,-1.4,83,0.025,37.6);openCarpet.castShadow=false;
+bx(M.wood,0,0.018,-19.65,83,0.025,2.35).castShadow=false;
+bx(M.wood,0,0.018,17.75,83,0.025,2.7).castShadow=false;
+bx(new THREE.MeshStandardMaterial({color:0x272c35,roughness:1}),0,0.0,38,96,0.045,10).castShadow=false;
+bx(new THREE.MeshStandardMaterial({color:0x3d4652,roughness:.95}),0,0.012,32.6,24,0.035,4.6).castShadow=false;
+// مدينة خارج النوافذ الشمالية والغربية
+const cityTex=canvasTex(256,512,(x,w,h)=>{x.fillStyle="#33425c";x.fillRect(0,0,w,h);for(let yy=14;yy<h-16;yy+=22)for(let xx=12;xx<w-16;xx+=24){x.fillStyle=Math.random()>.16?"rgba(205,228,250,.72)":"rgba(240,238,226,.58)";x.fillRect(xx,yy,13,10)}});
+const cityMats=[0x9fb4d4,0xb8c6dc,0x879ab5,0xc2c9d4].map(c=>new THREE.MeshStandardMaterial({color:c,map:cityTex,emissive:0xffffff,emissiveMap:cityTex,emissiveIntensity:.025,roughness:.62,metalness:.12}));
+for(let i=0;i<24;i++){
+  const north=i<15,x=north?-112+i*15.5+((i*7)%5):(-118-Math.random()*22),z=north?(-124-Math.random()*34):(-52+(i-15)*13),h=15+((i*7)%24),w=7+(i%4)*1.7;
+  const b=bx(cityMats[i%4],x,h/2-0.05,z,w,h,w);b.castShadow=false;
+}
+const lawnMat=new THREE.MeshStandardMaterial({color:0x355f3d,roughness:1}),walkMat=new THREE.MeshStandardMaterial({color:0x9aa0a3,roughness:.95});
+bx(lawnMat,0,0.012,-36.5,104,0.025,7).castShadow=false;bx(lawnMat,-48.5,0.012,-4,7,0.025,58).castShadow=false;
+bx(walkMat,0,0.02,-32.3,92,0.03,2.1).castShadow=false;bx(walkMat,-44.2,0.02,-4,2.1,0.03,58).castShadow=false;
+function outsideTree(x,z,sc=1){const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(sc);scene.add(g);cyl(M.deskTop,0,0.65,0,0.07,1.3,g).castShadow=false;const c1=mesh(sphGeo,M.plant,0,1.55,0,0.72,0.78,0.72,g);c1.castShadow=false;const c2=mesh(sphGeo,M.plant2,0.34,1.86,0.08,0.46,0.5,0.46,g);c2.castShadow=false;return g}
+for(let x=-38;x<=38;x+=9.5)outsideTree(x,-38.6,1.18+(Math.abs(x)%3)*0.08);
+for(let z=-24;z<=14;z+=8.5)outsideTree(-49.6,z,1.16+(Math.abs(z)%3)*0.07);
+for(let i=0;i<10;i++){const px=-35+i*7.8;bx(M.pot,px,0.28,34.8,2.0,0.56,0.95);cyl(M.deskTop,px,0.82,34.8,0.07,0.85);mesh(sphGeo,M.plant,px,1.5,34.8,0.56,0.6,0.56);mesh(sphGeo,M.plant2,px+0.32,1.72,34.72,0.36,0.4,0.36)}
+
+function createDoor(cx,z,label,{width=1.14,dir=1,glassDoor=false,open=false}={}){
+  const hinge=new THREE.Group();hinge.position.set(cx-dir*width/2,0,z);scene.add(hinge);markDynamic(hinge);
+  const leaf=rbx(glassDoor?M.glass:M.cubicleWood,dir*width/2,1.06,0,width,2.12,glassDoor?0.045:0.065,0.018,hinge);leaf.castShadow=false;
+  const frame=bx(M.frame,dir*width/2,2.14,0,width,0.07,0.09,hinge);frame.castShadow=false;
+  if(!glassDoor){const win=bx(M.glass,dir*width/2,1.43,0.038,width*0.52,0.68,0.012,hinge);win.castShadow=false}
+  const handle=bx(M.chrome,dir*(width-0.16),1.02,0.085,0.22,0.045,0.045,hinge);handle.castShadow=false;
+  const st={hinge,cx,z,width,dir,label,open:!!open,angle:open?dir*1.72:0,target:open?dir*1.72:0,autoUntil:0};
+  hinge.rotation.y=st.angle;doorStates.push(st);
+  registerInteractable(hinge,()=>`${st.open?"إغلاق":"فتح"} باب ${label}`,()=>toggleDoor(st),{maxDistance:3.4,lookLabel:"باب "+label,labelDistance:18});
+  return st;
+}
+function wallRun(x0,z0,x1,z1,{doorCx=null,doorLabel="الغرفة"}={}){
+  const horiz=Math.abs(z1-z0)<0.01,len=Math.hypot(x1-x0,z1-z0);
+  function seg(a,b){
+    const l=Math.abs(b-a);if(l<0.04)return;const mid=(a+b)/2;
+    const X=horiz?x0+mid:x0,Z=horiz?z0:z0+mid;
+    const w=horiz?l:0.15,d=horiz?0.15:l;
+    bx(M.wall,X,0.52,Z,w,1.04,d).castShadow=false;
+    bx(M.glass,X,1.94,Z,horiz?l:0.055,1.78,horiz?0.055:l).castShadow=false;
+    bx(M.frame,X,2.86,Z,horiz?l:0.13,0.08,horiz?0.13:l).castShadow=false;
+    bx(M.wallDark,X,3.24,Z,w,0.56,d).castShadow=false;
+    const posts=Math.max(1,Math.round(l/3.2));
+    for(let i=0;i<=posts;i++){const q=a+(b-a)*i/posts;bx(M.frame,horiz?x0+q:x0,1.94,horiz?z0:z0+q,horiz?0.09:0.16,1.78,horiz?0.16:0.09).castShadow=false}
+  }
+  if(doorCx===null){seg(0,len);return}
+  const dc=horiz?(doorCx-x0):(doorCx-z0),half=0.62;
+  seg(0,dc-half);seg(dc+half,len);
+  const X=horiz?doorCx:x0,Z=horiz?z0:doorCx;
+  bx(M.frame,X,2.35,Z,horiz?1.32:0.16,0.38,horiz?0.16:1.32).castShadow=false;
+  bx(M.wallDark,X,3.24,Z,horiz?1.32:0.15,0.56,horiz?0.15:1.32).castShadow=false;
+  if(horiz)createDoor(doorCx,z0,doorLabel,{width:1.14,open:false});
+}
+function roomShell(r){
+  wallRun(r.x0,r.z1,r.x1,r.z1,{doorCx:(r.x0+r.x1)/2,doorLabel:r.label});
+  if(r.x1<BUILDING.x1)wallRun(r.x1,r.z0,r.x1,r.z1,{});
+}
+Object.values(SPECIAL).forEach(roomShell);
+
+// واجهات خارجية: نوافذ واسعة شمالًا وغربًا مثل صورة المكاتب المرجعية
+function facadeNorth(z=-30){
+  bx(M.wall,0,0.34,z,84.3,0.68,0.22).castShadow=false;bx(M.wallDark,0,3.28,z,84.3,0.5,0.26).castShadow=false;
+  bx(M.frame,0,0.71,z+0.03,84.3,0.07,0.18).castShadow=false;bx(M.frame,0,1.92,z,84.3,0.07,0.14).castShadow=false;
+  for(let x=-42;x<=42;x+=6){bx(M.frame,x,1.86,z,0.14,2.42,0.2).castShadow=false;if(x<42)bx(M.windowGlass,x+3,1.86,z,5.72,2.34,0.045).castShadow=false}
+}
+
+function facadeWest(x=-42){
+  bx(M.wall,x,0.34,-6,0.22,0.68,48.3).castShadow=false;bx(M.wallDark,x,3.28,-6,0.26,0.5,48.3).castShadow=false;
+  bx(M.frame,x+0.03,0.71,-6,0.18,0.07,48.3).castShadow=false;bx(M.frame,x,1.92,-6,0.14,0.07,48.3).castShadow=false;
+  for(let z=-30;z<=18;z+=6){bx(M.frame,x,1.86,z,0.2,2.42,0.14).castShadow=false;if(z<18)bx(M.windowGlass,x,1.86,z+3,0.045,2.34,5.72).castShadow=false}
+  bx(M.wall,x,1.76,24,0.22,3.52,12).castShadow=false;
+}
+
+function facadeEast(x=42){
+  bx(M.wall,x,1.76,0,0.22,3.52,60).castShadow=false;
+  for(let z=-24;z<=24;z+=8){bx(M.frame,x-.04,2.05,z,0.13,1.55,3.4).castShadow=false;bx(M.windowGlass,x-.08,2.05,z,0.05,1.38,3.15).castShadow=false}
+}
+function facadeSouth(z=30){
+  bx(M.wall,-22.5,1.76,z,39,3.52,0.22).castShadow=false;bx(M.wall,22.5,1.76,z,39,3.52,0.22).castShadow=false;
+  for(const cx of[-31,-20,-9,9,20,31]){bx(M.frame,cx,2.0,z-.05,5.6,1.7,0.14).castShadow=false;bx(M.windowGlass,cx,2.0,z-.09,5.3,1.52,0.05).castShadow=false}
+  bx(M.frame,0,2.52,z,6.4,0.24,0.3).castShadow=false;bx(M.wallDark,0,3.26,z,6.4,1.25,0.26).castShadow=false;
+  bx(M.glass,-2.18,1.16,z,1.5,2.32,0.05).castShadow=false;bx(M.glass,2.18,1.16,z,1.5,2.32,0.05).castShadow=false;
+  createDoor(-0.72,z,"المدخل الرئيسي الأيسر",{width:1.42,dir:1,glassDoor:true});
+  createDoor(0.72,z,"المدخل الرئيسي الأيمن",{width:1.42,dir:-1,glassDoor:true});
+}
+facadeNorth();facadeWest();facadeEast();facadeSouth();blockRect(-42,-30,42,-29.65);blockRect(-42,29.65,42,30);blockRect(-42,-30,-41.65,30);blockRect(41.65,-30,42,30);
+const blindTex=canvasTex(256,128,(x,w,h)=>{x.clearRect(0,0,w,h);for(let y=2;y<h;y+=13){x.fillStyle="rgba(233,226,211,.92)";x.fillRect(0,y,w,7);x.fillStyle="rgba(105,98,84,.45)";x.fillRect(0,y+7,w,2)}},[9,2]);
+const blindMat=new THREE.MeshStandardMaterial({map:blindTex,transparent:true,opacity:.58,roughness:.88,side:THREE.DoubleSide});
+function addBlind(x,y,z,w,h,ry=0){const b=new THREE.Mesh(new THREE.PlaneGeometry(w,h),blindMat);b.position.set(x,y,z);b.rotation.y=ry;b.castShadow=false;b.receiveShadow=false;scene.add(b);return b}
+Object.values(SPECIAL).forEach(r=>addBlind((r.x0+r.x1)/2,2.52,-29.84,Math.min(10,r.x1-r.x0-2.2),1.02));
+[-20,-8,4].forEach(z=>addBlind(-41.84,2.52,z,11,1.02,Math.PI/2));
+
+// سقف حقيقي وأعمدة ووحدات إضاءة بحسب المناطق
+const ceiling=new THREE.Mesh(new THREE.PlaneGeometry(84.4,60.4),new THREE.MeshStandardMaterial({color:0xd9d3c6,emissive:0xf5efe1,emissiveIntensity:.38,roughness:.94,side:THREE.DoubleSide}));
+ceiling.rotation.x=Math.PI/2;ceiling.position.set(0,BUILDING.ceiling,0);ceiling.receiveShadow=false;ceiling.castShadow=false;scene.add(ceiling);
+for(let x=-40;x<=40;x+=8)bx(M.ceilingGrid,x,3.492,0,0.025,0.012,60).castShadow=false;
+for(let z=-28;z<=28;z+=7)bx(M.ceilingGrid,0,3.492,z,84,0.012,0.025).castShadow=false;
+function addCeilingLight(x,z,zone,w=2.5,d=0.68){
+  const p=bx(zoneMaterial(zone),x,3.452,z,w,0.035,d);p.castShadow=false;return p;
+}
+function quadrantZone(x,z){return "open"+((z>=4?2:0)+(x>=0?1:0))}
+for(let z=-17;z<=16;z+=5.5)for(let x=-36;x<=36;x+=8)addCeilingLight(x,z,quadrantZone(x,z),2.7,0.62);
+Object.values(SPECIAL).forEach(r=>{const cx=(r.x0+r.x1)/2;addCeilingLight(cx-2.6,-25.5,r.zone,3,0.72);addCeilingLight(cx+2.6,-25.5,r.zone,3,0.72)});
+for(let x=-32;x<=32;x+=8)addCeilingLight(x,24,"lobby",2.8,0.66);
+const COLUMN_POS=[];
+for(const x of[-24,-8,8,24])for(const z of[-9.5,-0.5,8.5,17.5]){
+  cyl(M.column,x,1.76,z,0.42,3.52);COLUMN_POS.push({x,z});blockRect(x-0.48,z-0.48,x+0.48,z+0.48);
+  const band=cyl(M.frame,x,3.34,z,0.46,0.08);band.castShadow=false;
+}
+// توزيع مصابيح النقاط الموجودة على المناطق بدل إضافة عشرات المصابيح الثقيلة
+const zoneLightSpots=[["open0",-20,-9.5],["open1",20,-9.5],["open2",-20,8.5],["open3",20,8.5],["ceo",-35.5,-25.5],["owner",-20.5,-25.5],["meeting",0,-25.5],["lounge",19.5,-25.5],["security",34.5,-25.5]];
+zoneLightSpots.forEach(([zone,x,z],i)=>{const l=nightLights[i];if(!l)return;l.position.set(x,2.92,z);l.distance=25;l.decay=1.45;defineLightZone(zone).lights.push(l)});
+lobbyLight.position.set(0,2.95,24);lobbyLight.distance=28;defineLightZone("lobby").lights.push(lobbyLight);
+
+function addLightSwitch(x,y,z,ry,zone){
+  const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=ry;scene.add(g);markDynamic(g);
+  rbx(M.wall,0,0,0,0.20,0.30,0.035,0.018,g);
+  const nub=rbx(M.frame,0,0.025,0.035,0.075,0.12,0.035,0.012,g);
+  const hit=new THREE.Mesh(new THREE.PlaneGeometry(0.55,0.65),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));hit.position.z=0.07;g.add(hit);
+  defineLightZone(zone).switches.push(nub);
+  registerInteractable(g,()=>`${lightZones[zone].on?"إطفاء":"تشغيل"} نور ${lightZones[zone].name}`,()=>toggleLightZone(zone),{maxDistance:3.1});
+  return g;
+}
+addLightSwitch(-34.62,1.28,-21.14,Math.PI,"ceo");
+addLightSwitch(-19.62,1.28,-21.14,Math.PI,"owner");
+addLightSwitch(0.88,1.28,-21.14,Math.PI,"meeting");
+addLightSwitch(20.38,1.28,-21.14,Math.PI,"lounge");
+addLightSwitch(35.38,1.28,-21.14,Math.PI,"security");
+addLightSwitch(-8,1.28,-8.99,0,"open0");addLightSwitch(8,1.28,-8.99,0,"open1");
+addLightSwitch(-8,1.28,9.01,0,"open2");addLightSwitch(8,1.28,9.01,0,"open3");
+addLightSwitch(-8,1.28,18.01,0,"lobby");
+
+// كاميرات مراقبة فيزيائية مطابقة لمواضع البث ثلاثي الأبعاد
+function addCctvFixture(def){
+  const g=new THREE.Group();g.position.set(def.pos[0],def.pos[1],def.pos[2]);scene.add(g);markDynamic(g);
+  if(def.id==="outside"){cyl(M.frame,0,-2.05,0,0.06,4.1,g)}
+  else cyl(M.frame,0,0.17,0,0.035,0.34,g);
+  const head=new THREE.Group();g.add(head);
+  mesh(sphGeo,M.black,0,0,0,0.16,0.13,0.16,head);
+  const lens=cyl(new THREE.MeshStandardMaterial({color:0x081426,emissive:0x1f7cff,emissiveIntensity:.8,roughness:.15,metalness:.4}),0,-0.035,0.13,0.055,0.045,head);lens.rotation.x=Math.PI/2;
+  const led=mesh(sphGeo,new THREE.MeshBasicMaterial({color:0xff3344}),0.09,0.055,0.12,0.018,0.018,0.018,head);
+  head.lookAt(def.look[0],def.look[1],def.look[2]);
+  cctvFixtures[def.id]={group:g,head,led:led.material,def};
+  registerInteractable(g,()=>`فتح ${def.name}`,()=>openCctvCamera(def.id),{maxDistance:4.2});
+  return g;
+}
+CCTV_CAMERAS.forEach(addCctvFixture);
+
+// أشعة نهارية ناعمة من واجهة الغرب الزجاجية
+const shafts=[];for(let i=0;i<5;i++){const sh=new THREE.Mesh(new THREE.PlaneGeometry(4.2,17),M.shaft);sh.position.set(-33,1.75,-18+i*8);sh.rotation.set(0.92,0.18,0.42);sh.castShadow=false;scene.add(sh);shafts.push(sh)}
+
+/* أثاث */
+function makeScreenMat(){const c=document.createElement("canvas");c.width=256;c.height=160;const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return{canvas:c,tex:t,mat:new THREE.MeshStandardMaterial({map:t,emissive:0xffffff,emissiveMap:t,emissiveIntensity:.85,roughness:.35}),sig:""}}
+function drawScreen(sm,agent){
+  const a=agent||{},cur=a.currentTask;
+  const sig=[a.status,a.model,cur?.lastAction,cur?.run?.step,a.configured].join("|");if(sig===sm.sig)return;sm.sig=sig;
+  const x=sm.canvas.getContext("2d");x.fillStyle="#071021";x.fillRect(0,0,256,160);
+  x.fillStyle=a.configured?(a.status==="working"?"#14532d":"#1d3468"):"#5c1f16";x.fillRect(0,0,256,30);
+  x.fillStyle="#fff";x.font="bold 12px Arial";x.textAlign="right";x.fillText((a.name||"")+" — "+(a.role||""),248,19);
+  x.font="10.5px Arial";x.fillStyle="#9fd0ff";
+  const act=a.activity&&a.activity.items&&a.activity.items[0];const run=a.currentRun;const lastTool=(run&&run.steps?run.steps.filter(function(x){return x.kind==="tool"}).slice(-1)[0]:null);const lines=!a.configured?["⚠️ بلا نموذج ذكاء مربوط","الحالة: غير مهيأ","من كمبيوتر المالك ← اتصالات الذكاء"]:a.status==="working"&&cur?["النموذج: "+a.model,"المهمة: "+cur.title,String(cur.lastAction||"").slice(0,34),lastTool?("🔧 أداة: "+lastTool.tool):"⏳ يفكر بنموذجه الآن"]:a.status==="awaiting_review"?["النموذج: "+a.model,"سلّم مهمته ✓","بانتظار مراجعة المدير زياد"]:a.status==="rejected"?["النموذج: "+a.model,"❌ المدير رفض تسليمه","بالمكتب: يتكلم مع المدير"]:["النموذج: "+(a.model||"—"),"بانتظار تكليف من المدير زياد",act?String(act.text||"").slice(0,32):""];
+  lines.forEach((l,i)=>x.fillText(l,248,52+i*19));
+  if(a.status==="working"){x.fillStyle="rgba(110,200,255,.25)";for(let i=0;i<5;i++)x.fillRect(10,112+i*9,90+((i*47)%110),4)}
+  sm.tex.needsUpdate=true;
+}
+const screenMats={};FALLBACK.forEach((f,i)=>{screenMats[i===0?"ceo":"a"+i]=makeScreenMat()});
+function desk(x,z,sm,{exec=false,owner=false,cubicle=false,agentId="",ry=0}={}){
+  const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;scene.add(g);
+  rbx(exec?M.gold:(cubicle?M.cubicleWood:M.deskTop),0,0.74,0,exec?2.9:(cubicle?2.68:2.3),0.09,0.85,0.035,g);
+  if(cubicle){rbx(M.cubicleWood,1.08,0.74,0.50,0.72,0.09,1.08,0.035,g);rbx(M.partition,-0.98,0.37,0.03,0.52,0.68,0.68,0.025,g);bx(M.frame,-0.98,0.56,0.39,0.34,0.035,0.025,g)}
+  bx(M.black,-1.0,0.37,0,0.08,0.72,0.7,g);bx(M.black,1.0,0.37,0,0.08,0.72,0.7,g);bx(M.black,0,0.42,-0.28,2.0,0.5,0.05,g);
+  const n=owner?1:2;
+  for(let k=0;k<n;k++){const mx=owner?0:(k===0?-0.48:0.48),ang=owner?0:(k===0?0.16:-0.16);
+    const mon=new THREE.Group();mon.position.set(mx,0.79,-0.18);mon.rotation.y=ang;mon.rotation.x=-0.045;g.add(mon);
+    cyl(M.black,0,0.14,-0.05,0.03,0.3,mon);rbx(M.black,0,0.42,0,owner?1.15:0.66,0.42,0.04,0.015,mon);
+    const scr=new THREE.Mesh(new THREE.PlaneGeometry(owner?1.06:0.59,0.35),sm?sm.mat:M.black);scr.position.set(0,0.42,0.025);mon.add(scr);
+    if(owner)mon.traverse(o=>o.userData.ownerPc=true);
+  }
+  rbx(M.black,0,0.8,0.18,0.7,0.025,0.24,0.01,g);
+  rbx(M.black,0.8,0.39,-0.02,0.26,0.6,0.5,0.02,g);bx(M.strip,0.8,0.55,0.24,0.16,0.03,0.02,g);
+  const nb=bx(M.wall,-0.62,0.8,0.2,0.34,0.014,0.25,g);nb.rotation.y=0.25;
+  const ph=bx(M.black,0.62,0.8,0.24,0.09,0.012,0.18,g);ph.rotation.y=-0.3;
+  cyl(M.chrome,0.88,0.85,0.15,0.045,0.13,g);
+  const arm=cyl(M.frame,-0.95,1.0,-0.2,0.02,0.5,g);arm.rotation.z=0.5;rbx(M.lampGlow,-0.78,1.22,-0.18,0.22,0.06,0.14,0.02,g);
+  contactShadow(0,0.2,2.7,1.5,g);
+  if(owner||agentId){const hit=new THREE.Mesh(new THREE.BoxGeometry(owner?2.5:2.7,1.35,1.25),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));hit.position.set(0,1.05,0.12);hit.castShadow=false;hit.receiveShadow=false;g.add(hit)}
+  if(owner)g.traverse(o=>{if(o.isMesh)o.userData.ownerPc=true});
+  batchGroupMeshes(g,{skip:o=>!!(sm&&o.material===sm.mat)});
+  blockRect(x-1.42,z-0.56,x+1.42,z+0.56);
+  if(owner)registerInteractable(g,()=>"كمبيوتر المالك",()=>{exitPlayerLock();openOS("home")},{maxDistance:3.7,lookLabel:"كمبيوتر المالك",labelDistance:18});
+  else if(agentId)registerInteractable(g,()=>{const a=view.agents.find(v=>v.id===agentId);return "شاشة "+(a?.name||"الموظف")},()=>{inspectAgentId=agentId;renderInspect(agentId);exitPlayerLock()},{maxDistance:3.7,lookLabel:()=>{const a=view.agents.find(v=>v.id===agentId);return a?a.name+" — "+a.role:"محطة عمل"},labelDistance:14});
+  return g;
+}
+function chair(x,z,mat=M.fabric){
+  const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);
+  rbx(mat,0,0.47,0,0.55,0.09,0.51,0.04,g);const back=rbx(mat,0,0.88,0.265,0.53,0.64,0.09,0.05,g);back.rotation.x=0.08;
+  rbx(mat,0,1.27,0.30,0.31,0.14,0.07,0.035,g);bx(M.black,0,0.64,0.27,0.07,0.34,0.045,g);
+  cyl(M.chrome,0,0.24,0,0.034,0.42,g);
+  for(let i=0;i<5;i++){const a=i/5*Math.PI*2,leg=bx(M.black,Math.cos(a)*0.17,0.045,Math.sin(a)*0.17,0.52,0.032,0.055,g);leg.rotation.y=-a}
+  bx(M.black,-0.30,0.58,-0.02,0.042,0.19,0.042,g);bx(M.black,0.30,0.58,-0.02,0.042,0.19,0.042,g);
+  bx(M.black,-0.30,0.69,-0.02,0.07,0.035,0.34,g);bx(M.black,0.30,0.69,-0.02,0.07,0.035,0.34,g);batchGroupMeshes(g,{detail:true});circleColliders.push({x,z,r:0.30});registerInteractable(g,()=>"الجلوس على الكرسي",()=>sitAt(x,z,g.rotation.y),{maxDistance:3.1,lookLabel:"كرسي",labelDistance:8});
+  return g;
+}
+function plant(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(s);scene.add(g);cyl(M.pot,0,0.22,0,0.2,0.44,g);for(let i=0;i<6;i++){const lf=mesh(new THREE.ConeGeometry(0.09,0.75,6),i%2?M.plant:M.plant2,(Math.random()-.5)*0.25,0.75+Math.random()*0.2,(Math.random()-.5)*0.25,1,1,1,g);lf.rotation.set((Math.random()-.5)*0.7,0,(Math.random()-.5)*0.7)}mesh(sphGeo,M.plant,0,0.92,0,0.2,0.24,0.2,g);batchGroupMeshes(g);plantGroups.push(g);markDynamic(g);circleColliders.push({x,z,r:0.26*s});registerInteractable(g,()=>"سقي النبات",()=>usePlant(g),{maxDistance:2.7});return g}
+function credenza(x,z,ry=0){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;scene.add(g);rbx(M.deskTop,0,0.42,0,1.5,0.8,0.42,0.03,g);const cols=[0xc0392b,0x2471a3,0x229954,0xd4ac0d,0x7d3c98];for(let i=0;i<7;i++)bx(new THREE.MeshStandardMaterial({color:cols[i%5],roughness:.8}),-0.55+i*0.13,0.95,0,0.09,0.26,0.2,g);blockRect(x-0.82,z-0.3,x+0.82,z+0.3);registerInteractable(g,()=>"تصفح أحدث مستندات الشركة الحقيقية",()=>showArtifactShelf(),{maxDistance:3});return g}
+function sofa(x,z,ry=0,w=2.2){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;scene.add(g);rbx(M.sofa,0,0.32,0,w,0.42,0.9,0.09,g);rbx(M.sofa,0,0.72,0.36,w,0.55,0.22,0.09,g);rbx(M.sofa,-w/2+0.14,0.55,0,0.28,0.55,0.9,0.08,g);rbx(M.sofa,w/2-0.14,0.55,0,0.28,0.55,0.9,0.08,g);rbx(M.fabric2,-w/4,0.58,0.12,w/2-0.3,0.16,0.55,0.06,g);rbx(M.fabric2,w/4,0.58,0.12,w/2-0.3,0.16,0.55,0.06,g);contactShadow(0,0,w+0.5,1.4,g);
+  if(Math.abs(Math.sin(ry))>0.7)boxColliders.push({x0:x-0.55,x1:x+0.55,z0:z-w/2,z1:z+w/2});else boxColliders.push({x0:x-w/2,x1:x+w/2,z0:z-0.55,z1:z+0.55});
+  batchGroupMeshes(g);registerInteractable(g,()=>"الجلوس على الكنبة",()=>sitAt(x,z,ry),{maxDistance:3.1});return g}
+function rug(x,z,w,d,color){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),new THREE.MeshStandardMaterial({map:carpetTex,color,roughness:1}));m.rotation.x=-Math.PI/2;m.position.set(x,0.02,z);m.receiveShadow=true;scene.add(m);return m}
+function staticLabel(text,x,y,z,w=3.2,color="#d7b45a",ry=0){
+  const clean=String(text).replace(/\s+—\s+.*/,"").trim();
+  const h=clamp(w*0.16,0.40,0.66);
+  const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=ry;scene.add(g);
+  const back=rbx(M.signDark,0,0,-0.028,w,h,0.055,0.018,g);back.castShadow=false;
+  const accent=bx(new THREE.MeshStandardMaterial({color:new THREE.Color(color),roughness:.38,metalness:.35}),0,-h/2+0.035,0.008,w*0.94,0.022,0.012,g);accent.castShadow=false;
+  const tex=canvasTex(1024,160,(c)=>{c.clearRect(0,0,1024,160);c.fillStyle="#ffffff";c.font="bold "+(clean.length>20?58:(clean.length>13?68:80))+"px Arial";c.textAlign="center";c.textBaseline="middle";c.fillText(clean,512,82)});
+  const face=new THREE.Mesh(new THREE.PlaneGeometry(w-0.10,h-0.05),new THREE.MeshBasicMaterial({map:tex,transparent:true}));face.position.z=0.012;face.castShadow=false;g.add(face);
+  bx(M.frame,-w*0.32,h/2+0.045,-0.055,0.035,0.09,0.09,g).castShadow=false;bx(M.frame,w*0.32,h/2+0.045,-0.055,0.035,0.09,0.09,g).castShadow=false;
+  registerInteractable(g,()=>clean,()=>openDirectory(),{maxDistance:3.2,lookLabel:clean,labelDistance:34});
+  return g;
+}
+
+/* شاشات جدارية ديناميكية */
+function wallScreen(x,y,z,w,h,ry=0){const c=document.createElement("canvas");c.width=512;c.height=Math.round(512*h/w);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=ry;scene.add(g);rbx(M.black,0,0,-0.03,w+0.12,h+0.12,0.06,0.02,g);const s=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map:t,emissive:0xffffff,emissiveMap:t,emissiveIntensity:.75}));s.position.z=0.012;g.add(s);return{canvas:c,tex:t,sig:"",group:g}}
+const ceoScreen=wallScreen(-35.5,1.98,-29.76,5.2,1.8);
+const meetScreen=wallScreen(0,1.98,-29.76,6.6,2.0);
+const lobbyScreen=wallScreen(0,1.92,20.36,6.4,1.68);
+registerInteractable(ceoScreen.group,()=>"قراءة شاشة الرئيس التنفيذي",()=>showCompanyScreen("ceo"),{maxDistance:4.4});
+registerInteractable(meetScreen.group,()=>"قراءة شاشة قاعة الاجتماعات",()=>showCompanyScreen("meeting"),{maxDistance:4.4});
+registerInteractable(lobbyScreen.group,()=>"قراءة شاشة بهو الشركة",()=>showCompanyScreen("lobby"),{maxDistance:4.4});
+function drawWallScreen(ws,title,lines,accent="#ffd94d"){const sig=title+lines.join("|");if(sig===ws.sig)return;ws.sig=sig;const x=ws.canvas.getContext("2d"),W=ws.canvas.width,H=ws.canvas.height;const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#0a1836");g.addColorStop(1,"#122a5e");x.fillStyle=g;x.fillRect(0,0,W,H);x.fillStyle=accent;x.fillRect(0,0,W,6);x.textAlign="center";x.fillStyle="#fff";x.font="bold 30px Arial";x.fillText(title,W/2,48);x.font="19px Arial";x.fillStyle="#cfe1ff";lines.slice(0,5).forEach((l,i)=>x.fillText(l,W/2,92+i*30));ws.tex.needsUpdate=true}
+
+/* تعبئة الغرف وكبائن الموظفين */
+const plates={};const officeStrips={};const officePickPlanes=[];const printers=[];
+let coffeeState={busyUntil:0,cup:null,lightMat:null,steam:null,group:null};
+const carpetColors=[0x514a43,0x584f47,0x4b4a48,0x5c5148,0x474b4d];
+function makePlate(i){
+  const c=document.createElement("canvas");c.width=512;c.height=110;const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(2.28,0.50),new THREE.MeshBasicMaterial({map:t,transparent:true}));scene.add(m);
+  plates[i]={canvas:c,tex:t,sig:""};return m;
+}
+function drawPlate(i,a){
+  const pl=plates[i];if(!pl)return;const sig=[a?.name,a?.status,a?.configured,a?.model,a?.summon?.active].join("|");if(sig===pl.sig)return;pl.sig=sig;
+  const x=pl.canvas.getContext("2d");x.clearRect(0,0,512,110);x.fillStyle="rgba(8,13,25,.94)";x.beginPath();x.roundRect(3,3,506,104,18);x.fill();
+  const col=!a?.configured?"#ff7a59":a?.summon?.active?"#ffd94d":a.status==="working"?"#35d07f":a.status==="awaiting_review"?"#c99aff":"#7fb8ff";
+  x.strokeStyle=col;x.lineWidth=4;x.stroke();x.fillStyle=col;x.beginPath();x.arc(474,32,11,0,7);x.fill();
+  x.fillStyle="#fff";x.font="bold 31px Arial";x.textAlign="center";x.fillText(a?.name||"",240,44);
+  x.font="20px Arial";x.fillStyle="#bcd0f5";x.fillText((a?.role||"")+" • "+(a?.summon?.active?"مستدعى لمكتب المالك":statusAr(a?.status||"")),240,80);pl.tex.needsUpdate=true;
+}
+function cubiclePartition(o,i){
+  const backZ=o.z0,sideDepth=4.15,sideCz=o.z0+sideDepth/2;
+  bx(M.partition,o.cx,0.58,backZ,6.9,1.16,0.09).castShadow=false;
+  bx(M.partitionTop,o.cx,1.33,backZ,6.9,0.34,0.075).castShadow=false;
+  bx(M.frame,o.cx,1.52,backZ,6.95,0.055,0.11).castShadow=false;
+  for(const x of[o.x0,o.cx,o.x1])bx(M.frame,x,0.76,backZ,0.09,1.52,0.12).castShadow=false;
+  for(const x of[o.x0,o.x1]){
+    bx(M.partition,x,0.58,sideCz,0.09,1.16,sideDepth).castShadow=false;
+    bx(M.partitionTop,x,1.33,sideCz,0.075,0.34,sideDepth).castShadow=false;
+    bx(M.frame,x,1.52,sideCz,0.11,0.055,sideDepth).castShadow=false;
+    bx(M.frame,x,0.76,o.z0+sideDepth,0.12,1.52,0.12).castShadow=false;
+  }
+  // خزانة علوية ولوحة ملاحظات داخل الكبينة
+  rbx(M.partition,o.cx+1.95,1.18,o.z0+0.28,2.0,0.52,0.38,0.025);
+  bx(M.frame,o.cx+1.95,0.91,o.z0+0.48,1.84,0.035,0.025).castShadow=false;
+  bx(new THREE.MeshStandardMaterial({color:0xf3efe4,roughness:.85}),o.cx-2.35,1.08,o.z0+0.075,1.25,0.72,0.025).castShadow=false;
+  const noteCols=[0xffd94d,0x7fb8ff,0xff9fbb,0x8ce99a];
+  for(let n=0;n<4;n++)bx(new THREE.MeshStandardMaterial({color:noteCols[n],roughness:.9}),o.cx-2.68+(n%2)*0.42,1.22-Math.floor(n/2)*0.32,o.z0+0.095,0.24,0.2,0.012).castShadow=false;
+  bx(new THREE.MeshStandardMaterial({color:new THREE.Color(FALLBACK[i+1][2]),roughness:.72}),o.x0+0.075,1.02,o.z0+2.3,0.025,0.78,1.15).castShadow=false;
+}
+function printerIsland(x,z){
+  const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);markDynamic(g);
+  rbx(M.cubicleWood,0,0.43,0,2.25,0.86,0.82,0.035,g);
+  rbx(M.black,-0.35,1.04,-0.05,1.05,0.34,0.62,0.035,g);
+  bx(M.wall,0.52,0.91,0.05,0.58,0.035,0.42,g).castShadow=false;
+  const paper=bx(M.wall,-0.35,0.94,0.39,0.52,0.018,0.34,g);paper.castShadow=false;
+  const lightMat=new THREE.MeshBasicMaterial({color:0x35d07f});mesh(sphGeo,lightMat,0.08,1.16,0.27,0.025,0.025,0.025,g);
+  const st={group:g,paper,lightMat,busyUntil:0};printers.push(st);
+  registerInteractable(g,()=>"استخدام الطابعة لعرض أحدث مستند حقيقي",()=>usePrinter(st),{maxDistance:3.2});
+  blockRect(x-1.25,z-0.55,x+1.25,z+0.55);
+  return g;
+}
+function waterCooler(x,z){
+  const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);
+  rbx(M.wall,0,0.48,0,0.42,0.96,0.42,0.04,g);
+  cyl(new THREE.MeshPhysicalMaterial({color:0x8fd4ff,transparent:true,opacity:.45,roughness:.08}),0,1.18,0,0.16,0.46,g);
+  bx(M.frame,-0.08,0.82,0.23,0.08,0.08,0.04,g);bx(new THREE.MeshBasicMaterial({color:0xff5566}),0.08,0.82,0.235,0.045,0.045,0.02,g);
+  registerInteractable(g,()=>"استخدام مبرد المياه",()=>useWaterCooler(g),{maxDistance:2.8});
+  blockRect(x-0.32,z-0.32,x+0.32,z+0.32);
+  return g;
+}
+for(let i=0;i<20;i++){
+  const o=officeRect(i),d=deskPos(i),agentId="a"+(i+1);
+  const floor=rug(o.cx,o.cz,6.55,4.95,carpetColors[i%5]);floor.userData.officeIndex=i;officePickPlanes.push(floor);
+  cubiclePartition(o,i);
+  desk(d.x,d.z,screenMats[agentId],{cubicle:true,agentId});
+  chair(d.x,d.z+0.95,M.chairBlack);
+  credenza(o.cx+2.28,o.z0+0.72);
+  if(i%3===0)plant(o.x1-0.72,o.z1-1.45,0.92);
+  if(i%4===1){const guest=chair(o.cx-2.35,o.z0+2.35,M.chairBlack);guest.rotation.y=Math.PI*0.82}
+  const stripMat=M.strip.clone();officeStrips[i]=stripMat;
+  bx(stripMat,o.cx+1.95,0.90,o.z0+0.49,1.75,0.035,0.025).castShadow=false;
+  bx(M.frame,o.x1-1.02,1.22,o.z1-1.03,2.36,0.58,0.045).castShadow=false;
+  const plate=makePlate(i);plate.position.set(o.x1-1.02,1.22,o.z1-0.995);
+  registerInteractable(plate,()=>{const a=view.agents.find(x=>x.officeIndex===i);return a?a.name+" — "+a.role:"كبينة موظف"},()=>{const a=view.agents.find(x=>x.officeIndex===i);if(a){inspectAgentId=a.id;renderInspect(a.id);exitPlayerLock()}},{maxDistance:4,lookLabel:()=>{const a=view.agents.find(x=>x.officeIndex===i);return a?a.name+" — "+a.role:"كبينة موظف"},labelDistance:18});
+}
+printerIsland(-20,-9.5);printerIsland(20,-0.5);printerIsland(-20,8.5);printerIsland(20,17.5);
+waterCooler(-7.15,-0.5);waterCooler(8.85,8.5);waterCooler(-23.1,17.5);
+// خزائن ملفات على الجدار الشرقي
+for(let i=0;i<5;i++){
+  const g=new THREE.Group();g.position.set(41.25,0,-6+i*3.2);scene.add(g);
+  rbx(M.frame,0,1.05,0,0.55,2.1,2.55,0.03,g);
+  for(let k=0;k<4;k++)bx(M.wallDark,-0.3,0.38+k*0.47,0,0.035,0.28,2.25,g).castShadow=false;
+  registerInteractable(g,()=>"فحص خزانة ملفات الشركة",()=>showArtifactShelf(),{maxDistance:3});
+  blockRect(40.85,-7.4+i*3.2,41.65,-4.6+i*3.2);
+}
+
+// مكتب الرئيس التنفيذي زياد
+rug(-35.5,-25.5,11.4,7.7,0x6e5636);
+desk(CEO_DESK.x,CEO_DESK.z,screenMats.ceo,{exec:true,agentId:"ceo",ry:Math.PI});const ceoChair=chair(CEO_CHAIR.x,CEO_CHAIR.z,M.chairBlack);ceoChair.rotation.y=Math.PI;
+chair(-36.7,-25.55,M.chairBlack).rotation.y=-0.22;chair(-34.3,-25.55,M.chairBlack).rotation.y=0.22;
+sofa(-40.7,-24.8,Math.PI/2,3.1);credenza(-31.5,-29.2);plant(-30.2,-22.3,1.25);plant(-40.8,-28.8,1.1);
+staticLabel("مكتب الرئيس التنفيذي",-35.5,2.58,-20.88,3.6);
+// مكتب المالك
+rug(-20.5,-25.5,14.2,7.7,0x36584e);const ownerSM=makeScreenMat();const ownerDesk=desk(OWNER_DESK.x,OWNER_DESK.z,ownerSM,{owner:true,ry:Math.PI});
+drawScreen(ownerSM,{name:"كمبيوتر المالك",role:"بوابة إدارة الشركة",configured:true,status:"idle",model:"نظام إدارة الشركة"});
+const ownerChair=chair(OWNER_CHAIR.x,OWNER_CHAIR.z,M.chairBlack);ownerChair.rotation.y=Math.PI;
+chair(-21.85,-25.55,M.chairBlack).rotation.y=-0.22;chair(-19.15,-25.55,M.chairBlack).rotation.y=0.22;
+sofa(-26.9,-24.7,Math.PI/2,3.0);credenza(-15.6,-29.2);plant(-14.3,-22.3,1.2);plant(-27.6,-28.8,1.1);
+staticLabel("مكتب المالك",-20.5,2.58,-20.88,2.8);
+const ownerGlowMat=new THREE.MeshStandardMaterial({color:0x35d07f,emissive:0x35d07f,emissiveIntensity:1.4});
+const ownerRing=mesh(new THREE.TorusGeometry(0.65,0.045,10,40),ownerGlowMat,OWNER_CHAIR.x,0.06,OWNER_CHAIR.z);ownerRing.rotation.x=Math.PI/2;ownerRing.castShadow=false;markDynamic(ownerRing);
+const ownerBeaconMat=new THREE.MeshBasicMaterial({color:0xffd94d,transparent:true,opacity:0.10,depthWrite:false,side:THREE.DoubleSide});
+const ownerBeacon=mesh(new THREE.CylinderGeometry(0.34,0.5,3.35,18,1,true),ownerBeaconMat,OWNER_DESK.x,1.72,OWNER_DESK.z);ownerBeacon.castShadow=false;markDynamic(ownerBeacon);
+const summonRings=[];
+for(let i=0;i<21;i++){
+  const s=ownerSummonSpot({summon:{slot:i}});
+  const ring=mesh(new THREE.TorusGeometry(0.42,0.028,8,30),new THREE.MeshBasicMaterial({color:0xffd94d,transparent:true,opacity:.75}),s.x,0.045,s.z);
+  ring.rotation.x=Math.PI/2;ring.visible=false;ring.castShadow=false;markDynamic(ring);summonRings.push(ring);
+}
+// قاعة الاجتماعات
+rug(0,-25.5,22.5,7.7,0x45557a);
+rbx(M.deskTop,0,0.74,-25.5,11.2,0.11,2.35,0.05);bx(M.black,-3.6,0.37,-25.5,0.55,0.72,1.45);bx(M.black,3.6,0.37,-25.5,0.55,0.72,1.45);
+blockRect(-5.8,-26.85,5.8,-24.15);
+for(let i=0;i<20;i++){const s=meetingSeat(i);const ch=chair(s.x,s.z,M.chairBlack);ch.rotation.y=s.z<-25.5?Math.PI:0;ch.scale.setScalar(0.94)}
+const headChair=chair(-6.55,-25.5,M.fabric2);headChair.rotation.y=-Math.PI/2;
+staticLabel("قاعة الاجتماعات",0,2.58,-20.88,3.2);plant(-10.8,-22.4,1.15);plant(10.8,-28.7,1.1);
+const whiteboard=new THREE.Group();whiteboard.position.set(11.82,1.72,-25.5);scene.add(whiteboard);
+bx(M.frame,0,0,0,0.08,1.45,3.9,whiteboard);bx(new THREE.MeshStandardMaterial({color:0xf7f9fb,roughness:.35}),-0.055,0,0,0.025,1.3,3.65,whiteboard);
+for(let i=0;i<4;i++)bx(new THREE.MeshBasicMaterial({color:[0x3366cc,0xcc3344,0x229955,0x7755cc][i]}),-0.075,0.42-i*0.27,-0.7+(i%2)*0.65,0.012,0.045,1.25-(i%3)*0.22,whiteboard);
+registerInteractable(whiteboard,()=>"قراءة سبورة الاجتماعات وحالة المشاريع",()=>showMeetingBoard(),{maxDistance:4});
+// استراحة الموظفين
+rug(19.5,-25.5,12.6,7.7,0x6b5a44);sofa(16.2,-24.4,0.25,3.0);sofa(22.8,-27.2,-0.35,3.0);
+cyl(M.deskTop,19.4,0.45,-25.6,0.62,0.08);cyl(M.black,19.4,0.22,-25.6,0.06,0.42);
+rbx(M.wallDark,24.8,0.55,-29.25,4.2,1.1,0.85,0.04);blockRect(22.6,-29.75,27,-28.75);
+(function coffeeMachine(){
+  const g=new THREE.Group();g.position.set(24.0,1.10,-29.22);scene.add(g);markDynamic(g);coffeeState.group=g;
+  rbx(M.chrome,0,0.22,0,0.72,0.48,0.52,0.035,g);rbx(M.black,0,0.39,0.27,0.46,0.18,0.025,0.015,g);
+  coffeeState.lightMat=new THREE.MeshBasicMaterial({color:0x35d07f});mesh(sphGeo,coffeeState.lightMat,0.24,0.39,0.30,0.022,0.022,0.022,g);
+  coffeeState.cup=cyl(M.wall,0,0.015,0.18,0.055,0.11,g);
+  coffeeState.steam=new THREE.Mesh(new THREE.PlaneGeometry(0.16,0.34),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}));coffeeState.steam.position.set(0,0.19,0.19);g.add(coffeeState.steam);
+  registerInteractable(g,()=>"تشغيل ماكينة القهوة",()=>useCoffeeMachine(),{maxDistance:3});
+})();
+for(let i=0;i<3;i++){cyl(M.fabric2,23.2+i*1.15,0.55,-28.35,0.26,0.1);cyl(M.chrome,23.2+i*1.15,0.27,-28.35,0.04,0.5)}
+waterCooler(13.0,-28.9);plant(13.2,-22.3,1.3);staticLabel("استراحة الموظفين",19.5,2.58,-20.88,3.2);
+// غرفة الأمن والسيرفرات
+rug(34.5,-25.5,13.2,7.7,0x334155);
+const securityDesk=desk(34.5,-28.72,null,{});chair(34.5,-27.62,M.chairBlack);
+registerInteractable(securityDesk,()=>"فتح شاشة كاميرات المراقبة",()=>openOS("cameras"),{maxDistance:3.6});
+function serverRack(x,z,ry=0){
+  const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;scene.add(g);
+  rbx(M.black,0,1.08,0,0.95,2.16,0.68,0.025,g);
+  for(let r=0;r<6;r++){
+    bx(M.wallDark,0,0.28+r*0.31,0.355,0.78,0.19,0.018,g).castShadow=false;
+    const lm=new THREE.MeshBasicMaterial({color:r%2?0x35d07f:0x4da3ff});blinkMats.push({mat:lm,phase:Math.random()*7});
+    mesh(sphGeo,lm,-0.31,0.28+r*0.31,0.375,0.018,0.018,0.018,g);
+  }
+  batchGroupMeshes(g);
+  registerInteractable(g,()=>"فحص حالة سيرفر الشركة من الخادم نفسه",()=>inspectServerRack(),{maxDistance:3.2});
+  if(Math.abs(ry)<0.1)blockRect(x-0.55,z-0.42,x+0.55,z+0.42);else blockRect(x-0.42,z-0.55,x+0.42,z+0.55);
+  return g;
+}
+for(let i=0;i<6;i++)serverRack(29.2+i*1.25,-29.35);
+for(let i=0;i<3;i++)serverRack(41.35,-27.5+i*1.35,-Math.PI/2);
+const securityScreen=wallScreen(34.5,2.05,-29.76,5.4,1.65);registerInteractable(securityScreen.group,()=>"قراءة شاشة الأمن وفتح الكاميرات",()=>showCompanyScreen("security"),{maxDistance:4.2});
+staticLabel("الأمن والسيرفرات",34.5,2.58,-20.88,3.2);plant(28.3,-22.3,1.05);
+// بهو واستقبال ومدخل واسع
+const brandWall=bx(M.wallDark,0,1.62,20.2,15,3.24,0.22);brandWall.castShadow=false;blockRect(-7.6,20.05,7.6,20.35);
+staticLabel("شركة الذكاء المستقلة",0,3.08,20.36,4.4);
+const reception=new THREE.Group();reception.position.set(0,0,23.15);scene.add(reception);
+rbx(M.wallDark,0,0.55,0,5.2,1.1,1.15,0.06,reception);rbx(M.gold,0,1.14,0,5.45,0.07,1.3,0.03,reception);
+bx(M.black,-1.5,1.28,-0.18,0.72,0.42,0.04,reception);bx(M.black,1.5,1.28,-0.18,0.72,0.42,0.04,reception);
+registerInteractable(reception,()=>"استخدام دليل الاستقبال والإرشاد داخل الشركة",()=>openDirectory(),{maxDistance:3.8});
+blockRect(-2.75,22.45,2.75,23.85);
+staticLabel("الاستقبال",0,0.90,23.78,1.55);
+staticLabel("صالة العمل",0,2.78,17.0,3.1);cyl(M.frame,-1.05,3.22,17.0,0.018,0.52);cyl(M.frame,1.05,3.22,17.0,0.018,0.52);
+staticLabel("الجناح التنفيذي",0,2.78,-19.1,3.5);cyl(M.frame,-1.15,3.22,-19.1,0.018,0.52);cyl(M.frame,1.15,3.22,-19.1,0.018,0.52);
+sofa(-9,25.2,0,2.8);sofa(9,25.2,0,2.8);plant(-5.2,28.4,1.25);plant(5.2,28.4,1.25);
+rug(-22,24.8,11,5.8,0x53655a);sofa(-23.5,25.4,0,3.0);sofa(-20.2,23.8,Math.PI,2.6);plant(-16.9,27.7,1.05);
+rug(22,24.8,11,5.8,0x5f5570);sofa(23.5,25.4,0,3.0);sofa(20.2,23.8,Math.PI,2.6);plant(16.9,27.7,1.05);
+const directoryTotem=new THREE.Group();directoryTotem.position.set(4.9,0,23.5);directoryTotem.rotation.y=Math.PI;scene.add(directoryTotem);
+rbx(M.frame,0,0.85,0,0.78,1.7,0.12,0.04,directoryTotem);const dirScr=new THREE.Mesh(new THREE.PlaneGeometry(0.62,1.25),new THREE.MeshBasicMaterial({color:0x12325e}));dirScr.position.set(0,0.95,0.07);directoryTotem.add(dirScr);
+registerInteractable(directoryTotem,()=>"فتح دليل أقسام وموظفين الشركة",()=>openDirectory(),{maxDistance:3});blockRect(4.45,23.15,5.35,23.85);
+
+/* روبوتات مفصلة */
+const ROBOT_BODY_MAT=new THREE.MeshStandardMaterial({color:0xf2f5fa,roughness:.22,metalness:.35});
+const ROBOT_DARK_MAT=new THREE.MeshStandardMaterial({color:0x1b2436,roughness:.3,metalness:.6});
+const ROBOT_FACE_MAT=new THREE.MeshStandardMaterial({color:0x0a1220,roughness:.08,metalness:.4});
+function buildRobot(a){
+  const g=new THREE.Group();const accent=new THREE.Color(a.color||"#4da3ff");
+  const accentMat=new THREE.MeshStandardMaterial({color:accent,roughness:.35,metalness:.25,emissive:accent,emissiveIntensity:.35});
+  const bodyMat=ROBOT_BODY_MAT;
+  const darkMat=ROBOT_DARK_MAT;
+  const eyeMat=new THREE.MeshStandardMaterial({color:0x66e0ff,emissive:0x66e0ff,emissiveIntensity:2});
+  cyl(darkMat,0,0.09,0,0.28,0.16,g);const ring=mesh(new THREE.TorusGeometry(0.27,0.025,10,36),accentMat,0,0.17,0,1,1,1,g);ring.rotation.x=Math.PI/2;
+  cyl(darkMat,0,0.3,0,0.13,0.3,g);
+  rbx(bodyMat,0,0.68,0,0.54,0.58,0.36,0.11,g);
+  rbx(darkMat,0,0.72,0.19,0.34,0.3,0.03,0.02,g);
+  const core=mesh(new THREE.CylinderGeometry(0.07,0.07,0.03,20),accentMat,0,0.72,0.21,1,1,1,g);core.rotation.x=Math.PI/2;const lodParts=[ring,core];
+  const armL=new THREE.Group(),armR=new THREE.Group();armL.position.set(-0.31,0.88,0);armR.position.set(0.31,0.88,0);g.add(armL,armR);
+  for(const arm of[armL,armR]){mesh(sphGeo,accentMat,0,0,0,0.1,0.1,0.1,arm);const up=cyl(bodyMat,0,-0.17,0,0.055,0.3,arm);const fore=new THREE.Group();fore.position.set(0,-0.32,0);arm.add(fore);cyl(bodyMat,0,-0.13,0,0.045,0.26,fore);mesh(sphGeo,darkMat,0,-0.29,0,0.065,0.065,0.065,fore);arm.userData.fore=fore}
+  cyl(darkMat,0,1.02,0,0.07,0.12,g);
+  const head=new THREE.Group();head.position.set(0,1.22,0);g.add(head);
+  rbx(bodyMat,0,0,0,0.44,0.36,0.38,0.1,head);
+  rbx(ROBOT_FACE_MAT,0,0.01,0.17,0.36,0.26,0.05,0.05,head);
+  const eyeL=mesh(sphGeo,eyeMat,-0.085,0.03,0.2,0.032,0.045,0.02,head);const eyeR=mesh(sphGeo,eyeMat,0.085,0.03,0.2,0.032,0.045,0.02,head);lodParts.push(eyeL,eyeR);
+  const ant=cyl(darkMat,0.14,0.26,0,0.012,0.18,head);const antBall=mesh(sphGeo,accentMat,0.14,0.37,0,0.035,0.035,0.035,head);lodParts.push(ant,antBall,armL,armR);
+  if(a.isCeo){const crown=mesh(new THREE.CylinderGeometry(0.15,0.18,0.1,8),M.gold,0,0.24,0,1,1,1,head);lodParts.push(crown)}
+  lodParts.push(contactShadow(0,0,0.85,0.85,g));
+  const hit=new THREE.Mesh(new THREE.CylinderGeometry(0.44,0.44,1.78,10),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));hit.position.y=0.89;hit.castShadow=false;hit.receiveShadow=false;g.add(hit);
+  g.traverse(o=>{o.userData.agentId=a.id});
+  scene.add(g);
+  registerInteractable(g,()=>{const ag=robots[a.id]?.agent||a;return ag.name+" — "+statusAr(ag.status)},()=>{inspectAgentId=a.id;renderInspect(a.id);exitPlayerLock()},{maxDistance:4.2,lookLabel:()=>{const ag=robots[a.id]?.agent||a;return ag.name+" — "+ag.role},labelDistance:16});
+  return{group:g,armL,armR,head,eyeMat,accentMat,coreMat:accentMat,lodParts,lodNear:true,path:null,pi:0,face:Math.PI,phase:Math.random()*7,targetKey:"",agent:a};
+}
+const robots={};
+view.agents.forEach(a=>{const r=buildRobot(a);robots[a.id]=r;
+  if(a.isCeo){r.group.position.set(CEO_CHAIR.x,0,CEO_CHAIR.z)}else{const c=chairPos(a.officeIndex);r.group.position.set(c.x,0,c.z)}
+  r.group.rotation.y=Math.PI;
+});
+function robotDestination(a){
+  if(a.summon?.active&&a.configured)return ownerSummonSpot(a);
+  if(view.company?.activeMeetingId&&a.configured){if(a.isCeo){const s=meetingSeat(99);return{x:s.x,z:s.z,face:s.face,key:"meeting"}}const s=meetingSeat(a.officeIndex);return{x:s.x,z:s.z,face:s.face,key:"meeting"}}
+  if(a.isCeo)return{x:CEO_CHAIR.x,z:CEO_CHAIR.z,face:0,key:"ceo-desk"};
+  if(a.status==="awaiting_review"||a.status==="rejected")return{x:-39+(a.officeIndex%5)*1.05,z:-19.65+Math.floor(a.officeIndex/5)*0.32,face:Math.PI,key:"ceo-visit"};
+  const c=chairPos(a.officeIndex);return{x:c.x,z:c.z,face:Math.PI,key:"desk"};
+}
+
+const bubbleCache=new Map();
+function bubbleTexture(text){
+  const key=String(text).slice(0,90);
+  if(bubbleCache.has(key))return bubbleCache.get(key);
+  const c=document.createElement("canvas");c.width=512;c.height=128;const x=c.getContext("2d");
+  x.fillStyle="rgba(9,17,34,.94)";x.strokeStyle="rgba(120,190,255,.8)";x.lineWidth=3;
+  if(x.roundRect){x.beginPath();x.roundRect(6,6,500,96,20);x.fill();x.stroke()}else{x.fillRect(6,6,500,96);x.strokeRect(6,6,500,96)}
+  x.fillStyle="#dceaff";x.font="bold 25px system-ui,Tahoma,Arial";x.textAlign="right";x.direction="rtl";
+  const words=String(text).split(/s+/);let line="",ln=0;
+  for(const w of words){const t=line?line+" "+w:w;if(x.measureText(t).width>462&&ln<2){x.fillText(line,498,52+ln*38);line=w;ln++}else line=t}
+  if(ln<3)x.fillText(line.slice(0,90),498,52+ln*38);
+  const tex=new THREE.CanvasTexture(c);tex.needsUpdate=true;bubbleCache.set(key,tex);
+  if(bubbleCache.size>60){const first=bubbleCache.keys().next().value;bubbleCache.delete(first)}
+  return tex;
+}
+function updateBubbles(){
+  for(const id in robots){
+    const r=robots[id];if(!r||!r.group)continue;
+    const a=r.agent||{};const act=a.activity&&a.activity.items&&a.activity.items[0];
+    let want=null;
+    if(a.status==="working"&&act)want=act.kind==="run"?("أعمل الآن على: "+String(a.currentTask&&a.currentTask.title||"مهمتي")):String(act.text||"");
+    else if(a.status==="rejected")want="رفض المدير تسليمي — أناقشه الآن";
+    else if(a.summon&&a.summon.active)want="استدعيتني يا مالك";
+    else if(a.status==="awaiting_review")want="سلّمت مهمتي للمدير";
+    if(!want){if(r.bubble)r.bubble.visible=false;continue}
+    const short=String(want).replace(/s+/g," ").slice(0,90);
+    if(!r.bubble){
+      const spr=new THREE.Sprite(new THREE.SpriteMaterial({map:bubbleTexture(short),transparent:true,depthTest:false}));
+      spr.scale.set(3.1,0.78,1);spr.position.set(0,2.34,0);spr.renderOrder=999;r.group.add(spr);r.bubble=spr;r.bubbleText=short;
+    }else if(r.bubbleText!==short){
+      r.bubble.material.map=bubbleTexture(short);r.bubble.material.needsUpdate=true;r.bubbleText=short;
+    }
+    r.bubble.visible=true;
+    r.bubble.position.y=2.34+Math.sin(performance.now()/620)*0.03;
+  }
+}
+function moveRobot(r,dt){
+  const dest=robotDestination(r.agent);
+  const targetKey=dest.key+"|"+dest.x.toFixed(1)+"|"+dest.z.toFixed(1);if(targetKey!==r.targetKey){r.targetKey=targetKey;r.path=findPath(r.group.position.x,r.group.position.z,dest.x,dest.z);r.pi=0;r.destFace=dest.face}
+  if(r.path&&r.pi<r.path.length){
+    const p=r.path[r.pi],dx=p.x-r.group.position.x,dz=p.z-r.group.position.z,d=Math.hypot(dx,dz),sp=2.85*dt;
+    if(d<=sp){r.group.position.x=p.x;r.group.position.z=p.z;r.pi++}else{r.group.position.x+=dx/d*sp;r.group.position.z+=dz/d*sp;
+      const targetRot=Math.atan2(dx,dz);let diff=((targetRot-r.group.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;r.group.rotation.y+=diff*Math.min(1,dt*8)}
+    if(r.pi>=r.path.length)r.path=null;
+    r.group.position.y=Math.abs(Math.sin(r.phase*2))*0.02;
+  }else{
+    if(r.agent&&r.targetKey&&r.targetKey.indexOf("desk|")===0){const c=chairPos(r.agent.officeIndex);r.group.position.x=c.x;r.group.position.z=c.z}
+    r.group.position.y=0;const f=r.destFace??Math.PI;let diff=((f-r.group.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;r.group.rotation.y+=diff*Math.min(1,dt*5);
+    const sitDesk=r.agent&&!r.agent.isCeo&&r.targetKey&&r.targetKey.indexOf("desk|")===0&&!r.path;r.group.position.y=0;
+  }
+}
+function poseRobot(r,t){
+  const a=r.agent,st=a.status,work=st==="working"&&!r.path,down=!a.configured||st==="server_offline";
+  r.phase+=0.016;
+  if(down){r.head.rotation.x=0.52;r.armL.rotation.x=0.25;r.armR.rotation.x=0.25;r.armL.rotation.z=0.35;r.armR.rotation.z=-0.35;r.eyeMat.emissiveIntensity=0.02;r.accentMat.emissiveIntensity=0.03}
+  else if(a.summon?.active&&!r.path){r.head.rotation.x=0.03;r.head.rotation.y=Math.sin(t*0.7+r.phase)*0.06;r.armL.rotation.x=-0.18;r.armR.rotation.x=-0.18;r.armL.rotation.z=0.12;r.armR.rotation.z=-0.12;r.armL.userData.fore.rotation.x=-0.35;r.armR.userData.fore.rotation.x=-0.35;r.eyeMat.emissiveIntensity=2.3;r.accentMat.emissiveIntensity=0.95+Math.sin(t*3.4)*0.2}
+  else if(work){r.head.rotation.x=0.22;r.head.rotation.y=Math.sin(t*0.6+r.phase)*0.08;
+    r.armL.rotation.x=-1.05+Math.sin(t*9+r.phase)*0.1;r.armR.rotation.x=-1.05+Math.cos(t*9.7+r.phase)*0.1;r.armL.rotation.z=0.18;r.armR.rotation.z=-0.18;
+    r.armL.userData.fore.rotation.x=-0.5;r.armR.userData.fore.rotation.x=-0.5;r.eyeMat.emissiveIntensity=2.2;r.accentMat.emissiveIntensity=0.8+Math.sin(t*3)*0.25}
+  else{r.head.rotation.x=0.05;r.head.rotation.y=Math.sin(t*0.35+r.phase)*0.22;r.armL.rotation.x=Math.sin(t*0.8+r.phase)*0.06;r.armR.rotation.x=-Math.sin(t*0.8+r.phase)*0.06;r.armL.rotation.z=0.14;r.armR.rotation.z=-0.14;r.armL.userData.fore.rotation.x=-0.15;r.armR.userData.fore.rotation.x=-0.15;r.eyeMat.emissiveIntensity=1.4;r.accentMat.emissiveIntensity=0.4}
+  if(r.path){r.armL.rotation.x=Math.sin(r.phase*6)*0.3;r.armR.rotation.x=-Math.sin(r.phase*6)*0.3;r.head.rotation.x=0.05}
+}
+
+/* إضاءة زمنية حقيقية */
+const lightState={sunI:2,hemiI:.7,strip:.25,night:0};
+function desiredLighting(){
+  const _now=performance.now();if(desiredLighting._c&&_now-desiredLighting._t<300)return desiredLighting._c;desiredLighting._t=_now;
+  const n=new Date();let hr=n.getHours()+n.getMinutes()/60;if(cfg.timeOverride)hr=+cfg.overrideHour;
+  let day; // 1 نهار كامل، 0 ليل
+  if(hr>=7.5&&hr<16.5)day=1;else if(hr>=5&&hr<7.5)day=(hr-5)/2.5;else if(hr>=16.5&&hr<19.5)day=1-(hr-16.5)/3;else day=0;
+  const sunset=hr>=16&&hr<19.5,az=((hr-6)/12)*Math.PI; // شروق شرق ← غروب غرب
+  const elev=Math.max(0.12,Math.sin(clamp((hr-5.5)/13,0,1)*Math.PI));
+  return desiredLighting._c={day,sunset,hr,sunPos:new THREE.Vector3(Math.cos(az)*78,12+elev*64,-54+Math.sin(az)*18),
+    sunColor:sunset?new THREE.Color(0xffb066):day>0.4?new THREE.Color(0xfff3dd):new THREE.Color(0x8fb4ff),
+    sunI:0.12+day*2.6,hemiI:0.14+day*0.62,strip:0.2+(1-day)*1.7,night:1-day,
+    bg:sunset?new THREE.Color(0x3a2b3f):day>0.5?new THREE.Color(0xa9cbe8):day>0.1?new THREE.Color(0x35507a):new THREE.Color(0x050914)};
+}
+function updateLighting(dt){
+  const d=desiredLighting(),k=Math.min(1,dt*0.8);
+  sun.position.lerp(d.sunPos,k);sun.intensity+=(d.sunI-sun.intensity)*k;sun.color.lerp(d.sunColor,k);
+  hemi.intensity+=((d.hemiI*(LOW_POWER?1.6:1))-hemi.intensity)*k;
+  M.strip.emissiveIntensity+=(d.strip-M.strip.emissiveIntensity)*k;M.lampGlow.emissiveIntensity=0.15+d.night*1.6;
+  scene.background.lerp(d.bg,k);scene.fog.color.copy(scene.background);ground.material.color.setHSL(0.58,0.16,0.07+d.day*0.30);
+  renderer.toneMappingExposure=0.72+d.day*0.42;
+  if(!updateLighting._m){updateLighting._m=new Set();scene.traverse(o=>{const ms=Array.isArray(o.material)?o.material:(o.material?[o.material]:[]);ms.forEach(m=>{if("envMapIntensity" in m)updateLighting._m.add(m)})})}
+  updateLighting._m.forEach(m=>m.envMapIntensity=0.12+d.day*0.9);
+  M.shaft.opacity=(d.hr>=6&&d.hr<12)?0.10*d.day:0;
+  const zonesOn=Object.values(lightZones).filter(z=>z.on).length;ceiling.material.emissiveIntensity=0.10+d.day*0.42+(zonesOn/Math.max(1,Object.keys(lightZones).length))*d.night*0.30;
+  for(const id in lightZones){
+    const z=lightZones[id],panelTarget=z.on?(0.38+d.night*2.55):0.015;
+    if(z.mat)z.mat.emissiveIntensity+=(panelTarget-z.mat.emissiveIntensity)*Math.min(1,dt*7);
+    const lightTarget=z.on?(2.2+d.night*23):0;
+    z.lights.forEach(l=>{l.intensity+=(lightTarget-l.intensity)*Math.min(1,dt*7)});
+  }
+  const _lb=QUALITY.lights,_lights=[];Object.values(lightZones).forEach(z=>z.lights.forEach(l=>_lights.push(l)));_lights.sort((a,b)=>a.position.distanceToSquared(player.pos)-b.position.distanceToSquared(player.pos)).forEach((l,i)=>l.visible=i<_lb&&l.intensity>0.04);
+  if(frameNo%10===0)for(const i in officeStrips){
+    const a=view.agents.find(x=>x.officeIndex==i),z=lightZones[zoneForOffice(+i)];
+    const occupied=!a||!a.configured?0.03:a.summon?.active?0.25:a.status==="working"?2.4:(a.status==="awaiting_review"||a.status==="in_meeting")?0.08:0.55;
+    officeStrips[i].emissiveIntensity=z&&!z.on?0.01:(0.25*d.day+occupied*d.night+0.12);
+  }
+  return d;
+}
+
+/* ================= تزامن الحالة الحقيقية ================= */
+let lastOfflineHint=0;
+async function poll(){
+  try{
+    const v=await api("/api/view");
+    const wasOffline=!serverOnline;serverOnline=true;view=v;
+    view.agents.forEach(a=>{const r=robots[a.id];if(r){r.agent=a;if(a.color)r.accentMat.color.set(a.color)}
+      const sm=screenMats[a.id];if(sm)drawScreen(sm,a);
+      if(!a.isCeo)drawPlate(a.officeIndex,a);});
+    $("osCoName").textContent=view.company?.name||"الشركة";
+    $("osSrv").textContent="🟢 الخادم متصل";
+    const conf=view.agents.filter(a=>!a.isCeo&&a.configured).length,ceoA=view.agents.find(a=>a.isCeo);
+    drawWallScreen(ceoScreen,"لوحة الرئيس التنفيذي زياد",[ceoA?.configured?("نموذجي: "+ceoA.model):"⚠️ بلا نموذج مربوط","وكلاء مهيأون: "+conf+" / ٢٠","مشاريع نشطة: "+view.projects.filter(p=>p.status==="active").length,"موافقات بانتظارك: "+view.pendingApprovals],ceoA?.configured?"#ffd94d":"#ff7a59");
+    drawWallScreen(lobbyScreen,view.company?.name||"الشركة",["وكلاء مهيأون: "+conf+" / ٢٠","يعمل الآن فعليًا: "+view.agents.filter(a=>a.status==="working").length,"مشاريع: "+view.projects.length,view.company?.activeMeetingId?"📋 اجتماع منعقد الآن":""],conf?"#35d07f":"#ff7a59");
+    drawWallScreen(meetScreen,"قاعة الاجتماعات",[view.company?.activeMeetingId?"اجتماع منعقد — مساهمات حقيقية من النماذج":"لا اجتماع منعقدًا الآن","الاجتماع الأسبوعي يديره الخادم تلقائيًا"],"#7fb8ff");
+    drawWallScreen(securityScreen,"مراقبة المقر",[`${CCTV_CAMERAS.length} كاميرات حية من المشهد`,"يعمل فعليًا الآن: "+view.agents.filter(a=>a.status==="working").length,"مستدعون لمكتب المالك: "+view.agents.filter(a=>a.summon?.active).length,"افتح الكاميرات من كمبيوتر المالك أو مكتب الأمن"],"#ff8fa3");
+    summonRings.forEach(r=>r.visible=false);view.agents.forEach(a=>{if(a.summon?.active&&Number.isInteger(a.summon.slot)&&summonRings[a.summon.slot])summonRings[a.summon.slot].visible=true});
+    ownerGlowMat.color.set(!ceoA?.configured?0xffb020:0x35d07f);ownerGlowMat.emissive.set(!ceoA?.configured?0xffb020:0x35d07f);
+    if(wasOffline)hint(ceoA?.configured?"🟢 أنت داخل المقر الآن — امشِ واقترب من الموظفين والأشياء للتفاعل، وكمبيوتر مكتبك في الشمال الغربي للإدارة والاستدعاء والكاميرات":"⚠️ الخادم يعمل لكن الرئيس التنفيذي زياد والفريق بلا نماذج بعد — اذهب شمالًا لمكتبك واستخدم كمبيوتره لبدء التهيئة",!ceoA?.configured);
+    if(inspectAgentId)renderInspect(inspectAgentId,true);
+  }catch(e){
+    if(serverOnline||Date.now()-lastOfflineHint>30000){lastOfflineHint=Date.now();hint("🔴 خادم الشركة غير متصل — الشركة متوقفة فعليًا ولا يوجد أي عمل وهمي. اذهب شمالًا لمكتبك واستخدم كمبيوتره لإدخال رابط الخادم.",true)}
+    serverOnline=false;$("osSrv").textContent="🔴 غير متصل";
+    view.agents.forEach(a=>{a.status="server_offline";a.configured=false;const sm=screenMats[a.id];if(sm)drawScreen(sm,a);if(!a.isCeo)drawPlate(a.officeIndex,a)});
+    ownerGlowMat.color.set(0xff5040);ownerGlowMat.emissive.set(0xff5040);
+  }
+}
+setInterval(poll,3000);
+
+/* ================= اللاعب: منظور الشخص الأول + تصادم + تفاعل ================= */
+const ray=new THREE.Raycaster(),centerPtr=new THREE.Vector2(0,0);
+let inspectAgentId="",focusedInteractable=null,lastFocusCheck=0,pointerLocked=false;
+const player={pos:new THREE.Vector3(0,1.62,28.55),yaw:0,pitch:-0.035,eye:1.62,bob:0,bobPhase:0,vy:0,yOff:0,sitting:false,sitExit:null};
+const keys=new Set();
+const joyVec={x:0,y:0};let joyPointer=null,joyOrigin=null,lookPointer=null;
+const focusBox=new THREE.Box3Helper(new THREE.Box3(),0xffd94d);focusBox.visible=false;focusBox.material.transparent=true;focusBox.material.opacity=0.28;scene.add(focusBox);markDynamic(focusBox);
+const guideMat=new THREE.LineBasicMaterial({color:0xffd94d,transparent:true,opacity:.9});
+const guideLine=new THREE.Line(new THREE.BufferGeometry(),guideMat);guideLine.visible=false;guideLine.frustumCulled=false;scene.add(guideLine);markDynamic(guideLine);
+let guideTarget=null,guideUntil=0;
+function buildOwnerAvatar(){
+  const g=new THREE.Group();
+  const suit=new THREE.MeshStandardMaterial({color:0x17233d,roughness:.62,metalness:.08});
+  const pants=new THREE.MeshStandardMaterial({color:0x232a38,roughness:.78});
+  const skin=new THREE.MeshStandardMaterial({color:0xd9a075,roughness:.58});
+  rbx(pants,-0.13,0.42,0,0.19,0.84,0.23,0.055,g);rbx(pants,0.13,0.42,0,0.19,0.84,0.23,0.055,g);
+  rbx(M.black,-0.13,0.045,0.05,0.2,0.09,0.34,0.03,g);rbx(M.black,0.13,0.045,0.05,0.2,0.09,0.34,0.03,g);
+  rbx(suit,0,1.08,0,0.56,0.62,0.31,0.1,g);rbx(M.wall,0,1.12,0.165,0.2,0.42,0.025,0.02,g);bx(M.gold,0,1.1,0.185,0.07,0.34,0.018,g);
+  rbx(suit,-0.36,1.05,0,0.15,0.62,0.19,0.055,g);rbx(suit,0.36,1.05,0,0.15,0.62,0.19,0.055,g);
+  mesh(sphGeo,skin,-0.36,0.7,0,0.075,0.085,0.075,g);mesh(sphGeo,skin,0.36,0.7,0,0.075,0.085,0.075,g);
+  mesh(sphGeo,skin,0,1.58,0,0.185,0.215,0.19,g);
+  const hair=mesh(sphGeo,new THREE.MeshStandardMaterial({color:0x241a14,roughness:.8}),0,1.69,-0.025,0.19,0.13,0.195,g);hair.scale.y=0.72;
+  g.visible=false;scene.add(g);markDynamic(g);return g;
+}
+const ownerAvatar=buildOwnerAvatar();
+function isUiOpen(){return $("os").classList.contains("open")||$("modal").classList.contains("open")||$("inspect").classList.contains("open")||!$("loader").classList.contains("done")}
+function exitPlayerLock(){if(document.pointerLockElement)document.exitPointerLock()}
+function setPlayerView(){
+  camera.position.set(player.pos.x,player.eye+player.bob+player.yOff,player.pos.z);
+  camera.rotation.set(player.pitch,player.yaw,0);
+  ownerAvatar.position.set(player.pos.x,player.yOff,player.pos.z);ownerAvatar.rotation.y=player.yaw+Math.PI;
+}
+function teleportPlayer(x,z,yaw=0,pitch=-0.03){
+  player.pos.x=clamp(x,BUILDING.x0+0.65,BUILDING.x1-0.65);player.pos.z=clamp(z,BUILDING.z0+0.65,BUILDING.z1-0.65);
+  player.yaw=yaw;player.pitch=clamp(pitch,-1.25,1.25);player.sitting=false;player.eye=1.62;player.yOff=0;player.vy=0;setPlayerView();try{updateDetailCull(true)}catch{}
+}
+function yawTo(fromX,fromZ,toX,toZ){return Math.atan2(-(toX-fromX),-(toZ-fromZ))}
+function focusCamera(pos){
+  if(!pos)return;
+  const options=[[pos.x,pos.z+1.9],[pos.x,pos.z-1.9],[pos.x+1.9,pos.z],[pos.x-1.9,pos.z],[pos.x+1.35,pos.z+1.35],[pos.x-1.35,pos.z+1.35]];
+  const spot=options.find(([x,z])=>isWalkable(x,z,true))||[pos.x,pos.z+2.2];
+  teleportPlayer(spot[0],spot[1],yawTo(spot[0],spot[1],pos.x,pos.z),-0.06);
+}
+function goToAgent(id){
+  const r=robots[id];if(!r)return;
+  $("os").classList.remove("open");closeModal();focusCamera(r.group.position);inspectAgentId=id;renderInspect(id);
+}
+window.goToAgent=goToAgent;
+function pointInBox(x,z,b,pad=0){return x>=b.x0-pad&&x<=b.x1+pad&&z>=b.z0-pad&&z<=b.z1+pad}
+function isWalkable(x,z,ignoreRobots=false){
+  if(x<BUILDING.x0+0.55||x>BUILDING.x1-0.55||z<BUILDING.z0+0.55||z>BUILDING.z1-0.55)return false;
+  const r=0.31;
+  for(const[ox,oz]of[[0,0],[r,0],[-r,0],[0,r],[0,-r],[r*.7,r*.7],[-r*.7,r*.7],[r*.7,-r*.7],[-r*.7,-r*.7]])if(cellBlockedAt(x+ox,z+oz))return false;
+  for(const b of boxColliders)if(pointInBox(x,z,b,r))return false;
+  for(const c of circleColliders)if(Math.hypot(x-c.x,z-c.z)<c.r+r)return false;
+  for(const d of doorStates)if(Math.abs(d.angle)<0.42&&Math.abs(x-d.cx)<d.width/2+r&&Math.abs(z-d.z)<0.34+r)return false;
+  if(!ignoreRobots)for(const id in robots){const p=robots[id].group.position;if(Math.hypot(x-p.x,z-p.z)<0.56)return false}
+  return true;
+}
+function tryPlayerMove(dx,dz){
+  if(dx&&isWalkable(player.pos.x+dx,player.pos.z))player.pos.x+=dx;
+  if(dz&&isWalkable(player.pos.x,player.pos.z+dz))player.pos.z+=dz;
+}
+function standUp(){
+  if(!player.sitting)return;
+  if(player.sitExit){player.pos.x=player.sitExit.x;player.pos.z=player.sitExit.z}
+  player.sitting=false;player.eye=1.62;player.sitExit=null;
+}
+function sitAt(x,z,yaw){
+  if(player.sitting&&Math.hypot(player.pos.x-x,player.pos.z-z)<0.4){standUp();return}
+  const fx=-Math.sin(yaw),fz=-Math.cos(yaw);
+  const dirs=[[fx,fz],[-fx,-fz],[-fz,fx],[fz,-fx]];
+  let exit={x:x-fx*1.05,z:z-fz*1.05};
+  for(const[dx,dz]of dirs){const ex=x+dx*1.05,ez=z+dz*1.05;if(isWalkable(ex,ez,true)){exit={x:ex,z:ez};break}}
+  player.pos.x=x;player.pos.z=z;player.yaw=yaw;player.pitch=-0.02;player.eye=1.16;player.sitting=true;
+  player.sitExit=exit;player.yOff=0;player.vy=0;setPlayerView();
+}
+
+let audioCtx=null;
+function uiSound(freq=660,dur=0.055,type="sine",vol=0.022){
+  try{
+    audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==="suspended")audioCtx.resume();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;
+    g.gain.setValueAtTime(vol,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+dur);
+    o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur);
+  }catch{}
+}
+function updatePlayer(dt){
+  const ui=isUiOpen();
+  let forward=0,right=0;
+  if(!ui){
+    forward=(keys.has("KeyW")||keys.has("ArrowUp")?1:0)-(keys.has("KeyS")||keys.has("ArrowDown")?1:0)-joyVec.y;
+    right=(keys.has("KeyD")||keys.has("ArrowRight")?1:0)-(keys.has("KeyA")||keys.has("ArrowLeft")?1:0)+joyVec.x;
+  }
+  const mag=Math.hypot(forward,right);
+  if(player.sitting&&mag>0.16)standUp();
+  if(mag>0.03&&!ui){
+    forward/=Math.max(1,mag);right/=Math.max(1,mag);
+    const sprint=(keys.has("ShiftLeft")||keys.has("ShiftRight"))?1.62:1;
+    const speed=(+cfg.walkSpeed||4.25)*sprint;
+    const fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);
+    const moveX=(fx*forward+rx*right)*speed*dt,moveZ=(fz*forward+rz*right)*speed*dt,steps=Math.max(1,Math.ceil(Math.hypot(moveX,moveZ)/0.16));
+    for(let step=0;step<steps;step++)tryPlayerMove(moveX/steps,moveZ/steps);
+    player.bobPhase+=dt*(sprint>1?10.5:8);player.bob=Math.sin(player.bobPhase)*0.028;
+  }else player.bob*=0.82;
+  if(player.yOff>0||player.vy!==0){player.vy-=13.5*dt;player.yOff+=player.vy*dt;if(player.yOff<=0){player.yOff=0;player.vy=0}}
+  setPlayerView();
+}
+document.addEventListener("pointerlockchange",()=>{pointerLocked=document.pointerLockElement===renderer.domElement});
+renderer.domElement.addEventListener("pointerdown",e=>{
+  if(isUiOpen())return;
+  try{renderer.domElement.setPointerCapture(e.pointerId)}catch{}
+  if(e.pointerType==="mouse"){
+    if(!pointerLocked&&!IS_MOBILE){try{const p=renderer.domElement.requestPointerLock();if(p?.catch)p.catch(()=>{})}catch{}}
+    lookPointer={id:e.pointerId,x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY,t:e.timeStamp,mouse:true};
+  }else if(e.clientX<innerWidth*0.46&&joyPointer===null){
+    joyPointer=e.pointerId;joyOrigin={x:e.clientX,y:e.clientY,t:e.timeStamp};joyVec.x=0;joyVec.y=0;
+    const b=$("joyBase"),n=$("joyNub");b.style.left=e.clientX+"px";b.style.top=e.clientY+"px";b.classList.add("show");n.style.transform="translate(-50%,-50%)";
+  }else{
+    lookPointer={id:e.pointerId,x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY,t:e.timeStamp,mouse:false};
+  }
+});
+renderer.domElement.addEventListener("pointermove",e=>{
+  if(isUiOpen())return;
+  const sens=(+cfg.mouseSens||1)*0.00215;
+  if(pointerLocked&&e.pointerType==="mouse"){
+    player.yaw-=e.movementX*sens;player.pitch=clamp(player.pitch-e.movementY*sens,-1.32,1.32);return;
+  }
+  if(e.pointerId===joyPointer&&joyOrigin){
+    let dx=e.clientX-joyOrigin.x,dy=e.clientY-joyOrigin.y;const d=Math.hypot(dx,dy),max=56;
+    if(d>max){dx*=max/d;dy*=max/d}joyVec.x=dx/max;joyVec.y=dy/max;
+    $("joyNub").style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;
+  }else if(lookPointer&&e.pointerId===lookPointer.id){
+    const dx=e.clientX-lookPointer.x,dy=e.clientY-lookPointer.y;lookPointer.x=e.clientX;lookPointer.y=e.clientY;
+    player.yaw-=dx*sens*1.85;player.pitch=clamp(player.pitch-dy*sens*1.85,-1.32,1.32);
+  }
+});
+function endPointer(e){
+  if(e.pointerId===joyPointer){const quickJoy=joyOrigin&&Math.hypot(e.clientX-joyOrigin.x,e.clientY-joyOrigin.y)<12;joyPointer=null;joyOrigin=null;joyVec.x=0;joyVec.y=0;$("joyBase").classList.remove("show");if(quickJoy&&!isUiOpen())interactFocused()}
+  if(lookPointer&&e.pointerId===lookPointer.id){
+    const quick=Math.hypot(e.clientX-lookPointer.sx,e.clientY-lookPointer.sy)<12;
+    lookPointer=null;
+    if(quick&&!isUiOpen())interactFocused();
+  }
+}
+renderer.domElement.addEventListener("pointerup",endPointer);renderer.domElement.addEventListener("pointercancel",endPointer);
+addEventListener("keydown",e=>{
+  const tag=(e.target?.tagName||"").toLowerCase();
+  if(["input","textarea","select"].includes(tag))return;
+  if(e.code==="Escape"){closeInspect();return}
+  if(isUiOpen())return;
+  keys.add(e.code);
+  if(e.code==="KeyE"||e.code==="KeyF")interactFocused();
+  if(e.code==="Space"&&player.yOff===0&&!player.sitting){player.vy=3.5;player.yOff=0.001;e.preventDefault()}
+  if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.code))e.preventDefault();
+});
+addEventListener("keyup",e=>keys.delete(e.code));addEventListener("blur",()=>keys.clear());
+function interactLabel(item){try{return typeof item.label==="function"?item.label():(item.label||"")}catch{return ""}}
+function lookLabelText(item){try{return typeof item.lookLabel==="function"?item.lookLabel():(item.lookLabel||"")}catch{return ""}}
+const _focusTmp=new THREE.Vector3();let lookOnlyInteractable=null;
+function updateInteractionFocus(nowMs){
+  const cross=$("crosshair"),label=$("lookLabel");
+  if(isUiOpen()){focusedInteractable=null;lookOnlyInteractable=null;focusBox.visible=false;cross.classList.remove("show","active");label.classList.remove("show");label.textContent="";return}
+  cross.classList.add("show");
+  if(nowMs-lastFocusCheck<130)return;lastFocusCheck=nowMs;
+  ray.setFromCamera(centerPtr,camera);ray.far=38;
+  const candidates=[];
+  for(const item of interactables){
+    item.root.getWorldPosition(_focusTmp);
+    const dist=Math.hypot(_focusTmp.x-player.pos.x,_focusTmp.z-player.pos.z);
+    if(dist<=(item.labelDistance||item.maxDistance||3.4)+2.4)candidates.push(item.root);
+  }
+  const hits=candidates.length?ray.intersectObjects(candidates,true):[];
+  let occDist=Infinity;
+  if(hits.length&&occluderMeshes.length){const maxHit=hits[hits.length-1].distance,origin=ray.ray.origin,dir=ray.ray.direction,nearOcc=[];for(const mesh of occluderMeshes){const m=mesh.userData.occ;if(!m)continue;const vx=m.x-origin.x,vy=m.y-origin.y,vz=m.z-origin.z,along=vx*dir.x+vy*dir.y+vz*dir.z;if(along<-m.r||along>maxHit+m.r)continue;const d2=vx*vx+vy*vy+vz*vz-along*along;if(d2<m.r*m.r)nearOcc.push(mesh)}if(nearOcc.length)occDist=ray.intersectObjects(nearOcc,false)[0]?.distance??Infinity}
+  let found=null,look=null;
+  for(const h of hits){
+    if(h.distance>occDist+0.12)continue;
+    let o=h.object,id=o.userData.interactId;
+    while(id===undefined&&o.parent){o=o.parent;id=o.userData.interactId}
+    if(id===undefined)continue;
+    const item=interactables[id];if(!item)continue;
+    if(h.distance<=(item.maxDistance||3.4)){found=item;break}
+    if(item.lookLabel&&h.distance<=(item.labelDistance||0)){look=item;break}
+  }
+  focusedInteractable=found;lookOnlyInteractable=found?null:look;focusBox.visible=false;
+  cross.classList.toggle("active",!!found);
+  const txt=found?interactLabel(found):(look?lookLabelText(look):"");
+  label.textContent=txt;label.classList.toggle("show",!!txt);
+}
+
+function interactFocused(){
+  if(!focusedInteractable||isUiOpen())return;
+  uiSound(720,0.05,"sine",0.018);
+  try{focusedInteractable.action()}catch(e){toast("تعذر تنفيذ التفاعل: "+e.message)}
+}
+function toggleDoor(st,force=null){
+  st.open=force===null?!st.open:!!force;st.target=st.open?st.dir*1.72:0;uiSound(st.open?520:390,0.07,"triangle",0.02);
+  toast((st.open?"فتحت":"أغلقت")+" باب "+st.label);
+}
+function updateDoors(dt){
+  const now=performance.now();
+  for(const d of doorStates){
+    let auto=now<d.autoUntil;
+    if(Math.hypot(player.pos.x-d.cx,player.pos.z-d.z)<1.05)auto=true;
+    if(!auto)for(const id in robots){const p=robots[id].group.position;if(Math.hypot(p.x-d.cx,p.z-d.z)<1.25){auto=true;d.autoUntil=now+850;break}}
+    const target=(d.open||auto)?d.dir*1.72:0;
+    d.angle+=(target-d.angle)*Math.min(1,dt*7);d.hinge.rotation.y=d.angle;
+  }
+}
+function applyLightStates(){
+  const saved=cfg.lightZones||{};
+  for(const id in lightZones){
+    if(typeof saved[id]==="boolean")lightZones[id].on=saved[id];
+    lightZones[id].switches.forEach(n=>{n.rotation.x=lightZones[id].on?-0.22:0.28;n.position.y=lightZones[id].on?0.035:-0.015});
+  }
+}
+function toggleLightZone(id){
+  const z=lightZones[id];if(!z)return;z.on=!z.on;
+  cfg.lightZones={...(cfg.lightZones||{}),[id]:z.on};saveCfg();applyLightStates();uiSound(z.on?830:470,0.045,"square",0.014);
+  toast((z.on?"شغّلت":"أطفأت")+" نور "+z.name);
+}
+function showGuideTo(x,z,label="المكان"){
+  const path=findPath(player.pos.x,player.pos.z,x,z);
+  const pts=path.map(p=>new THREE.Vector3(p.x,0.09,p.z));pts.unshift(new THREE.Vector3(player.pos.x,0.09,player.pos.z));
+  guideLine.geometry.setFromPoints(pts);guideLine.visible=true;guideTarget={x,z};guideUntil=performance.now()+30000;
+  hint("اتبع الخط الذهبي على الأرض للوصول إلى "+label,false);
+}
+window.guideToPlace=key=>{
+  closeModal();
+  const d={owner:[-20.5,-19.55,"مكتب المالك"],ceo:[-35.5,-19.55,"مكتب الرئيس التنفيذي زياد"],meeting:[0,-19.55,"قاعة الاجتماعات"],lounge:[19.5,-19.55,"استراحة الموظفين"],security:[34.5,-19.55,"غرفة الأمن والسيرفرات"],lobby:[0,22.5,"الاستقبال"]}[key];
+  if(d)showGuideTo(d[0],d[1],d[2]);
+};
+window.guideToAgent=id=>{closeModal();const r=robots[id];if(r)showGuideTo(r.group.position.x,r.group.position.z+0.8,r.agent?.name||"الموظف")};
+function openDirectory(){
+  exitPlayerLock();
+  const rows=view.agents.filter(a=>!a.isCeo).map(a=>`<tr><td><b style="color:${esc(a.color)}">${esc(a.name)}</b><br><span class="small">${esc(a.role)}</span></td><td>كبينة عمود ${(a.officeIndex%5)+1} — صف ${Math.floor(a.officeIndex/5)+1}<br><span class="small">${a.summon?.active?"مستدعى لمكتب المالك":statusAr(a.status)}</span></td><td><button class="btn gray" onclick="guideToAgent('${a.id}')">🧭 إرشادني إليه</button></td></tr>`).join("");
+  showModal(`<div class="row"><b class="grow">🧭 دليل المقر والموظفين</b><button class="xbtn" onclick="closeModal()">✕</button></div>
+  <p class="small">اختر وجهة وسيظهر خط إرشاد ذهبي على أرضية الشركة من مكانك الحالي.</p>
+  <div class="row"><button class="btn green" onclick="guideToPlace('owner')">🖥️ مكتبي وكمبيوتر الإدارة</button><button class="btn gold" onclick="guideToPlace('ceo')">👑 مكتب زياد</button><button class="btn" onclick="guideToPlace('meeting')">📋 الاجتماعات</button><button class="btn gray" onclick="guideToPlace('security')">🎥 الأمن والسيرفرات</button><button class="btn gray" onclick="guideToPlace('lounge')">☕ الاستراحة</button></div>
+  <div style="overflow:auto;max-height:48vh;margin-top:10px"><table>${rows}</table></div>`);
+}
+function showCompanyScreen(kind){
+  exitPlayerLock();
+  const conf=view.agents.filter(a=>!a.isCeo&&a.configured).length,working=view.agents.filter(a=>a.status==="working").length;
+  const title=kind==="ceo"?"شاشة الرئيس التنفيذي زياد":kind==="meeting"?"شاشة قاعة الاجتماعات":kind==="security"?"شاشة غرفة الأمن":"شاشة بهو الشركة";
+  showModal(`<div class="row"><b class="grow">📺 ${title}</b><button class="xbtn" onclick="closeModal()">✕</button></div>
+  <div class="kpi"><div class="card"><b>${conf}/٢٠</b><span class="small">وكلاء مهيأون بنماذج حقيقية</span></div><div class="card"><b>${working}</b><span class="small">ينفذون مهام الآن على الخادم</span></div><div class="card"><b>${view.projects.filter(p=>p.status==="active").length}</b><span class="small">مشاريع نشطة</span></div><div class="card"><b>${view.agents.filter(a=>a.summon?.active).length}</b><span class="small">مستدعون لمكتبك</span></div></div>
+  <p class="small">${serverOnline?"هذه الأرقام قادمة مباشرة من خادم الشركة في آخر مزامنة.":"الخادم غير متصل الآن؛ لا توجد أرقام أو عمل وهمي."}</p>
+  ${kind==="security"?`<button class="btn" onclick="closeModal();openOS('cameras')">🎥 فتح كاميرات المراقبة</button>`:""}`);
+}
+function showArtifactShelf(){
+  exitPlayerLock();
+  const arts=view.agents.map(a=>({a,art:a.latestArtifact})).filter(x=>x.art).sort((x,y)=>y.art.createdAt-x.art.createdAt);
+  showModal(`<div class="row"><b class="grow">🗄️ أحدث مستندات حقيقية من خادم الشركة</b><button class="xbtn" onclick="closeModal()">✕</button></div>
+  ${arts.length?arts.map(({a,art})=>`<div class="card"><b>${art.kind==="image"?"🖼️":"📄"} ${esc(art.title)}</b><div class="small">أنتجه ${esc(a.name)} • ${fmtT(art.createdAt)}</div><button class="btn gray" onclick="viewArtifact('${art.id}')">فتح المستند الفعلي</button></div>`).join(""):'<p class="small">لا مستندات محفوظة بعد على الخادم.</p>'}`);
+}
+function showMeetingBoard(){
+  exitPlayerLock();
+  showModal(`<div class="row"><b class="grow">📋 سبورة حالة المشاريع الحقيقية</b><button class="xbtn" onclick="closeModal()">✕</button></div>
+  <p class="small">${view.company?.activeMeetingId?"يوجد اجتماع منعقد الآن على الخادم، والروبوتات المهيأة مجتمعة في القاعة.":"لا اجتماع منعقدًا الآن."}</p>
+  ${(view.projects||[]).slice(-12).reverse().map(p=>`<div class="card"><b>${esc(p.title)}</b><div class="small">الحالة: ${statusAr(p.status)} • المنشأ: ${p.origin==="owner"?"هدف المالك":"مبادرة/مشروع شركة"}</div></div>`).join("")||'<p class="small">لا مشاريع مسجلة بعد.</p>'}
+  <button class="btn" onclick="closeModal();openOS('projects')">فتح المشاريع من كمبيوتر المالك</button>`);
+}
+function usePrinter(st){
+  const latest=view.agents.map(a=>a.latestArtifact).filter(Boolean).sort((a,b)=>b.createdAt-a.createdAt)[0];
+  if(!serverOnline||!latest){toast("لا مستند حقيقي محفوظ على الخادم للطباعة/العرض حاليًا");return}
+  st.busyUntil=performance.now()+1100;st.lightMat.color.set(0xffb020);uiSound(300,0.16,"sawtooth",0.012);
+  toast("جارٍ تجهيز أحدث مستند فعلي من الخادم…");
+  setTimeout(()=>{st.lightMat.color.set(0x35d07f);viewArtifact(latest.id)},1150);
+}
+function useWaterCooler(){uiSound(240,0.12,"sine",0.018);setTimeout(()=>uiSound(180,0.1,"sine",0.014),110);toast("💧 مليت كوباية مياه من المبرد")}
+function usePlant(g){g.userData.wateredAt=performance.now();uiSound(520,0.08,"sine",0.012);toast("🌿 سقيت النبات")}
+function useCoffeeMachine(){
+  if(performance.now()<coffeeState.busyUntil){toast("القهوة لسه بتتعمل…");return}
+  coffeeState.busyUntil=performance.now()+4200;if(coffeeState.lightMat)coffeeState.lightMat.color.set(0xffb020);uiSound(180,0.22,"sawtooth",0.012);toast("☕ ماكينة القهوة شغالة…");
+}
+async function inspectServerRack(){
+  exitPlayerLock();showModal("<p class='small'>جارٍ سؤال خادم الشركة عن حالته الفعلية…</p>");
+  try{
+    const h=await api("/api/health");
+    showModal(`<div class="row"><b class="grow">🖥️ حالة سيرفر الشركة الفعلية</b><button class="xbtn" onclick="closeModal()">✕</button></div>
+    <div class="kpi"><div class="card"><b>${h.ok?"متصل":"غير متاح"}</b><span class="small">الخدمة</span></div><div class="card"><b>${esc(h.configuredAgents||"—")}</b><span class="small">وكلاء مهيأون</span></div><div class="card"><b>${h.ceoConfigured?"✓":"✗"}</b><span class="small">نموذج المدير زياد</span></div><div class="card"><b>${h.runningTasks??0}</b><span class="small">مهام قيد التنفيذ</span></div><div class="card"><b>${h.activeSummons??0}</b><span class="small">استدعاءات نشطة</span></div></div>
+    <p class="small">وقت الخادم: ${esc(h.time||"")} • Cloudinary: ${h.cloudinary?"مضبوط":"غير مضبوط"}</p>`);
+  }catch(e){showModal("<div class='err'>الخادم لم يرد؛ الشركة متوقفة فعليًا: "+esc(e.message)+"</div><button class='btn gray' onclick='closeModal()'>إغلاق</button>")}
+}
+function updateAmbientInteractions(t,dt){
+  const now=performance.now();
+  if(guideLine.visible){
+    guideMat.opacity=0.58+Math.sin(t*5)*0.25;
+    if(now>guideUntil||(guideTarget&&Math.hypot(player.pos.x-guideTarget.x,player.pos.z-guideTarget.z)<1.1))guideLine.visible=false;
+  }
+  for(const pr of printers){
+    const busy=now<pr.busyUntil;pr.paper.position.z=busy?0.39+Math.sin(t*18)*0.018:0.39;
+  }
+  if(coffeeState.cup){
+    const busy=now<coffeeState.busyUntil;
+    coffeeState.steam.material.opacity=busy?0.28+Math.sin(t*7)*0.08:Math.max(0,(coffeeState.steam.material.opacity||0)-dt*0.12);
+    coffeeState.steam.rotation.z=Math.sin(t*3)*0.16;
+    if(busy&&coffeeState.lightMat)coffeeState.lightMat.color.set(0xffb020);
+    if(!busy&&coffeeState._wasBusy){coffeeState.lightMat?.color.set(0x35d07f);toast("☕ قهوتك جاهزة");uiSound(880,0.09,"sine",0.018)}
+    coffeeState._wasBusy=busy;
+  }
+  for(const p of plantGroups){
+    const age=p.userData.wateredAt?now-p.userData.wateredAt:99999;
+    p.rotation.z=age<2500?Math.sin(t*9+p.position.x)*0.025*(1-age/2500):0;
+  }
+  for(const b of blinkMats)b.mat.color.setHex(Math.sin(t*2.7+b.phase)>-0.25?(b.phase%2?0x35d07f:0x4da3ff):0x10233d);
+  for(const id in cctvFixtures)cctvFixtures[id].led.color.setHex(Math.sin(t*2.2)>0?0xff3344:0x66111c);
+}
+
+/* ================= كاميرات مراقبة حية من نفس المشهد ================= */
+let cctvRenderer=null,cctvSelectedId="westfloor",cctvLastFrame=0,cctvLastSnap=0,cctvSnapIndex=0;
+const cctvSnapshots={},cctvCameras={};
+CCTV_CAMERAS.forEach(def=>{
+  const cam=new THREE.PerspectiveCamera(def.fov,16/9,0.05,300);cam.rotation.order="YXZ";cam.position.set(...def.pos);cctvCameras[def.id]=cam;
+});
+function cctvDef(id=cctvSelectedId){return CCTV_CAMERAS.find(c=>c.id===id)||CCTV_CAMERAS[0]}
+function updateCctvCamera(def){
+  const cam=cctvCameras[def.id];if(!cam)return;
+  const dx=def.look[0]-def.pos[0],dy=def.look[1]-def.pos[1],dz=def.look[2]-def.pos[2];
+  const yaw=Math.atan2(-dx,-dz)+(def.pan||0),pitch=Math.atan2(dy,Math.hypot(dx,dz))+(def.tilt||0);
+  cam.position.set(...def.pos);cam.rotation.set(clamp(pitch,-1.25,1.25),yaw,0);cam.fov=clamp(def.fov/(def.zoom||1),22,85);cam.updateProjectionMatrix();
+  const fx=-Math.sin(yaw)*Math.cos(pitch),fy=Math.sin(pitch),fz=-Math.cos(yaw)*Math.cos(pitch);
+  cctvFixtures[def.id]?.head.lookAt(def.pos[0]+fx*6,def.pos[1]+fy*6,def.pos[2]+fz*6);
+}
+CCTV_CAMERAS.forEach(updateCctvCamera);
+function ensureCctvRenderer(){
+  if(cctvRenderer)return cctvRenderer;
+  cctvRenderer=new THREE.WebGLRenderer({antialias:false,stencil:false,preserveDrawingBuffer:true,powerPreference:"low-power"});
+  cctvRenderer.setPixelRatio(1);cctvRenderer.setSize(IS_MOBILE?480:640,IS_MOBILE?270:360);
+  cctvRenderer.shadowMap.enabled=false;cctvRenderer.toneMapping=THREE.ACESFilmicToneMapping;cctvRenderer.outputColorSpace=THREE.SRGBColorSpace;
+  cctvRenderer.domElement.id="cctvCanvas";return cctvRenderer;
+}
+function mountCctvRenderer(){
+  const holder=$("cctvViewport");if(!holder)return;
+  const r=ensureCctvRenderer();
+  if(r.domElement.parentElement!==holder)holder.appendChild(r.domElement);
+  renderCctvFrame(cctvDef());
+}
+function renderCctvFrame(def){
+  const r=ensureCctvRenderer();updateCctvCamera(def);
+  const oldBox=focusBox.visible,oldGuide=guideLine.visible,fixture=cctvFixtures[def.id];
+  focusBox.visible=false;guideLine.visible=false;if(fixture)fixture.group.visible=false;if(typeof detailCull!=="undefined")detailCull.forEach(d=>d.mesh.visible=true);Object.values(robots).forEach(r=>r.lodParts?.forEach(p=>p.visible=true));ownerAvatar.visible=true;setPlayerView();
+  r.render(scene,cctvCameras[def.id]);
+  ownerAvatar.visible=false;if(fixture)fixture.group.visible=true;focusBox.visible=oldBox;guideLine.visible=oldGuide;if(typeof updateDetailCull==="function")updateDetailCull(true);Object.values(robots).forEach(r=>r.lodParts?.forEach(p=>p.visible=r.lodNear!==false));
+  const stamp=$("cctvStamp");if(stamp)stamp.textContent=new Date().toLocaleString("ar-EG",{dateStyle:"short",timeStyle:"medium"});
+}
+function renderCctvIfNeeded(nowMs){
+  if(!$("os").classList.contains("open")||typeof curApp==="undefined"||curApp!=="cameras")return;
+  const holder=$("cctvViewport");if(!holder)return;
+  if(!cctvRenderer||cctvRenderer.domElement.parentElement!==holder)mountCctvRenderer();
+  if(nowMs-cctvLastFrame>115){cctvLastFrame=nowMs;renderCctvFrame(cctvDef())}
+  if(nowMs-cctvLastSnap>2800){
+    cctvLastSnap=nowMs;const def=CCTV_CAMERAS[cctvSnapIndex++%CCTV_CAMERAS.length];
+    renderCctvFrame(def);
+    try{cctvSnapshots[def.id]=cctvRenderer.domElement.toDataURL("image/jpeg",0.62);const img=$("cctvThumb_"+def.id);if(img)img.src=cctvSnapshots[def.id]}catch{}
+    renderCctvFrame(cctvDef());
+  }
+}
+window.selectCctv=id=>{cctvSelectedId=id;renderApp();requestAnimationFrame(mountCctvRenderer)};
+window.cctvPtz=(dir)=>{
+  const d=cctvDef();
+  if(dir==="left")d.pan=clamp((d.pan||0)+0.11,-0.8,0.8);
+  if(dir==="right")d.pan=clamp((d.pan||0)-0.11,-0.8,0.8);
+  if(dir==="up")d.tilt=clamp((d.tilt||0)+0.07,-0.45,0.45);
+  if(dir==="down")d.tilt=clamp((d.tilt||0)-0.07,-0.45,0.45);
+  if(dir==="zin")d.zoom=clamp((d.zoom||1)*1.22,1,3.2);
+  if(dir==="zout")d.zoom=clamp((d.zoom||1)/1.22,1,3.2);
+  if(dir==="reset"){d.pan=0;d.tilt=0;d.zoom=1}
+  updateCctvCamera(d);renderCctvFrame(d);const z=$("cctvZoomVal");if(z)z.textContent="×"+(d.zoom||1).toFixed(1);
+};
+window.captureCctv=()=>{
+  const d=cctvDef();renderCctvFrame(d);
+  try{const img=cctvRenderer.domElement.toDataURL("image/jpeg",0.78);cctvSnapshots[d.id]=img;showModal(`<div class="row"><b class="grow">📸 لقطة ${esc(d.name)}</b><button class="xbtn" onclick="closeModal()">✕</button></div><img class="art" src="${img}"><p class="small">لقطة حية من مشهد المقر ثلاثي الأبعاد وقت الضغط، ليست صورة جاهزة.</p><a class="btn" href="${img}" download="cctv-${d.id}.jpg" style="text-decoration:none">تنزيل اللقطة</a>`)}catch(e){toast("تعذر التقاط الصورة: "+e.message)}
+};
+window.goToCctv=id=>{
+  const d=cctvDef(id);$("os").classList.remove("open");
+  if(d.id==="outside"){teleportPlayer(0,27.2,Math.PI,-0.02);hint("أنت عند المدخل؛ الكاميرا الخارجية فوقك خارج الواجهة",false);return}
+  const yaw=yawTo(d.pos[0],d.pos[2],d.look[0],d.look[2]);
+  const bx=d.pos[0]+Math.sin(yaw)*1.15,bz=d.pos[2]+Math.cos(yaw)*1.15;
+  teleportPlayer(isWalkable(bx,bz,true)?bx:d.pos[0],isWalkable(bx,bz,true)?bz:d.pos[2],yaw,0.28);
+};
+function openCctvCamera(id){cctvSelectedId=id;openOS("cameras")}
+function closeInspect(){inspectAgentId="";$("inspect").classList.remove("open")}
+window.closeInspect=closeInspect;
+applyLightStates();setPlayerView();
+window.__companyPlayer={player,teleportPlayer,goToAgent,isWalkable,renderer,scene,camera,robots,lightZones,doorStates,sitAt,selectCctv:window.selectCctv,cctvDef,renderCctvFrame};
+
+function elapsed(ts){if(!ts)return"—";const s=Math.max(0,Math.round((Date.now()-ts)/1000));return s<60?s+" ثا":Math.floor(s/60)+" د "+(s%60)+" ثا"}
+function renderInspect(id,soft=false){
+  const a=view.agents.find(x=>x.id===id);if(!a)return;const el=$("inspect");const cur=a.currentTask;
+  const stBadge=!a.configured?"bad":a.status==="working"?"work":a.status==="awaiting_review"?"review":"ok";
+  el.innerHTML=`
+  <div class="row"><div style="font-size:30px">🤖</div><div class="grow"><b style="color:${esc(a.color||"#fff")};font-size:16px">${esc(a.name)}${a.isCeo?" 👑":""}</b><div class="small">${esc(a.role)} — ${esc(a.dept||"")}</div></div><span class="badge ${stBadge}">${statusAr(a.status)}</span><button class="xbtn" onclick="closeInspect()">✕</button></div>
+  <p class="small" style="margin:8px 0">
+    <b>النموذج الفعلي:</b> ${a.configured?esc(a.connectionName||"")+" / <b>"+esc(a.model)+"</b>":"<span style='color:#ff9a7a'>لا يوجد — هذا الوكيل متوقف ولا يدّعي العمل</span>"}<br>
+    <b>أدواته المصرح بها:</b> ${(a.tools||[]).map(t=>TOOL_NAMES[t]||t).join("، ")||"لا أدوات"}<br>
+    <b>سجله:</b> مهام معتمدة ${a.stats?.approvedTasks??0} • طلبات تعديل ${a.stats?.revisions??0} • متوسط درجة المدير زياد ${a.stats?.avgScore??"—"}<br><b>حضوره بالمقر:</b> ${a.summon?.active?"📣 مستدعى لمكتب المالك حتى "+fmtT(a.summon.expiresAt):a.isCeo?"بمكتب الرئيس التنفيذي":"بكبينة عمله في الصالة المفتوحة"}
+  </p>
+  ${cur?`<div class="card" style="margin:0"><b>📋 مهمته الحالية الحقيقية: ${esc(cur.title)}</b>
+    <div class="small">مشروع: ${esc(cur.projectTitle)}<br><b>لماذا أُسندت إليه؟</b> ${esc(cur.why||"—")}<br>
+    <b>الحالة الآن:</b> ${esc(cur.lastAction||statusAr(cur.status))} • بدأ قبل ${elapsed(cur.startedAt)}${cur.run?` • خطوة ${cur.run.step}/${cur.run.maxSteps} • أدوات استخدمها فعليًا في هذا التشغيل: ${(cur.run.toolsUsed||[]).map(t=>TOOL_NAMES[t]||t).join("، ")||"لم يستخدم أداة بعد"}`:""}</div>
+    ${cur.run?`<div class="bar" style="margin-top:8px"><i style="width:${Math.round(cur.run.step/cur.run.maxSteps*100)}%"></i></div><div class="small">تقدم خطوات التنفيذ الموثقة على الخادم (لا نسبة وهمية)</div>`:""}
+  </div>`:`<p class="small">لا مهمة جارية على الخادم لهذا الوكيل الآن — لذلك تراه ساكنًا عند مكتبه.</p>`}
+  ${a.latestArtifact?`<p class="small">📄 <b>آخر ناتج فعلي:</b> ${esc(a.latestArtifact.title)} (${fmtT(a.latestArtifact.createdAt)})</p>`:`<p class="small">لا نواتج محفوظة لهذا الوكيل بعد.</p>`}
+  ${(a.memory||[]).length?`<details><summary>🧠 ذاكرته الدائمة بالشركة (${a.memory.length})</summary><ul class="small">${a.memory.slice(-8).map(m=>"<li>"+esc(m)+"</li>").join("")}</ul></details>`:""}
+  <div class="row" style="margin-top:9px">
+    ${a.latestArtifact?`<button class="btn" onclick="viewArtifact('${a.latestArtifact.id}')">👁️ عرض آخر ناتج</button>`:""}
+    ${a.isCeo?`<button class="btn gold" onclick="openOS('ceo')">💬 محادثة المدير التنفيذي زياد</button>`:""}
+    ${a.configured?`<button class="btn gold" onclick="openOS('summon','${a.id}')">📣 الاستدعاء والمحادثة من كمبيوتري</button>`:""}<button class="btn ${a.configured?"gray":"green"}" onclick="openOS('agents','${a.id}')">${a.configured?"⚙️ تهيئته في كمبيوتري":"🔌 ربط نموذج به الآن"}</button>
+  </div>`;
+  el.classList.add("open");
+}
+window.viewArtifact=async(id)=>{
+  showModal("<p class='small'>جارٍ جلب المستند الحقيقي من خادم الشركة…</p>");
+  try{
+    const a=await api("/api/artifacts/"+id);
+    const raw=cfg.url.replace(/\/$/,"")+"/api/artifacts/"+id+"/raw?token="+encodeURIComponent(cfg.token||"");
+    showModal(`<div class="row"><b class="grow">${esc(a.title)}</b><button class="xbtn" onclick="closeModal()">✕</button></div>
+    <p class="small">أنتجه وكيل فعلي وحُفظ على خادم الشركة • ${fmtT(a.createdAt)} • ${Math.round((a.size||0)/1024)} KB${a.meta?.model?" • النموذج: "+esc(a.meta.model):""}${a.meta?.cloudinaryUrl?" • توجد نسخة على Cloudinary":""}</p>
+    ${a.kind==="image"?`<img class="art" src="${a.meta?.cloudinaryUrl?esc(a.meta.cloudinaryUrl):raw}">`:`<pre class="doc">${esc(a.content||"")}</pre>`}
+    <div class="row"><a class="btn" href="${raw}" download style="text-decoration:none">⬇️ تنزيل الملف</a>${a.meta?.cloudinaryUrl?`<a class="btn gray" href="${esc(a.meta.cloudinaryUrl)}" target="_blank" rel="noopener" style="text-decoration:none">فتح نسخة Cloudinary</a>`:""}</div>`);
+  }catch(e){showModal("<div class='err'>تعذر جلب المستند: "+esc(e.message)+"</div><button class='btn gray' onclick='closeModal()'>إغلاق</button>")}
+};
+
+/* ================= كمبيوتر المالك (نظام التشغيل) ================= */
+const APPS=[["home","🏠 الرئيسية والإعداد"],["ceo","👑 الرئيس التنفيذي زياد"],["projects","🎯 المشاريع والمهام"],["agents","🤖 الوكلاء وتهيئاتهم"],["summon","📣 الاستدعاء والمحادثة"],["cameras","🎥 كاميرات المراقبة"],["connections","🔌 اتصالات الذكاء"],["files","📄 الملفات والمخرجات"],["runs","🧾 سجلات التنفيذ"],["meetings","📋 الاجتماعات"],["conversation","🗨️ المحادثات الحية"],["approvals","✅ الموافقات والطلبات"],["stats","📊 إحصائيات"],["activity","🕘 الذاكرة والنشاط"],["settings","⚙️ الإعدادات"]];
+let curApp="home",selAgent="",selSummonAgent="",osTimer=null,osDataAt=0,osReqSeq=0;
+$("osNav").innerHTML=`<div class="osProfile"><div class="osAvatar">م</div><div><b>مالك الشركة</b><span>لوحة التحكم الخاصة</span></div></div><div class="osNavLabel">تطبيقات الإدارة</div>`+APPS.map(a=>`<button type="button" data-app="${a[0]}">${a[1]}</button>`).join("");
+function appLabel(id=curApp){return(APPS.find(a=>a[0]===id)||APPS[0])[1]}
+function syncOsChrome(){const c=$("osCrumb");if(c)c.textContent=appLabel();document.querySelectorAll("#osNav button").forEach(b=>b.classList.toggle("active",b.dataset.app===curApp))}
+function ensureOsTimer(){if(osTimer)return;osTimer=setInterval(()=>{if($("os").classList.contains("open")&&!document.hidden)refreshOS(true)},20000)}
+function renderOsLoading(){syncOsChrome();$("osMain").innerHTML=`<h3>${esc(appLabel())}</h3><div class="card"><b>جارٍ تحميل بيانات الصفحة من خادم الشركة…</b><p class="small">لن تبقى الصفحة السابقة ظاهرة أثناء الانتظار.</p></div>`}
+document.querySelectorAll("#osNav button").forEach(b=>b.addEventListener("click",()=>{void openOS(b.dataset.app,selAgent)}));
+$("osAppsBtn").onclick=()=>$("os").classList.toggle("apps-open");
+window.openOS=async(app="home",agentId="")=>{
+  curApp=APPS.some(a=>a[0]===app)?app:"home";if(agentId){selAgent=agentId;selSummonAgent=agentId}
+  exitPlayerLock();$("os").classList.remove("apps-open");$("os").classList.add("open");closeInspect();syncOsChrome();ensureOsTimer();
+  if(osData){renderApp();if(Date.now()-osDataAt>4000)void refreshOS(true);return}
+  if(curApp==="cameras"){renderApp();void refreshOS(true);return}
+  renderOsLoading();await refreshOS();
+};
+$("osClose").onclick=()=>{$("os").classList.remove("open","apps-open");clearInterval(osTimer);osTimer=null};
+$("osRefresh").onclick=()=>refreshOS();
+
+(async function dragOS(){let d=null;const h=$("osHead"),b=$("os");h.addEventListener("pointerdown",e=>{if(innerWidth<760||e.target.closest("button"))return;const r=b.getBoundingClientRect();d={dx:e.clientX-r.left,dy:e.clientY-r.top};b.style.transform="none";b.style.right="auto";b.style.left=r.left+"px";b.style.top=r.top+"px";h.setPointerCapture(e.pointerId)});h.addEventListener("pointermove",e=>{if(!d)return;b.style.left=clamp(e.clientX-d.dx,4,innerWidth-140)+"px";b.style.top=clamp(e.clientY-d.dy,4,innerHeight-90)+"px"});h.addEventListener("pointerup",()=>d=null)})();
+
+async function refreshOS(soft=false){
+  syncOsChrome();
+  const seq=++osReqSeq;
+  cfg.url=normalizeServerUrl(cfg.url);
+  if(!cfg.url){serverOnline=false;$("osSrv").textContent="🔴 غير متصل";if(osData||curApp==="cameras")renderApp();else renderServerSetup("لم يُدخل رابط خادم الشركة بعد.");return}
+  try{
+    const data=await api("/api/os");if(seq!==osReqSeq)return;
+    osData=data;try{coState()}catch{}osDataAt=Date.now();serverOnline=true;$("osSrv").textContent="🟢 الخادم متصل";
+    const ae=document.activeElement;if(!(soft&&ae&&$("osMain").contains(ae)&&["INPUT","TEXTAREA","SELECT"].includes(ae.tagName)))renderApp();
+  }catch(e){
+    if(seq!==osReqSeq)return;serverOnline=false;$("osSrv").textContent="🔴 غير متصل";
+    if(osData||curApp==="cameras"){if(!soft){renderApp();toast("تعذر تحديث الخادم الآن — الصفحة مفتوحة بآخر بيانات وصلت لهذا الجهاز")}}
+    else renderServerSetup("تعذر الوصول لخادم الشركة على هذا الرابط: "+e.message);
+  }
+}
+function renderServerSetup(msg){
+  syncOsChrome();
+  const wants=curApp!=="home"?` لفتح «${esc(appLabel())}»`:"";
+  const sameBtn=SAME_ORIGIN&&cfg.url!==SAME_ORIGIN?`<button class="btn" id="svSame" type="button">الاتصال بخادم هذه الصفحة تلقائيًا</button>`:"";
+  $("osMain").innerHTML=`<h3>🌐 توصيل خادم الشركة أولًا${wants}</h3><div class="err">${esc(msg)}<br>الشركة الحقيقية تعمل على خادمها — هذه الشاشة مرآته فقط. بدونه لا يوجد أي عمل، ولن نتظاهر بغير ذلك.</div>
+  <div class="card"><label>رابط الخادم</label><input id="svUrl" dir="ltr" value="${esc(cfg.url)}" placeholder="https://your-app.onrender.com">
+  <label>رمز المالك (OWNER_TOKEN الذي ضبطته على الخادم)</label><input id="svTok" dir="ltr" type="password" value="${esc(cfg.token)}">
+  <div class="row" style="margin-top:9px"><button class="btn green" id="svSave" type="button">💾 حفظ واتصال</button>${sameBtn}</div>
+  <p class="small">يُخزن الرابط والرمز على هذا الجهاز فقط. بعد نجاح الاتصال سيفتح لك نفس التطبيق الذي اخترته.</p></div>`;
+  const connect=async(url)=>{const b=$("svSave");if(b){b.disabled=true;b.textContent="جارٍ الاتصال…"}cfg.url=normalizeServerUrl(url);cfg.token=$("svTok").value.trim();saveCfg();await refreshOS();poll()};
+  $("svSave").onclick=()=>connect($("svUrl").value);
+  const same=$("svSame");if(same)same.onclick=()=>connect(SAME_ORIGIN);
+}
+
+const connOf=id=>osData?.connections.find(c=>c.id===id);
+const agentOf=id=>osData?.agents.find(a=>a.id===id)||view.agents.find(a=>a.id===id);
+function renderApp(){
+  syncOsChrome();
+  const C=$("osMain");if(!osData&&curApp!=="cameras"){renderOsLoading();return}
+  const ceoA=osData?.agents.find(a=>a.isCeo)||{configured:false},conf=osData?osData.agents.filter(a=>!a.isCeo&&a.configured).length:0;
+  if(curApp==="home"){
+    C.innerHTML=`<h3>🏢 ${esc(osData.company.name)} — لوحة المالك</h3>
+    <div class="kpi"><div class="card"><b>${conf}/٢٠</b><span class="small">وكلاء مهيأون بنماذج</span></div><div class="card"><b>${ceoA.configured?"✓":"✗"}</b><span class="small">الرئيس التنفيذي زياد ${ceoA.configured?esc(ceoA.model):"بلا نموذج"}</span></div><div class="card"><b>${osData.projects.filter(p=>p.status==="active").length}</b><span class="small">مشاريع نشطة</span></div><div class="card"><b>${osData.tasks.filter(t=>t.status==="running").length}</b><span class="small">مهام تُنفذ الآن فعليًا</span></div><div class="card"><b>${osData.artifacts.length}</b><span class="small">مستندات حقيقية</span></div><div class="card"><b>${osData.approvals.filter(a=>a.status==="pending").length}</b><span class="small">بانتظار قرارك</span></div></div>
+    ${!ceoA.configured?`<div class="warn" style="margin-top:10px"><b>🚀 خطوة التفعيل الأولى:</b> لا وكيل يعمل قبل ربط نموذج ذكاء حقيقي — وهذا مقصود. لديك طريقان:<br>
+      <b>أ)</b> مزود عام مجاني جاهز بالشركة (نماذج مفتوحة بلا مفتاح — حد مجاني: رد كل ٤٥ ثانية، جودة بداية) — فعّله بضغطة ليبدأ المدير والفريق بنماذج حقيقية فورًا.<br>
+      <b>ب)</b> مزودك الخاص (OpenAI/OpenRouter/Groq/Claude/Gemini/Ollama) من قسم «اتصالات الذكاء» — موصى به للإنتاج.
+      <div class="row" style="margin-top:8px"><button class="btn green" id="actFree">⚡ تفعيل المجاني للمدير والفريق (openai-fast)</button><button class="btn" onclick="openOS('connections')">🔌 إضافة مزودي الخاص</button></div></div>`
+    :`<div class="okbox" style="margin-top:10px">✅ الرئيس التنفيذي زياد يعمل بنموذج <b>${esc(ceoA.model)}</b> عبر ${esc(ceoA.connectionName||"")}، و${conf} من ٢٠ وكيلًا مهيأون. المدير زياد يمسح الشركة ذاتيًا كل ${osData.settings.autonomy.scanMinutes} دقائق ويبادر ضمن صلاحياته، والأفعال الخارجية بانتظار موافقاتك دائمًا.</div>`}
+    <div class="card"><b>آخر نشاط حقيقي بالشركة</b>${osData.activity.slice(0,10).map(a=>`<p class="small"><b>${fmtT(a.ts)}</b> — ${esc(a.text)}</p>`).join("")||'<p class="small">لا نشاط بعد.</p>'}</div>`;
+    const af=$("actFree");if(af)af.onclick=async()=>{af.disabled=true;af.textContent="جارٍ التفعيل…";try{await api("/api/connections/activate-free",{method:"POST",body:JSON.stringify({model:"openai-fast"})});toast("✅ تم ربط نموذج حقيقي بالمدير والفريق — الشركة حية الآن");await refreshOS();poll()}catch(e){toast("❌ "+e.message);af.disabled=false}};
+  }
+  else if(curApp==="ceo"){
+    C.innerHTML=`<h3>👑 الرئيس التنفيذي زياد ${ceoA.configured?`<span class="badge ok">نموذج: ${esc(ceoA.model)}</span>`:`<span class="badge bad">غير مهيأ</span>`}</h3>
+    ${!ceoA.configured?`<div class="err">المدير بلا نموذج — لن تتلقى أي ردود ممثلة منه. <button class="btn green" onclick="openOS('home')">فعّله من الرئيسية</button></div>`:""}
+    <div class="card"><label>🎯 تكليف بهدف (يخطط له المدير التنفيذي بنموذجه ويسنده للفريق)</label><textarea id="goalTxt" placeholder="مثال: مقال موثق عن فوائد المشي لكبار السن مع صورة ومنشورات للمنصات"></textarea><div class="row"><button class="btn green" id="goalBtn">إرسال الهدف وبدء التخطيط الحقيقي</button><button class="btn gold" id="scanBtn">🧭 مسح استقلالي للمدير الآن</button></div><p class="small" id="goalMsg"></p></div>
+    <div class="chat">${osData.ceoChat.map(m=>`<div class="msg ${m.who==="owner"?"me":"ceo"}"><div class="who">${m.who==="owner"?"أنت (المالك)":"👑 المدير زياد"+(m.model?" • نموذج "+esc(m.model):"")} • ${fmtT(m.at)}</div>${esc(m.text)}</div>`).join("")||'<p class="small">لا محادثات بعد — كل رد هنا سيكون من نموذج المدير فعليًا ومسجلًا برقم تشغيله.</p>'}</div>
+    <div class="row" style="margin-top:9px"><input id="ceoIn" class="grow" placeholder="اسأل المدير زياد عن حالة الشركة من بياناتها الفعلية…"><button class="btn" id="ceoSend">إرسال</button></div>
+    <div class="card" style="margin-top:10px"><b>🧭 قرارات المدير الاستقلالية المسجلة</b>${osData.decisions.slice(0,8).map(d=>`<p class="small"><b>${fmtT(d.at)}</b> [${esc(d.kind)}] ${esc(d.text)}</p>`).join("")||'<p class="small">لا قرارات بعد.</p>'}</div>`;
+    C.scrollTop=C.scrollHeight;
+    $("goalBtn").onclick=async()=>{const g=$("goalTxt").value.trim();if(!g)return;$("goalMsg").textContent="جارٍ إرسال الهدف…";try{const p=await api("/api/goals",{method:"POST",body:JSON.stringify({goal:g})});$("goalMsg").textContent="✅ استلم المدير الهدف ("+statusAr(p.status)+") — تابع خطته ومهامه في «المشاريع والمهام» وشاهد الموظفين يعملون فعلًا بالمقر.";setTimeout(()=>openOS("projects"),1200)}catch(e){$("goalMsg").textContent="❌ "+e.message}};
+    $("scanBtn").onclick=async()=>{try{await api("/api/ceo/scan",{method:"POST",body:"{}"});toast("🧭 بدأ المدير زياد مسحه — قراراته ستظهر بالنشاط")}catch(e){toast("❌ "+e.message)}};
+    const send=async()=>{const v=$("ceoIn").value.trim();if(!v)return;$("ceoIn").value="";$("ceoSend").disabled=true;$("ceoSend").textContent="المدير يفكر بنموذجه…";try{await api("/api/ceo/chat",{method:"POST",body:JSON.stringify({message:v})});await refreshOS()}catch(e){toast("❌ "+e.message,5000);$("ceoSend").disabled=false;$("ceoSend").textContent="إرسال"}};
+    $("ceoSend").onclick=send;$("ceoIn").onkeydown=e=>{if(e.key==="Enter")send()};
+  }
+  else if(curApp==="projects"){
+    C.innerHTML=`<h3>🎯 المشاريع والمهام (${osData.projects.length})</h3>`+(osData.projects.map(p=>{
+      const ts=osData.tasks.filter(t=>t.projectId===p.id),done=ts.filter(t=>t.status==="approved").length;
+      return`<div class="card"><div class="row"><b class="grow">${esc(p.title)}</b><span class="badge ${p.status.startsWith("completed")?"ok":p.status==="active"?"work":"wait"}">${statusAr(p.status)}</span></div>
+      <div class="small">الهدف: ${esc(p.goal)} • المنشأ: ${p.origin==="owner"?"هدف المالك":p.origin==="ceo_autonomous"?"🤖 مبادرة المدير زياد":"تحسين معتمد"} • ${fmtT(p.createdAt)}${p.planSummary?"<br>خطة المدير: "+esc(p.planSummary):""}${p.planError?"<br><span style='color:#ff9a7a'>خطأ تخطيط: "+esc(p.planError)+"</span>":""}</div>
+      <div class="bar" style="margin:7px 0"><i style="width:${ts.length?done/ts.length*100:0}%"></i></div>
+      ${ts.map(t=>{const a=agentOf(t.agentId),rv=osData.reviews.find(r=>r.id===t.lastReviewId);return`<div class="small" style="border-top:1px solid rgba(255,255,255,.06);padding-top:6px;margin-top:6px">🤖 <b>${esc(a?.name||"")}</b> — ${esc(t.title)} <span class="badge ${t.status==="approved"?"ok":t.status==="running"?"work":t.status==="failed"||t.status==="blocked_unconfigured"?"bad":t.status==="under_review"?"review":"wait"}">${statusAr(t.status)}</span>
+        ${t.why?"<br>لماذا هو؟ "+esc(t.why):""}${t.lastAction?"<br>الآن: "+esc(t.lastAction):""}
+        ${rv?"<br>قرار المدير: <b>"+esc(rv.verdict)+"</b> ("+rv.score+"/١٠٠) — "+esc(rv.feedback.slice(0,220)):""}
+        <div class="row" style="margin-top:4px">${t.deliverableArtifactId?`<button class="btn gray" onclick="viewArtifact('${t.deliverableArtifactId}')">👁️ الناتج الحقيقي</button>`:""}${["failed","blocked_unconfigured"].includes(t.status)?`<button class="btn" onclick="taskAct('${t.id}','retry')">↻ إعادة تشغيل</button>`:""}${!["approved","cancelled"].includes(t.status)?`<button class="btn green" onclick="taskDecide('${t.id}','approve')">✅ أعتمدها أنا</button><button class="btn gold" onclick="taskRevise('${t.id}')">↩️ أطلب تعديلًا</button>`:""}${!["approved","cancelled"].includes(t.status)?`<button class="btn red" onclick="taskAct('${t.id}','cancel')">إلغاء المهمة</button>`:""}</div>
+        <div class="row" style="margin-top:6px"><span class="small">الأولوية: <b>${["عادية","مهمة","عالية","عاجلة"][Number(t.priority||0)]||"عادية"}</b></span><select onchange="setPriority('${t.id}',this.value)" style="width:auto"><option value="0" ${Number(t.priority||0)===0?"selected":""}>عادية</option><option value="1" ${Number(t.priority||0)===1?"selected":""}>مهمة</option><option value="2" ${Number(t.priority||0)===2?"selected":""}>عالية</option><option value="3" ${Number(t.priority||0)===3?"selected":""}>عاجلة</option></select></div>
+        ${t.lastError?`<div class="small" style="color:#ff9a7a">آخر رفض/خطأ موثق: ${esc(t.lastError)}</div>`:""}</div>`}).join("")}
+      <div class="row" style="margin-top:8px">${p.status==="planning_failed"?`<button class="btn gold" onclick="projAct('${p.id}','replan')">🧭 إعادة محاولة تخطيط المدير</button>`:""}${!p.status.startsWith("completed")&&p.status!=="cancelled"?`<button class="btn red" onclick="projAct('${p.id}','cancel')">إلغاء المشروع</button>`:""}</div></div>`}).join("")||'<p class="small">لا مشاريع بعد — كلّف المدير التنفيذي بهدف من قسمه.</p>');
+  }
+  else if(curApp==="agents"){
+    if(!selAgent)selAgent="ceo";const a=osData.agents.find(x=>x.id===selAgent)||osData.agents[0];const acfg=osData.agentsConfig.find(x=>x.id===a.id);const conn=connOf(a.connectionId);
+    C.innerHTML=`<h3>🤖 الوكلاء — نموذج وأدوات كل موظف من عندك أنت</h3>
+    <div class="grid">${osData.agents.map(x=>`<div class="card pick ${x.id===a.id?"sel":""}" onclick="selAgentGo('${x.id}')"><b style="color:${esc(x.color)}">${x.isCeo?"👑":"🤖"} ${esc(x.name)}</b><div class="small">${esc(x.role)}<br>${x.configured?esc(x.model):"<span style='color:#ff9a7a'>بلا نموذج</span>"} • ${statusAr(x.status)}</div></div>`).join("")}</div>
+    <div class="card"><h4>⚙️ تهيئة: ${esc(a.name)} — ${esc(a.role)}</h4>
+    <label>اتصال الذكاء</label><select id="agConn"><option value="">— بلا اتصال (متوقف) —</option>${osData.connections.map(c=>`<option value="${c.id}" ${a.connectionId===c.id?"selected":""}>${esc(c.name)}</option>`).join("")}</select>
+    <label>\u0627\u0644\u0646\u0645\u0648\u0630\u062c \u2014 \u0627\u062e\u062a\u0631 \u0645\u0646 \u0627\u0644\u0642\u0627\u0626\u0645\u0629</label><select id="agModel" dir="ltr">${(()=>{const ms=(conn?.models||[]);const cur=a.model||"";const list=cur&&!ms.includes(cur)?[cur,...ms]:ms;return list.length?list.map(m=>`<option value="${esc(m)}" ${m===cur?"selected":""}>${esc(m)}</option>`).join(""):`<option value="">\u2014 \u0644\u0627 \u062a\u0648\u062c\u062f \u0646\u0645\u0627\u0630\u062c: \u0627\u0636\u063a\u0637 \u00ab\u062c\u0644\u0628 \u0646\u0645\u0627\u0630\u062c \u0627\u0644\u0645\u0632\u0648\u062f\u00bb \u0623\u0648\u0644\u064b\u0627</option>`})()}</select>\n    <div class="row" style="margin-top:6px"><input id="agCustomModel" dir="ltr" placeholder="\u0623\u0648 \u0627\u0643\u062a\u0628 \u0627\u0633\u0645 \u0646\u0645\u0648\u0630\u062c \u0622\u062e\u0631 \u064a\u062f\u0648\u064a\u064b\u0627" style="flex:1"></div>
+    <label>الأدوات المصرح بها فعليًا على الخادم</label><div class="row small">${osData.toolDefs.map(t=>`<label style="margin:2px 6px"><input type="checkbox" class="agTool" value="${t.id}" style="width:auto" ${(a.tools||[]).includes(t.id)?"checked":""}> ${esc(t.name)}</label>`).join("")}</div>
+    <label>الدور المعروض</label><input id="agRole" value="${esc(a.role)}">
+    <label>تعليمات نظامه (شخصيته المهنية التي يتلقاها نموذجه في كل مهمة)</label><textarea id="agPrompt" rows="5">${esc(acfg?.systemPrompt||"")}</textarea>
+    <div class="row" style="margin-top:9px"><button class="btn green" id="agSave">💾 حفظ تهيئة هذا الوكيل</button>${a.configured?(a.summon?.active?`<button class="btn red" onclick="dismissAgent('${a.id}')">↩️ إنهاء استدعائه</button>`:`<button class="btn gold" onclick="summonAgent('${a.id}')">📣 استدعاؤه لمكتبي</button>`):""}<button class="btn gray" id="agGo">🚶 الذهاب لكبينته بالمقر</button></div>
+    <details><summary>🧠 ذاكرته الدائمة (${(a.memory||[]).length}) — تُحقن في مهامه القادمة</summary><ul class="small">${(a.memory||[]).slice(-12).map(m=>"<li>"+esc(m)+"</li>").join("")||"<li>لا ذكريات بعد</li>"}</ul></details><div class="card" style="border-color:rgba(120,200,255,.45)"><b>👁️ ماذا يفعل ${esc(a.name)} الآن؟ (بيانات الخادم الحقيقية)</b>
+      ${a.currentRun?`<p class="small"><b>تشغيل جارٍ:</b> ${esc(a.currentRun.model||"")} • ${esc(a.currentRun.status)} • ${fmtT(a.currentRun.startedAt)}</p>
+        ${(a.currentRun.steps||[]).map(st=>`<p class="small">${st.kind==="tool"?"🔧 أداة "+esc(st.tool):st.kind==="model"?"🧠 نداء نموذج ("+(st.latencyMs||0)+"ms)":st.kind==="error"?"⚠️ خطأ":st.kind==="system"?"• نظام":"•"} ${esc(String(st.text||"").slice(0,240))}</p>`).join("")}`:'<p class="small">لا تشغيل جارٍ الآن.</p>'}
+      ${(a.activity?.items||[]).slice(0,6).map(it=>`<p class="small">${it.kind==="chat"?"💬 "+esc(it.who==="owner"?"المالك":a.name)+": "+esc(it.text):it.kind==="run"?"⏳ يعمل الآن على "+esc(it.run?.model||""):it.kind==="event"?"• "+esc(it.text):esc(it.text||"")}</p>`).join("")}
+      ${a.rejection?`<div class="warn" style="margin-top:8px"><b>❌ آخر رفض من المدير</b> (${esc(a.rejection.verdict)} — ${a.rejection.score}/100)<br>${esc(a.rejection.feedback)}${(a.rejection.requiredChanges||[]).length?`<br><b>المطلوب تعديله:</b> ${esc((a.rejection.requiredChanges||[]).join(" ؛ "))}`:""}
+        <div class="row" style="margin-top:6px"><button class="btn" onclick="openOS('summon','${a.id}')">💬 كلّمه الآن عن رفضه</button></div></div>`:""}
+      ${a.currentTask?`<p class="small"><b>مهمته:</b> ${esc(a.currentTask.title)} • ${statusAr(a.currentTask.status)}<br><b>آخر إجراء:</b> ${esc(a.currentTask.lastAction||"")}</p>`:""}
+      <div class="row" style="margin-top:6px"><button class="btn gold" onclick="summonAgent('${a.id}')">📣 استدعاؤه لمكتبي</button><button class="btn" onclick="openOS('summon','${a.id}')">💬 محادثته</button></div></div></div>
+    <div class="card"><b>تعيين جماعي سريع</b><div class="row"><select id="bulkConn" class="grow">${osData.connections.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("")}</select><select id="bulkModel" class="grow" dir="ltr">${osData.connections.flatMap(c=>(c.models||[])).filter((v,i,arr)=>arr.indexOf(v)===i).map(m=>`<option value="${esc(m)}">${esc(m)}</option>`).join("")}</select><select id="bulkScope"><option value="all">المدير + الكل</option><option value="employees">الموظفون فقط</option></select><button class="btn gold" id="bulkBtn">تطبيق</button></div></div>`;
+    $("agSave").onclick=async()=>{try{await api("/api/agents/"+a.id+"/config",{method:"POST",body:JSON.stringify({connectionId:$("agConn").value||null,model:(($("agCustomModel")&&$("agCustomModel").value.trim())||$("agModel").value||"").trim()||null,tools:[...document.querySelectorAll(".agTool:checked")].map(x=>x.value),role:$("agRole").value,systemPrompt:$("agPrompt").value})});toast("💾 حُفظت تهيئة "+a.name);await refreshOS();poll()}catch(e){toast("❌ "+e.message)}};
+    $("agGo").onclick=()=>{$("os").classList.remove("open");inspectAgentId=a.id;renderInspect(a.id);focusCamera(robots[a.id]?.group.position)};
+    $("bulkBtn").onclick=async()=>{try{await api("/api/agents/bulk-assign",{method:"POST",body:JSON.stringify({connectionId:$("bulkConn").value,model:$("bulkModel").value.trim(),scope:$("bulkScope").value})});toast("⚙️ طُبق التعيين الجماعي");await refreshOS();poll()}catch(e){toast("❌ "+e.message)}};
+  }
+  else if(curApp==="summon"){
+    if(!selSummonAgent||!osData.agents.find(a=>a.id===selSummonAgent))selSummonAgent=(osData.agents.find(a=>a.summon?.active)||osData.agents.find(a=>!a.isCeo)||osData.agents[0])?.id;
+    const a=osData.agents.find(x=>x.id===selSummonAgent)||osData.agents[0];
+    const chats=(osData.agentChats&&osData.agentChats[a.id])||[];
+    const active=osData.agents.filter(x=>x.summon?.active);
+    const locTxt=x=>{
+      if(!x.summon?.active)return x.isCeo?"في مكتب الرئيس التنفيذي":view.company?.activeMeetingId?"في قاعة الاجتماعات":"في كبينة عمله";
+      const r=robots[x.id],s=ownerSummonSpot(x);
+      const dist=r?Math.hypot(r.group.position.x-s.x,r.group.position.z-s.z):99;
+      return dist<0.9?"وصل إلى مكتبك الآن":"في الطريق إلى مكتبك — تبقى "+dist.toFixed(1)+" م بصريًا";
+    };
+    C.innerHTML=`<h3>📣 استدعاء الموظفين إلى مكتبك</h3>
+    <div class="okbox">الاستدعاء يحرّك تمثيل الموظف داخل المقر إلى مكتبك فورًا وتستطيع محادثته بنموذجه الحقيقي من هنا. <b>لا يوقف أي مهمة جارية ولا يضيع نقطة حفظها على الخادم.</b> الوكيل غير المهيأ بنموذج لا يُستدعى ولا نتظاهر بحركته.</div>
+    <div class="row" style="margin:10px 0"><button class="btn gold" id="summonAllBtn">📣 استدعاء كل المهيأين لمكتبي</button><button class="btn red" id="dismissAllBtn">↩️ إنهاء كل الاستدعاءات (${active.length})</button><span class="small">ينتهي كل استدعاء تلقائيًا بعد ٣٠ دقيقة ما لم تنهِه.</span></div>
+    <div class="summonLayout">
+      <div class="agentSummonGrid">${osData.agents.map(x=>`<div class="card pick ${x.id===a.id?"sel":""}" onclick="selSummonGo('${x.id}')">
+        <b style="color:${esc(x.color)}">${x.isCeo?"👑":"🤖"} ${esc(x.name)}</b>
+        <div class="small">${esc(x.role)}<br>${x.configured?"النموذج: "+esc(x.model):"<span style='color:#ff9a7a'>بلا نموذج — لا يمكن استدعاؤه</span>"}<br>${statusAr(x.status)}<br>📍 ${esc(locTxt(x))}</div>
+        <div class="row" style="margin-top:7px" onclick="event.stopPropagation()">
+          ${x.configured?(x.summon?.active?`<button class="btn red" onclick="dismissAgent('${x.id}')">إنهاء الاستدعاء</button>`:`<button class="btn gold" onclick="summonAgent('${x.id}')">📣 استدعاؤه لمكتبي</button>`):`<button class="btn green" onclick="openOS('agents','${x.id}')">ربط نموذج</button>`}
+          <button class="btn gray" onclick="goToAgent('${x.id}')">الذهاب إليه</button>
+        </div>
+      </div>`).join("")}</div>
+      <div class="card summonChatCard">
+        <div class="row"><div class="summonAvatar" style="--ac:${esc(a.color||"#4da3ff")}">${a.isCeo?"👑":"🤖"}</div><div class="grow"><b>${esc(a.name)}</b><div class="small">${esc(a.role)} • ${esc(locTxt(a))}</div></div><span class="badge ${a.configured?"ok":"bad"}">${a.configured?esc(a.model):"غير مهيأ"}</span></div>
+        ${a.currentTask?`<p class="small"><b>مهمته الحالية على الخادم:</b> ${esc(a.currentTask.title)}<br><b>آخر إجراء موثق:</b> ${esc(a.currentTask.lastAction||statusAr(a.currentTask.status))}</p>`:'<p class="small">لا مهمة جارية لهذا الوكيل على الخادم الآن.</p>'}
+        <div class="row">${a.configured?(a.summon?.active?`<button class="btn red" onclick="dismissAgent('${a.id}')">↩️ إنهاء استدعائه</button>`:`<button class="btn gold" onclick="summonAgent('${a.id}')">📣 استدعاؤه لمكتبي الآن</button>`):""}<button class="btn gray" onclick="openOS('agents','${a.id}')">⚙️ ملفه وتهيئته</button><button class="btn" onclick="goToAgent('${a.id}')">🚶 الذهاب إليه بالمقر</button></div>
+        <h4>💬 محادثة مباشرة بنموذجه الحقيقي</h4>
+        <div class="chat summonMsgs">${chats.map(m=>`<div class="msg ${m.who==="owner"?"me":"ceo"}"><div class="who">${m.who==="owner"?"أنت (المالك)":esc(a.name)+(m.model?" • "+esc(m.model):"")} • ${fmtT(m.at)}</div>${esc(m.text)}</div>`).join("")||'<p class="small">لا محادثة مباشرة بعد. اسأله عن مهمته أو آخر ناتج له؛ سيرد نموذجه المرتبط فعليًا وسيُسجل التشغيل.</p>'}</div>
+        <div class="row" style="margin-top:8px"><input id="agentChatIn" class="grow" placeholder="${a.configured?"اكتب سؤالك لهذا الموظف…":"اربط له نموذجًا أولًا كي يتحدث"}" ${a.configured?"":"disabled"}><button class="btn" id="agentChatSend" ${a.configured?"":"disabled"}>إرسال</button></div>
+        <p class="small">طلبات العمل الرسمية الجديدة ما زالت تمر بهدف للرئيس التنفيذي زياد لتتحول إلى مشروع ومهام موثقة ومراجعة.</p>
+      </div>
+    </div>`;
+    $("summonAllBtn").onclick=()=>summonAllAgents();$("dismissAllBtn").onclick=()=>dismissAllAgents();
+    const sendAgent=async()=>{
+      const inp=$("agentChatIn"),btn=$("agentChatSend"),v=inp.value.trim();if(!v)return;
+      inp.value="";btn.disabled=true;btn.textContent=a.name+" يفكر بنموذجه…";
+      try{await api("/api/agents/"+a.id+"/chat",{method:"POST",body:JSON.stringify({message:v})});await refreshOS();poll()}
+      catch(e){toast("❌ "+e.message,7000);btn.disabled=false;btn.textContent="إرسال"}
+    };
+    const sendBtn=$("agentChatSend");if(sendBtn)sendBtn.onclick=sendAgent;
+    const chatIn=$("agentChatIn");if(chatIn)chatIn.onkeydown=e=>{if(e.key==="Enter")sendAgent()};
+    const msgs=C.querySelector(".summonMsgs");if(msgs)msgs.scrollTop=msgs.scrollHeight;
+  }
+  else if(curApp==="cameras"){
+    const def=cctvDef(cctvSelectedId);
+    C.innerHTML=`<h3>🎥 كاميرات مراقبة المقر — بث حي من نفس المشهد</h3>
+    <div class="cctvMain card">
+      <div id="cctvViewport"><div class="cctvTop"><b>● مباشر — ${esc(def.name)}</b><span id="cctvStamp"></span></div><div class="cctvRec">REC</div></div>
+      <div class="cctvControls">
+        <button class="btn gray" onclick="cctvPtz('left')">◀ يسار</button><button class="btn gray" onclick="cctvPtz('up')">▲ أعلى</button><button class="btn gray" onclick="cctvPtz('down')">▼ أسفل</button><button class="btn gray" onclick="cctvPtz('right')">يمين ▶</button>
+        <button class="btn" onclick="cctvPtz('zin')">＋ تكبير</button><button class="btn" onclick="cctvPtz('zout')">－ تصغير</button><span class="badge work" id="cctvZoomVal">×${(def.zoom||1).toFixed(1)}</span>
+        <button class="btn gray" onclick="cctvPtz('reset')">إعادة الضبط</button><button class="btn gold" onclick="captureCctv()">📸 لقطة الآن</button><button class="btn green" onclick="goToCctv('${def.id}')">🚶 الذهاب لمكانها</button>
+      </div>
+      <p class="small">الصورة تُرسم لحظيًا من مقر الشركة ثلاثي الأبعاد وحالة الخادم الحالية؛ سترى نفسك كلاعب، والروبوتات في أماكنها المستمدة من مهامها والاجتماعات والاستدعاءات.</p>
+    </div>
+    <div class="cctvGrid">${CCTV_CAMERAS.map(d=>`<button class="cctvCard ${d.id===def.id?"sel":""}" onclick="selectCctv('${d.id}')">
+      <img id="cctvThumb_${d.id}" src="${cctvSnapshots[d.id]||"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="}" alt="">
+      <span><b>${esc(d.name)}</b><small>${d.id===def.id?"تعرض الآن بثًا حيًا":"اضغط للبث الحي • لقطاتها تتجدد تلقائيًا"}</small></span>
+    </button>`).join("")}</div>`;
+    requestAnimationFrame(()=>mountCctvRenderer());
+  }
+  else if(curApp==="connections"){
+    C.innerHTML=`<h3>🔌 اتصالات الذكاء — مفاتيحك مشفرة على الخادم ولا تعود للمتصفح</h3>
+    ${osData.connections.map(c=>`<div class="card"><div class="row"><b class="grow">${esc(c.name)}</b><span class="badge">${esc(osData.providerTypes.find(t=>t.id===c.type)?.name||c.type)}</span><span class="badge ${c.enabled?"ok":"bad"}">${c.enabled?"مفعّل":"موقوف"}</span></div>
+      <div class="small">المفتاح: ${esc(c.masked)} • النماذج: ${(c.models||[]).join("، ")||"—"} • مستخدم لدى: ${osData.agents.filter(a=>a.connectionId===c.id).length} وكيلًا<br>${c.lastTest?("آخر اختبار حقيقي: "+(c.lastTest.ok?"✅ رد النموذج «"+esc(c.lastTest.reply||"")+"» ("+esc(c.lastTest.providerModel||"")+"، "+c.lastTest.latencyMs+"ms)":"❌ "+esc(c.lastTest.error||""))):"لم يُختبر بعد"}${c.note?"<br>"+esc(c.note):""}</div>
+      <div class="row" style="margin-top:6px"><select id="tm_${c.id}" dir="ltr" style="flex:1">${((c.models||[]).length?c.models:[`\u0644\u0627 \u0646\u0645\u0627\u0630\u062c \u2014 \u0627\u062c\u0644\u0628\u0647\u0627 \u0623\u0648\u0644\u064b\u0627`]).map(m=>`<option value="${esc(m)}">${esc(m)}</option>`).join("")}</select><button class="btn" onclick="testConn('${c.id}')">🧪 اختبار فعلي الآن</button><button class="btn gray" onclick="fetchModels('${c.id}')">جلب نماذج المزود</button><button class="btn red" onclick="delConn('${c.id}')">حذف</button></div></div>`).join("")}
+    <div class="card"><h4>\u0645\u0643\u062a\u0628\u0629 \u0645\u0632\u0648\u062f\u064a \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u062c\u0627\u0647\u0632\u0629</h4>\n      <div class="small">\u0623\u0646\u0634\u0626 \u0645\u0641\u062a\u0627\u062d\u064b\u0627 \u0645\u062c\u0627\u0646\u064a\u064b\u0627 \u0645\u0646 \u0623\u064a \u0645\u0632\u0648\u062f \u062b\u0645 \u0623\u0636\u0641\u0647 \u0641\u064a Cloudflare \u0628\u0627\u0633\u0645 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 \u0627\u0644\u0645\u0630\u0643\u0648\u0631 \u0643\u0640 Secret\u061b \u0633\u064a\u064f\u0631\u0628\u0637 \u062a\u0644\u0642\u0627\u0626\u064a\u064b\u0627 \u0628\u0639\u062f \u0623\u0648\u0644 \u0627\u0633\u062a\u064a\u0642\u0627\u0638.</div>\n      <table><tr><th>\u0627\u0644\u0645\u0632\u0648\u062f</th><th>\u0627\u0644\u0645\u062a\u063a\u064a\u0631</th><th>\u0627\u0644\u062d\u0627\u0644\u0629</th><th>\u0627\u0644\u0645\u0641\u062a\u0627\u062d</th></tr>${(osData.providerLibrary||[]).map(x=>`<tr><td>${esc(x.name)}<div class="small">${esc(x.note)} • \u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u064a: ${esc(x.model)}<br>\u0643\u0644 \u0627\u0644\u0645\u0648\u062f\u064a\u0644\u0627\u062a (${(x.models||[]).length}): ${esc((x.models||[]).slice(0,8).join("، "))}${(x.models||[]).length>8?" \u2026":""}</div></td><td dir="ltr" class="small">${esc(x.env)}</td><td>${x.connected?("\u2705 \u0645\u0631\u0628\u0648\u0637 \u2014 "+x.agentsUsing+" \u0648\u0643\u064a\u0644"):(x.keyPresent?"\u23f3 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 \u0645\u0648\u062c\u0648\u062f \u0628\u0644\u0627 \u0631\u0628\u0637":"\u2796 \u063a\u064a\u0631 \u0645\u0636\u0628\u0648\u0637")}</td><td>${x.keyUrl?`<a href="${esc(x.keyUrl)}" target="_blank" rel="noopener" style="color:#8fd0ff">\u0645\u0641\u062a\u0627\u062d</a>`:""}</td></tr>`).join("")}</table>\n      <div class="row" style="margin-top:8px"><button class="btn green" onclick="applyProviders()">\u0631\u0628\u0637 \u0643\u0644 \u0627\u0644\u0645\u062a\u063a\u064a\u0631\u0627\u062a \u0627\u0644\u0645\u0648\u062c\u0648\u062f\u0629 \u0627\u0644\u0622\u0646</button></div><div class="card" style="margin-top:10px"><h4>🧰 مكتبة كل مزودي الذكاء — فعّل أو أوقف أيًا بضغطة</h4>
+      <div class="small">الأولوية من أعلى لأسفل: المزود المفعّل والمربوط أولًا، وإذا سقط نموذجه ينتقل المدير تلقائيًا للمزود التالي المفعّل. المفتاح يُضاف من نفس النموذج بالأسفل.</div>
+      <table><tr><th>المزود</th><th>ما يقدمه</th><th>الحالة</th><th>المفتاح</th><th>تحكم</th></tr>${(osData.services||[]).map(x=>`<tr><td><b>${esc(x.name)}</b><br>${x.free?'<span class="badge ok">مجاني</span>':'<span class="badge work">مدفوع</span>'}</td><td class="small">${esc(x.kind)}<br>${esc(x.note)}</td><td>${x.connected?'✅ مربوط':(x.enabled?'⏳ مفعّل بلا مفتاح':'➖ موقوف')}</td><td>${x.keyUrl?`<a href="${esc(x.keyUrl)}" target="_blank" rel="noopener" style="color:#8fd0ff">احصل على مفتاح</a>`:""}</td><td><button class="btn ${x.enabled?'gray':'green'}" onclick="toggleService('${x.id}',${x.enabled?"false":"true"})">${x.enabled?'إيقاف':'تفعيل'}</button></td></tr>`).join("")}</table></div></div>
+      <label>نوع المزود</label><select id="ncType">${osData.providerTypes.map(t=>`<option value="${t.id}" data-base="${esc(t.defaultBase)}" data-key="${t.needsKey?1:0}">${esc(t.name)}</option>`).join("")}</select>
+      <label>اسم الاتصال</label><input id="ncName" placeholder="مثال: OpenRouter الرئيسي">
+      <label>عنوان القاعدة Base URL</label><input id="ncBase" dir="ltr">
+      <label>مفتاح API (يُشفّر على الخادم فورًا)</label><input id="ncKey" type="password" dir="ltr" placeholder="sk-…">
+      <label>\u0627\u0644\u0646\u0645\u0648\u0630\u062c \u2014 \u0627\u062e\u062a\u0631 \u0645\u0646 \u0627\u0644\u0642\u0627\u0626\u0645\u0629 (\u0644\u0627 \u062a\u0643\u062a\u0628\u0647)</label><select id="ncModel" dir="ltr"></select>\n      <div class="row" style="margin-top:6px"><button class="btn gray" id="ncFetch">\u{1F4CB} \u062c\u0644\u0628 \u0646\u0645\u0627\u0630\u062c \u0647\u0630\u0627 \u0627\u0644\u0645\u0632\u0648\u062f \u0628\u0627\u0644\u0645\u0641\u062a\u0627\u062d</button><span class="small" id="ncHint">\u0644\u0646 \u064a\u064f\u062d\u0641\u0638 \u0627\u062a\u0635\u0627\u0644 \u0628\u0646\u0645\u0648\u0630\u062c \u063a\u064a\u0631 \u0645\u0648\u062c\u0648\u062f \u0641\u0639\u0644\u064b\u0627.</span></div>
+      <button class="btn green" id="ncAdd" style="margin-top:9px">💾 حفظ الاتصال مشفرًا</button></div>`;
+    const syncBase=()=>{const o=$("ncType").selectedOptions[0];$("ncBase").value=o?.dataset.base||"";$("ncKey").placeholder=o?.dataset.key==="1"?"sk-…":"(لا يحتاج مفتاحًا)"};$("ncType").onchange=syncBase;syncBase();
+    $("ncFetch").onclick=async()=>{const btn=$("ncFetch");btn.disabled=true;const t=btn.textContent;btn.textContent="\u062c\u0627\u0631\u064d \u0627\u0644\u062c\u0644\u0628 \u0645\u0646 \u0627\u0644\u0645\u0632\u0648\u062f\u2026";try{const r=await api("/api/connections/discover",{method:"POST",body:JSON.stringify({type:$("ncType").value,baseUrl:$("ncBase").value,apiKey:$("ncKey").value})});const sel=$("ncModel");const ms=(r.models||[]).filter(m=>m&&!/whisper|orpheus|prompt-guard|embedding|moderation|tts/i.test(m));sel.innerHTML=ms.length?ms.map(m=>`<option value="${esc(m)}">${esc(m)}</option>`).join(""):""; if(!ms.length)sel.innerHTML="<option value=\"\">\\u2014 \\u0644\\u0627 \\u062a\\u0648\\u062c\\u062f \\u0646\\u0645\\u0627\\u0630\\u062c \\u2014</option>";$("ncHint").textContent="\u2705 "+ms.length+" \u0646\u0645\u0648\u0630\u062c \u0645\u062a\u0627\u062d \u0644\u0647\u0630\u0627 \u0627\u0644\u0645\u0641\u062a\u0627\u062d \u0627\u0644\u0622\u0646";toast("\u{1F4CB} "+ms.length+" \u0646\u0645\u0648\u0630\u062c \u0645\u0646 \u0627\u0644\u0645\u0632\u0648\u062f",6000)}catch(e){toast("\u274c "+(e.body?.error||e.message),8000)}finally{btn.disabled=false;btn.textContent=t}};$("ncAdd").onclick=async()=>{const btn=$("ncAdd");btn.disabled=true;const t=btn.textContent;btn.textContent="\u0623\u062a\u062d\u0642\u0651\u0642 \u0645\u0646 \u0627\u0644\u0645\u0641\u062a\u0627\u062d \u0628\u0646\u062f\u0627\u0621 \u062d\u0642\u064a\u0642\u064a\u2026";try{const r=await api("/api/connections",{method:"POST",body:JSON.stringify({name:$("ncName").value,type:$("ncType").value,baseUrl:$("ncBase").value,apiKey:$("ncKey").value,model:$("ncModel").value,autoFetch:true})});if(r.liveTest&&r.liveTest.ok){toast("\u2705 \u0627\u0644\u0645\u0641\u062a\u0627\u062d \u0634\u063a\u0651\u0627\u0644 \u0641\u0639\u0644\u064b\u0627 ("+r.liveTest.model+" \u2014 "+r.liveTest.latencyMs+"ms) \u0648\u062d\u064f\u0641\u0638 \u0645\u0634\u0641\u0631\u064b\u0627",8000)}else{toast("\u26a0\ufe0f \u062d\u064f\u0641\u0638 \u0627\u0644\u0627\u062a\u0635\u0627\u0644 \u0644\u0643\u0646 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u062d\u0642\u064a\u0642\u064a \u0644\u0645 \u064a\u0646\u062c\u062d: "+((r.liveTest&&r.liveTest.error)||(r.discovered&&r.discovered.error)||"\u063a\u064a\u0631 \u0645\u0639\u0631\u0648\u0641"),10000)}await refreshOS()}catch(e){toast("\u274c "+(e.body?.error||e.message),9000)}finally{btn.disabled=false;btn.textContent=t}};
+  }
+  else if(curApp==="files"){
+    C.innerHTML=`<h3>📄 ملفات ومخرجات الشركة الحقيقية (${osData.artifacts.length})</h3><div class="grid">${osData.artifacts.map(a=>`<div class="card pick" onclick="viewArtifact('${a.id}')">${a.kind==="image"?"🖼️":"📄"} <b>${esc(a.title.slice(0,60))}</b><div class="small">بقلم ${esc(agentOf(a.agentId)?.name||"")} • ${fmtT(a.createdAt)} • ${Math.round((a.size||0)/1024)} KB${a.meta?.model?" • نموذج "+esc(a.meta.model):""}${a.meta?.cloudinaryUrl?" • Cloudinary ✓":""}</div></div>`).join("")||'<p class="small">لا مستندات بعد — أول مهمة حقيقية ستترك أول ملف هنا.</p>'}</div>`;
+  }
+  else if(curApp==="runs"){
+    C.innerHTML=`<h3>🧾 سجلات تنفيذ النماذج — دليلك أن لا شيء ممثل</h3><p class="small">كل سطر = نداءات نموذج فعلية على الخادم مع زمنها ورموزها وأخطائها.</p>`+
+    osData.runs.map(r=>{const a=agentOf(r.agentId);const tok=r.steps.reduce((s,x)=>s+(x.usage?.total_tokens||0),0);const tools=[...new Set(r.steps.filter(s=>s.kind==="tool").map(s=>s.tool))];
+      return`<details><summary>${{agent_task:"🤖 مهمة وكيل",ceo_plan:"🧭 تخطيط مدير",ceo_review:"🧐 مراجعة مدير",ceo_chat:"💬 محادثة مدير",agent_chat:"💬 محادثة وكيل مباشرة",ceo_scan:"🧭 مسح مدير",meeting:"📋 اجتماع"}[r.type]||r.type} — ${esc(a?.name||"")} • ${esc(r.model||"")} • <span class="badge ${r.status==="completed"?"ok":r.status==="failed"?"bad":"work"}">${esc(r.status)}</span> • ${fmtT(r.startedAt)}${tok?" • "+tok+" رمز":""}${tools.length?" • أدوات: "+tools.map(t=>TOOL_NAMES[t]||t).join("، "):""}</summary>
+      ${r.error?`<p class="small" style="color:#ff9a7a">خطأ موثق: ${esc(r.error)}</p>`:""}${r.steps.map(s=>`<p class="small">${s.kind==="tool"?"🔧 أداة "+esc(s.tool):s.kind==="model"?"🧠 نموذج ("+(s.latencyMs||0)+"ms)":s.kind==="error"?"⚠️":"•"} ${esc(String(s.text||"").slice(0,420))}</p>`).join("")}</details>`}).join("");
+  }
+  else if(curApp==="conversation"){
+    const rows=(osData.conversation||[]);
+    const kindAr={ "owner-ceo":"👑 أنت ↔ المدير", "owner-agent":"💬 أنت ↔ موظف", "meeting":"📋 اجتماع", "ceo-review":"🧐 مراجعة المدير" };
+    C.innerHTML=`<h3>🗨️ المحادثات الحية — كل ما يقال في الشركة بنموذجه الحقيقي</h3>
+    <div class="small">هنا كل رسالة بينك وبين المدير، وبينك وبين أي موظف، وكل مساهمة في اجتماع، وكل مراجعة يكتبها المدير. المصدر: خادم الشركة نفسه، لا شيء ممثل.</div>
+    <div class="card"><b>ماذا يفعل كل موظف الآن؟</b>
+      ${osData.agents.filter(a=>!a.isCeo).map(a=>{const act=a.activity?.items?.[0];return `<p class="small"><b style="color:${esc(a.color)}">${esc(a.name)}</b> — ${statusAr(a.status)}${a.currentTask?` • ${esc(a.currentTask.title)}`:""}${act?` • ${esc(String(act.text||(act.run?("نموذج "+act.run.model+" يعمل"):"")).slice(0,120))}`:""}</p>`}).join("")}
+    </div>
+    <div class="chat">${rows.map(m=>`<div class="msg ${m.kind==="owner-ceo"||m.kind==="owner-agent"?"me":"ceo"}"><div class="who">${kindAr[m.kind]||m.kind} — ${esc(m.who||"")} • ${fmtT(m.at)}</div>${esc(m.text)}</div>`).join("")||'<p class="small">لا محادثات بعد.</p>'}</div>`;
+  }
+  else if(curApp==="meetings"){
+    const active=osData.meetings.find(m=>m.status==="in_progress");
+    C.innerHTML=`<h3>📋 الاجتماعات — مساهمات من نماذج كل حاضر، لا نصوص جاهزة</h3>
+    <div class="card"><p class="small">الاجتماع الأسبوعي القادم: <b>${fmtT(osData.settings.nextWeeklyMeeting)}</b> (يبدأ تلقائيًا إن كان المدير والفريق مهيأين). أثناء الاجتماع تتوقف المهام عند نقاط حفظها وتُستأنف بعدها.</p>
+    <div class="row"><button class="btn red" id="mtgE">🚨 اجتماع طارئ الآن</button><button class="btn" id="mtgW">اجتماع أسبوعي الآن</button></div>
+    ${active?`<p class="small">⏳ اجتماع جارٍ: اكتملت ${active.contributions.length} مساهمة، تبقى ${active.queue.length}… تابع الروبوتات تتجمع بالقاعة في المقر.</p>`:""}</div>`+
+    osData.meetings.map(m=>`<div class="card"><b>اجتماع ${esc(m.type)}</b> <span class="small">${fmtT(m.startedAt)} — ${m.status==="done"?"انتهى "+fmtT(m.endedAt):"جارٍ الآن"}</span>
+      <details ${m.status!=="done"?"open":""}><summary>المساهمات الفعلية (${m.contributions.length})</summary>${m.contributions.map(c=>`<p class="small"><b>${esc(c.name)}:</b> ${esc(c.text)}</p>`).join("")}</details>
+      ${m.transcriptArtifactId?`<button class="btn gray" onclick="viewArtifact('${m.transcriptArtifactId}')">📄 المحضر المحفوظ</button>`:""}</div>`).join("");
+    $("mtgE").onclick=()=>startMeetingUI("طارئ");$("mtgW").onclick=()=>startMeetingUI("أسبوعي");
+  }
+  else if(curApp==="approvals"){
+    const pend=osData.approvals.filter(a=>a.status==="pending"),done=osData.approvals.filter(a=>a.status!=="pending");
+    C.innerHTML=`<h3>✅ موافقات وطلبات بانتظار سلطتك (${pend.length})</h3><p class="small">المدير التنفيذي زياد لا ينشر خارجيًا ولا يغيّر صلاحيات ولا يعتمد موارد جديدة دون قرارك المسجل هنا.</p>`+
+    (pend.map(a=>`<div class="card"><b>${{resource:"🔌 طلب مورد",improvement:"💡 مقترح تحسين",task_failed:"⚠️ مهمة متعثرة",external:"🌐 فعل خارجي"}[a.type]||a.type}: ${esc(a.title)}</b><p class="small">${esc(a.details)}<br>${fmtT(a.createdAt)}</p>
+      <div class="row"><button class="btn green" onclick="decide('${a.id}',true)">${a.type==="improvement"?"✅ اعتماد وتنفيذ كمشروع":a.type==="task_failed"?"✅ إعادة تشغيل المهمة":"✅ اعتماد ومتابعة"}</button><button class="btn red" onclick="decide('${a.id}',false)">رفض</button></div></div>`).join("")||'<p class="small">لا شيء بانتظارك الآن.</p>')+
+    (done.length?`<details><summary>قرارات سابقة (${done.length})</summary>${done.map(a=>`<p class="small">${a.status==="rejected"?"❌":"✅"} ${esc(a.title)} — ${fmtT(a.decidedAt)}</p>`).join("")}</details>`:"");
+  }
+  else if(curApp==="stats"){
+    const revs=osData.reviews,avg=revs.length?Math.round(revs.reduce((s,r)=>s+r.score,0)/revs.length):0;
+    const tokens=osData.runs.reduce((s,r)=>s+r.steps.reduce((x,y)=>x+(y.usage?.total_tokens||0),0),0);
+    C.innerHTML=`<h3>📊 إحصائيات من سجلات الخادم الفعلية</h3><div class="kpi">
+    <div class="card"><b>${osData.projects.filter(p=>p.status.startsWith("completed")).length}/${osData.projects.length}</b><span class="small">مشاريع مكتملة</span></div>
+    <div class="card"><b>${osData.tasks.filter(t=>t.status==="approved").length}</b><span class="small">مهام اعتمدها المدير</span></div>
+    <div class="card"><b>${revs.filter(r=>r.verdict!=="approve").length}</b><span class="small">مرات طلب تعديل/رفض</span></div>
+    <div class="card"><b>${avg||"—"}</b><span class="small">متوسط درجات المراجعة</span></div>
+    <div class="card"><b>${osData.runs.filter(r=>r.status==="completed").length}/${osData.runs.length}</b><span class="small">تشغيلات نموذج ناجحة</span></div>
+    <div class="card"><b>${tokens.toLocaleString("ar-EG")}</b><span class="small">رموز نموذج موثقة من المزودين</span></div></div>
+    <div class="card"><b>أداء الوكلاء (اعتمادات المدير زياد)</b>${osData.agents.filter(a=>!a.isCeo).map(a=>`<p class="small">${esc(a.name)} — معتمدة ${a.stats.approvedTasks} • متوسط درجة ${a.stats.avgScore??"—"} • تعديلات مطلوبة ${a.stats.revisions}${a.configured?"":" • <span style='color:#ff9a7a'>غير مهيأ</span>"}</p>`).join("")}</div>`;
+  }
+  else if(curApp==="activity"){
+    C.innerHTML=`<h3>🕘 ذاكرة الشركة وسجل نشاطها الكامل</h3>
+    <div class="card"><b>قرارات المدير الاستقلالية</b>${osData.decisions.map(d=>`<p class="small"><b>${fmtT(d.at)}</b> [${esc(d.kind)}] ${esc(d.text)}</p>`).join("")||'<p class="small">لا قرارات مسجلة بعد.</p>'}</div>
+    <div class="card"><b>سجل النشاط (أحدث ١٥٠ حدثًا موثقًا)</b>${osData.activity.map(a=>`<p class="small"><b>${fmtT(a.ts)}</b> — ${esc(a.text)}</p>`).join("")}</div>`;
+  }
+  else if(curApp==="settings"){
+    const s=osData.settings;
+    C.innerHTML=`<h3>⚙️ إعدادات الشركة والخادم</h3>
+    <div class="card"><b>🌐 اتصال هذا الجهاز بخادم الشركة</b><label>رابط الخادم</label><input id="stUrl" dir="ltr" value="${esc(cfg.url)}"><label>رمز المالك</label><input id="stTok" dir="ltr" type="password" value="${esc(cfg.token)}"><button class="btn green" id="stConn" style="margin-top:8px">💾 حفظ وإعادة الاتصال</button></div>
+    <div class="card"><b>🏢 إعدادات على الخادم</b><label>اسم الشركة</label><input id="stName" value="${esc(osData.company.name)}">
+    <div class="row"><div class="grow"><label>أقصى خطوات لكل مهمة وكيل</label><input id="stSteps" type="number" min="2" max="20" value="${s.maxSteps}"></div><div class="grow"><label>أقصى مهام بخطة مشروع</label><input id="stTasks" type="number" min="1" max="20" value="${s.maxTasksPerProject}"></div><div class="grow"><label>مهام متزامنة</label><input id="stConc" type="number" min="1" max="6" value="${s.concurrency}"></div></div>
+    <label><input type="checkbox" id="stAuto" style="width:auto" ${s.autonomy.enabled?"checked":""}> تفعيل المسح الاستقلالي الدوري للمدير</label>
+    <label><input type="checkbox" id="stAutoProj" style="width:auto" ${s.autonomy.allowAutoProjects?"checked":""}> السماح للمدير ببدء مشاريع ذاتية (بحد أقصى مشروعين نشطين)</label>
+    <div class="row"><div class="grow"><label>كل كم دقيقة يمسح؟</label><input id="stScanMin" type="number" min="3" max="240" value="${s.autonomy.scanMinutes}"></div></div>
+    <label><input type="checkbox" id="stWeekly" style="width:auto" ${s.weeklyMeetings?"checked":""}> اجتماعات أسبوعية تلقائية (مساهمات نماذج فعلية)</label>
+    <button class="btn green" id="stSave" style="margin-top:8px">💾 حفظ إعدادات الخادم</button></div>
+    <div class="card"><b>🌗 إضاءة المقر (عرض محلي فقط)</b><label><input type="checkbox" id="stTimeOv" style="width:auto" ${cfg.timeOverride?"checked":""}> تجاوز وقت جهازك لاختبار الإضاءة — الساعة: <input id="stHour" type="number" min="0" max="23" value="${cfg.overrideHour}" style="width:76px;display:inline-block"></label><button class="btn gray" id="stTimeSave">تطبيق</button>
+    <p class="small">بدون التجاوز تتبع إضاءة المقر الشمس حسب وقت هاتفك الحقيقي، وتُضاء مكاتب من يعملون فعليًا ليلًا.</p></div>
+    <div class="card"><b>🎮 حركة اللاعب داخل المقر (هذا الجهاز)</b><label>سرعة المشي: <span id="stWalkVal">${cfg.walkSpeed}</span> م/ث</label><input id="stWalk" type="range" min="2.5" max="7" step="0.25" value="${cfg.walkSpeed}"><label>حساسية النظر: <span id="stSensVal">${cfg.mouseSens}</span></label><input id="stSens" type="range" min="0.5" max="2" step="0.1" value="${cfg.mouseSens}"><button class="btn gray" id="stPlayerSave">حفظ إعدادات الحركة</button><p class="small">على الكمبيوتر: WASD للمشي والماوس للنظر وE للتفاعل وShift للجري. على الموبايل: النصف الأيسر عصا حركة تظهر عند اللمس، والنصف الأيمن للنظر.</p></div>
+    <div class="card"><b>🖥️ دقة المشهد وحجم النوافذ (هذا الجهاز)</b>
+    <label>جودة ودقة الرسم ثلاثي الأبعاد</label><select id="stQuality"><option value="clear" ${cfg.quality==="clear"?"selected":""}>واضحة — أفضل رؤية (موصى بها الآن)</option><option value="balanced" ${cfg.quality==="balanced"?"selected":""}>متوازنة — وضوح جيد وحمل أقل</option><option value="fast" ${cfg.quality==="fast"?"selected":""}>سريعة — لأضعف الأجهزة فقط</option></select>
+    <label>حجم خطوط وعناصر النوافذ</label><select id="stUiScale"><option value="compact" ${cfg.uiScale!=="normal"?"selected":""}>مضغوطة — أصغر (الافتراضي الآن)</option><option value="normal" ${cfg.uiScale==="normal"?"selected":""}>عادية — أكبر كما كانت</option></select>
+    <div class="row" style="margin-top:8px"><button class="btn gray" id="stDisplaySave">تطبيق وحفظ العرض</button></div>
+    <p class="small">وضع «واضحة» لا يسمح للدقة التكيفية بالنزول إلى الضبابية الشديدة السابقة؛ اختر «سريعة» فقط إن كان الجهاز ما زال بطيئًا جدًا.</p></div>
+    <div class="card"><b>🗄️ نسخة احتياطية</b><p class="small">تصدير حالة الشركة كاملة من الخادم (بدون أسرار المفاتيح).</p><button class="btn" id="stBackup">⬇️ تنزيل نسخة JSON</button></div>`;
+    $("stConn").onclick=()=>{cfg.url=normalizeServerUrl($("stUrl").value);cfg.token=$("stTok").value.trim();saveCfg();refreshOS();poll()};
+    $("stSave").onclick=async()=>{try{await api("/api/settings",{method:"PUT",body:JSON.stringify({companyName:$("stName").value,maxSteps:+$("stSteps").value,maxTasksPerProject:+$("stTasks").value,concurrency:+$("stConc").value,weeklyMeetings:$("stWeekly").checked,autonomy:{enabled:$("stAuto").checked,allowAutoProjects:$("stAutoProj").checked,scanMinutes:+$("stScanMin").value}})});toast("💾 حُفظت إعدادات الخادم");await refreshOS()}catch(e){toast("❌ "+e.message)}};
+    $("stTimeSave").onclick=()=>{cfg.timeOverride=$("stTimeOv").checked;cfg.overrideHour=+$("stHour").value;saveCfg();toast("🌗 طُبق وقت الإضاءة التجريبي")};
+    $("stPlayerSave").onclick=()=>{cfg.walkSpeed=+$("stWalk").value;cfg.mouseSens=+$("stSens").value;saveCfg();toast("🎮 حُفظت إعدادات حركة اللاعب")};$("stWalk").oninput=e=>$("stWalkVal").textContent=e.target.value;$("stSens").oninput=e=>$("stSensVal").textContent=e.target.value;
+    $("stDisplaySave").onclick=()=>{cfg.quality=$("stQuality").value;cfg.uiScale=$("stUiScale").value;saveCfg();applyUiScale();applyQualityProfile(true);toast("🖥️ طُبقت دقة المشهد وحجم النوافذ وحُفظا على هذا الجهاز")};
+    $("stBackup").onclick=async()=>{try{const d=await api("/api/backup");const b=new Blob([JSON.stringify(d,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="company-backup.json";a.click()}catch(e){toast("❌ "+e.message)}};
+  }
+}
+window.selAgentGo=id=>{selAgent=id;renderApp()};
+window.selSummonGo=id=>{selSummonAgent=id;renderApp()};
+window.summonAgent=async(id)=>{try{const a=await api("/api/agents/"+id+"/summon",{method:"POST",body:JSON.stringify({durationMinutes:30})});toast("📣 "+a.name+" في طريقه إلى مكتبك الآن");await refreshOS();poll()}catch(e){toast("❌ "+e.message,6500)}};
+window.dismissAgent=async(id)=>{try{const a=await api("/api/agents/"+id+"/dismiss",{method:"POST",body:"{}"});toast("↩️ عاد "+a.name+" إلى محطة عمله");await refreshOS();poll()}catch(e){toast("❌ "+e.message)}};
+window.summonAllAgents=async()=>{try{const r=await api("/api/agents/summon-all",{method:"POST",body:JSON.stringify({durationMinutes:30})});toast("📣 استُدعي "+r.count+" وكيلًا مهيأً إلى مكتبك");await refreshOS();poll()}catch(e){toast("❌ "+e.message,6500)}};
+window.dismissAllAgents=async()=>{try{const r=await api("/api/agents/dismiss-all",{method:"POST",body:"{}"});toast("↩️ انتهى "+r.count+" استدعاء");await refreshOS();poll()}catch(e){toast("❌ "+e.message)}};
+window.setPriority=async(id,v)=>{try{await api("/api/tasks/"+id+"/priority",{method:"POST",body:JSON.stringify({priority:Number(v)})});toast("⬆️ حُدِّدت الأولوية — ستبدأ بها الشركة قبل غيرها");await refreshOS()}catch(e){toast("❌ "+e.message,6000)}};
+window.taskDecide=async(id,v,note)=>{try{await api("/api/tasks/"+id+"/decide",{method:"POST",body:JSON.stringify({verdict:v,note:note||""})});toast(v==="approve"?"✅ اعتُمدت المهمة بقرارك المباشر":"↩️ أُعيدت المهمة للموظف للتعديل");await refreshOS();poll()}catch(e){toast("❌ "+e.message,6000)}};
+window.taskRevise=async(id)=>{const n=prompt("اكتب ما تريد تعديله — سيصل للموظف نصًا في مراجعته:");if(n===null)return;taskDecide(id,"revise",n)};
+window.coState=function(){const el=document.getElementById("coState");if(!el)return;const lp=(osData&&osData.loop)||{};const st=lp.state||"off";
+ el.textContent = st==="working" ? "🟢 الشركة تعمل" : st==="sleeping" ? "⚪ نائمة — لا مهام معلقة" : "⏸ موقوفة";
+ el.style.background = st==="working" ? "#12351f" : st==="sleeping" ? "#1b2233" : "#3a1f1f";
+ el.style.color = st==="working" ? "#5ee38a" : st==="sleeping" ? "#9fd0ff" : "#ff9a7a";
+ el.style.borderColor = st==="working" ? "#1e5c35" : st==="sleeping" ? "#2b3b57" : "#5c2b2b";
+ el.title = lp.stateNote || "";
+};
+window.taskAct=async(id,act)=>{try{await api("/api/tasks/"+id+"/"+act,{method:"POST",body:"{}"});toast("تم ✅");await refreshOS()}catch(e){toast("❌ "+e.message)}};
+window.projAct=async(id,act)=>{try{await api("/api/projects/"+id+"/"+act,{method:"POST",body:"{}"});toast("تم ✅");await refreshOS()}catch(e){toast("❌ "+e.message)}};
+window.decide=async(id,ok)=>{try{await api("/api/approvals/"+id+"/decide",{method:"POST",body:JSON.stringify({approve:ok})});toast(ok?"✅ اعتُمد وسُجل قرارك":"رُفض وسُجل قرارك");await refreshOS()}catch(e){toast("❌ "+e.message)}};
+window.startMeetingUI=async(type)=>{try{await api("/api/meetings",{method:"POST",body:JSON.stringify({type})});toast("📋 بدأ الاجتماع — شاهدهم يتجمعون بالقاعة");await refreshOS();poll()}catch(e){toast("❌ "+e.message,6000)}};
+window.testConn=async(id)=>{const m=$("tm_"+id)?.value.trim();toast("🧪 جارٍ نداء النموذج فعليًا… قد يستغرق ثواني (والمجاني حتى ٤٥ ثانية)");try{const r=await api("/api/connections/"+id+"/test",{method:"POST",body:JSON.stringify({model:m})});toast("✅ رد النموذج فعليًا: «"+(r.reply||"")+"»",6000);await refreshOS()}catch(e){toast("❌ فشل الاختبار الحقيقي: "+(e.body?.error||e.message),7000);await refreshOS()}};
+window.toggleService=async(id,on)=>{try{await api("/api/services/"+id+"/"+(on?"enable":"disable"),{method:"POST",body:"{}"});toast((on?"✅ فعّل المزود":"⏸️ أوقف المزود"),5000);await refreshOS()}catch(e){toast("❌ "+e.message,6000)}};
+window.applyProviders=async()=>{try{const r=await api("/api/providers/apply",{method:"POST",body:"{}"});toast("\u0631\u064f\u0628\u0637 "+(r.created||[]).length+" \u0645\u0632\u0648\u062f \u0645\u0646 \u0645\u062a\u063a\u064a\u0631\u0627\u062a Cloudflare");await refreshOS()}catch(e){toast("\u274c "+e.message,6000)}};
+window.fetchModels=async(id)=>{try{const r=await api("/api/connections/"+id+"/models",{method:"POST",body:"{}"});toast("📋 "+r.source+": "+(r.models.slice(0,6).join("، ")||"لا نماذج"),7000);await refreshOS()}catch(e){toast("❌ "+e.message,6000)}};
+window.delConn=async(id)=>{if(!confirm("حذف هذا الاتصال؟ سينفصل وكلاؤه ويتوقفون بصدق حتى إعادة ربطهم."))return;try{await api("/api/connections/"+id,{method:"DELETE"});await refreshOS();poll()}catch(e){toast("❌ "+e.message)}};
+
+/* تجميع الهندسة الثابتة غير التفاعلية حسب الخامة والمنطقة لتقليل نداءات الرسم */
+function batchStaticMeshes(){
+  scene.updateMatrixWorld(true);
+  const dyn=new Set();dynamicObjects.forEach(r=>r.traverse(o=>dyn.add(o)));Object.values(robots).forEach(r=>r.group.traverse(o=>dyn.add(o)));ownerAvatar.traverse(o=>dyn.add(o));
+  const groups=new Map(),pos=new THREE.Vector3();
+  scene.traverse(o=>{
+    if(!o.isMesh||dyn.has(o)||o.userData.interactId!==undefined||o===ceiling||o===ground||o===slab)return;
+    const mat=o.material;if(!mat||Array.isArray(mat)||mat.transparent||mat.visible===false||!o.geometry?.attributes?.position)return;
+    o.getWorldPosition(pos);if(pos.y<0.04)return;
+    const key=mat.uuid+"|"+(o.castShadow?1:0)+"|"+(o.receiveShadow?1:0)+"|"+Math.floor(pos.x/14)+"|"+Math.floor(pos.z/14);
+    if(!groups.has(key))groups.set(key,{mat,cast:o.castShadow,receive:o.receiveShadow,geos:[],src:[]});
+    const gr=groups.get(key);gr.geos.push(_cleanGeoForMerge(o.geometry,o.matrixWorld));gr.src.push(o);
+  });
+  let merged=0,created=0;
+  for(const gr of groups.values()){
+    if(gr.geos.length<2)continue;let geo=null;try{geo=mergeGeometries(gr.geos,false)}catch{}
+    if(!geo)continue;const m=new THREE.Mesh(geo,gr.mat);m.castShadow=gr.cast;m.receiveShadow=gr.receive;m.matrixAutoUpdate=false;m.updateMatrix();scene.add(m);created++;merged+=gr.src.length;gr.src.forEach(o=>o.removeFromParent());
+  }
+  window.__staticBatch={merged,created};
+}
+batchStaticMeshes();
+
+/* تخفيف بعيد المدى: إخفاء التفاصيل الصغيرة فقط خارج مدى الرؤية المفيد */
+const detailCull=[],occluderMeshes=[];let detailCullFrame=-999,detailCullX=1e9,detailCullZ=1e9;
+{
+  scene.updateMatrixWorld(true);
+  const dyn=new Set();dynamicObjects.forEach(r=>r.traverse(o=>dyn.add(o)));Object.values(robots).forEach(r=>r.group.traverse(o=>dyn.add(o)));ownerAvatar.traverse(o=>dyn.add(o));
+  const box=new THREE.Box3(),size=new THREE.Vector3(),center=new THREE.Vector3();
+  scene.traverse(o=>{
+    if(!o.isMesh||dyn.has(o)||o===ceiling||o===ground||o===slab)return;
+    box.setFromObject(o);box.getSize(size);const maxDim=Math.max(size.x,size.y,size.z);box.getCenter(center);
+    if((maxDim>0&&maxDim<0.68)||o.userData.detailCull)detailCull.push({mesh:o,x:center.x,z:center.z});
+    if(maxDim>=1.0&&o.userData.interactId===undefined&&!o.material?.transparent&&center.y>0.12&&center.y<3.3){o.userData.occ={x:center.x,y:center.y,z:center.z,r:Math.max(.35,Math.hypot(size.x,size.y,size.z)/2)};occluderMeshes.push(o)}
+  });
+}
+function updateDetailCull(force=false){
+  const moved=Math.hypot(player.pos.x-detailCullX,player.pos.z-detailCullZ);
+  if(!force&&frameNo-detailCullFrame<24&&moved<2)return;
+  detailCullFrame=frameNo;detailCullX=player.pos.x;detailCullZ=player.pos.z;
+  const R=QUALITY.detail,R2=R*R;
+  for(const d of detailCull){const dx=d.x-player.pos.x,dz=d.z-player.pos.z;d.mesh.visible=dx*dx+dz*dz<R2}
+}
+Object.assign(window.__companyPlayer,{detailCull,updateDetailCull,occluderMeshes,staticBatch:window.__staticBatch,applyQualityProfile,getQuality:()=>({name:cfg.quality,pixelRatioCap,effectivePixelRatio:renderer.getPixelRatio(),drawingBuffer:[renderer.domElement.width,renderer.domElement.height]})});
+
+/* تثبيت العناصر الساكنة لتخفيف تحديثات المشهد كل إطار */
+scene.traverse(o=>{o.matrixAutoUpdate=false;o.updateMatrix();});
+[sun,sun.target,lobbyLight,...nightLights,ownerRing,ownerBeacon,ownerAvatar,focusBox,guideLine].forEach(o=>o.traverse?o.traverse(x=>x.matrixAutoUpdate=true):o.matrixAutoUpdate=true);
+dynamicObjects.forEach(root=>root.traverse(o=>o.matrixAutoUpdate=true));
+Object.values(robots).forEach(r=>r.group.traverse(o=>o.matrixAutoUpdate=true));
+scene.updateMatrixWorld(true);
+
+/* ================= الحلقة ================= */
+const clock=new THREE.Clock();let frameNo=0,perfTime=0,perfFrames=0,lastUiFrame=0,perfWindowStart=performance.now(),perfRendered=0,slowPerfWindows=0;
+setInterval(()=>{const c=$("osClock");if(c)c.textContent=new Date().toLocaleTimeString("ar-EG",{hour:"2-digit",minute:"2-digit"})},1000);
+function animate(){
+  requestAnimationFrame(animate);
+  const nowMs=performance.now(),uiOpen=isUiOpen();
+  if(document.hidden)return;
+  if(uiOpen&&nowMs-lastUiFrame<((typeof curApp!=="undefined"&&curApp==="cameras")?80:180)){renderCctvIfNeeded(nowMs);return}
+  lastUiFrame=nowMs;
+  const rawDt=clock.getDelta(),dt=Math.min(rawDt,0.05),moveDt=Math.min(rawDt,0.12),t=clock.elapsedTime;frameNo++;perfTime+=dt;perfFrames++;
+  if(renderer.shadowMap.enabled&&frameNo%10===0)renderer.shadowMap.needsUpdate=true;
+  updatePlayer(moveDt);updateDoors(dt);updateInteractionFocus(performance.now());updateAmbientInteractions(t,dt);
+  if(frameNo%12===0)updateBubbles();
+  for(const id in robots){const r=robots[id];if(frameNo%15===0){const near=r.group.position.distanceToSquared(player.pos)<(LOW_POWER?169:289);if(r.lodNear!==near){r.lodNear=near;r.lodParts?.forEach(p=>p.visible=near)}}moveRobot(r,moveDt);poseRobot(r,t)}
+  ownerRing.scale.setScalar(1+Math.sin(t*2.2)*0.08);ownerRing.position.y=0.06+Math.sin(t*2.2)*0.015;
+  const beaconDist=Math.hypot(player.pos.x-OWNER_DESK.x,player.pos.z-OWNER_DESK.z);ownerBeacon.visible=beaconDist>10;ownerBeaconMat.opacity=0.055+Math.sin(t*2.2)*0.018;ownerBeacon.rotation.y=t*0.35;
+  summonRings.forEach((r,i)=>{if(r.visible)r.scale.setScalar(1+Math.sin(t*3+i)*0.07)});
+  updateLighting(dt);updateDetailCull();
+  renderer.render(scene,camera);renderCctvIfNeeded(nowMs);
+  if(!uiOpen){perfRendered++;if(nowMs-perfWindowStart>=1200){const fps=perfRendered*1000/Math.max(1,nowMs-perfWindowStart);perfRendered=0;perfWindowStart=nowMs;if(fps<30){slowPerfWindows++;if(slowPerfWindows>=2&&pixelRatioCap>MIN_PIXEL_RATIO){pixelRatioCap=Math.max(MIN_PIXEL_RATIO,pixelRatioCap*.92);applyQualityProfile();slowPerfWindows=0}}else{slowPerfWindows=0;if(fps>57&&pixelRatioCap<MAX_PIXEL_RATIO){pixelRatioCap=Math.min(MAX_PIXEL_RATIO,pixelRatioCap*1.05);applyQualityProfile()}}}}else{perfRendered=0;perfWindowStart=nowMs;slowPerfWindows=0}
+}
+addEventListener("resize",()=>{camera.aspect=innerWidth/innerHeight;camera.fov=camera.aspect<0.75?94:(camera.aspect<1.1?82:71);camera.updateProjectionMatrix();applyQualityProfile();});
+window.__booted=true;
+animate();poll().then(()=>{setTimeout(()=>$("loader").classList.add("done"),500)});
+setTimeout(()=>$("loader").classList.add("done"),2600);
+hint(IS_MOBILE?"أنت داخل الشركة: النصف الأيسر للمشي والأيمن للنظر • اقترب من أي شيء ثم المس زر التفاعل • مكتبك وكمبيوتر الإدارة في الشمال الغربي":"أنت داخل الشركة: WASD للمشي والماوس للنظر وE للتفاعل • مكتبك وكمبيوتر الإدارة والاستدعاء والكاميرات في الشمال الغربي",false);
+</script>
+</body>
+</html>
