@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ترحيل الشركة إلى Cloudflare</title>
+<style>
+  :root{color-scheme:dark;--bg:#07111f;--card:#0d1d31;--line:#24405f;--txt:#edf6ff;--mut:#a9bfd6;--ok:#39d98a;--warn:#ffbf69;--bad:#ff7a90;--btn:#1976d2}
+  *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#12345e,var(--bg) 55%);color:var(--txt);font-family:Tahoma,Arial,sans-serif;line-height:1.8}
+  main{max-width:820px;margin:0 auto;padding:28px 16px 50px}h1{font-size:clamp(24px,5vw,38px);margin:0 0 8px}h2{margin:0 0 12px;font-size:20px}
+  .card{background:rgba(13,29,49,.94);border:1px solid var(--line);border-radius:18px;padding:20px;margin:16px 0;box-shadow:0 16px 50px rgba(0,0,0,.28)}
+  label{display:block;font-weight:700;margin:14px 0 6px}input[type=password],input[type=file]{width:100%;background:#071525;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:12px}
+  button{border:0;border-radius:11px;background:var(--btn);color:white;padding:11px 16px;font-weight:800;cursor:pointer;margin:8px 0 8px 8px}button.secondary{background:#294a6e}button.danger{background:#8a3345}button:disabled{opacity:.55;cursor:wait}
+  .mut{color:var(--mut)}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}code{direction:ltr;display:inline-block;background:#06101d;border:1px solid var(--line);padding:1px 6px;border-radius:6px}
+  pre{white-space:pre-wrap;direction:ltr;text-align:left;background:#050d18;border:1px solid var(--line);padding:14px;border-radius:12px;max-height:360px;overflow:auto;font-size:12px}
+  .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.check{display:flex;align-items:flex-start;gap:9px}.check input{margin-top:8px}.steps li{margin:7px 0}
+</style>
+</head>
+<body>
+<main>
+  <h1>☁️ ترحيل شركة الذكاء المستقلة إلى Cloudflare</h1>
+  <p class="mut">هذه الصفحة تستورد حالة الشركة الحالية إلى Durable Object واحد، من دون أي جهاز يعمل عند المالك.</p>
+
+  <section class="card">
+    <h2>قبل أن تبدأ</h2>
+    <ol class="steps">
+      <li>حمّل ملف <code>company-import.json</code> من مساحة العمل.</li>
+      <li>في وضع المالك الواحد اترك خانة رمز المالك فارغة. لا تكتب رمزًا إلا إذا كنت ضبطت <code>OWNER_TOKEN</code> اختياريًا في Cloudflare.</li>
+      <li>اترك «إيقاف الحلقة بعد الاستيراد» مفعّلة حتى تراجع الحالة أولًا.</li>
+      <li><span class="warn">تحذير:</span> ملف الترحيل قد يحتوي مفاتيح مزودين مشفرة؛ لا ترفعه إلى GitHub أو مكان عام.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>الاستيراد</h2>
+    <label for="token">رمز المالك (اختياري — اتركه فارغًا في وضع المالك الواحد)</label>
+    <input id="token" type="password" autocomplete="current-password" placeholder="فارغ إذا لم تضبط OWNER_TOKEN">
+
+    <label for="file">ملف company-import.json</label>
+    <input id="file" type="file" accept="application/json,.json">
+
+    <label class="check">
+      <input id="pause" type="checkbox" checked>
+      <span>إيقاف الحلقة بعد الاستيراد (موصى به) — لن تبدأ المهام المنتظرة حتى تضغط تشغيل الحلقة بنفسك.</span>
+    </label>
+
+    <div class="row">
+      <button id="importBtn">استيراد الشركة</button>
+      <button id="statusBtn" class="secondary">فحص الحلقة والصحة</button>
+      <button id="resumeBtn">تشغيل الحلقة</button>
+      <button id="pauseBtn" class="danger">إيقاف الحلقة</button>
+      <button id="wakeBtn" class="secondary">تنفيذ استيقاظ واحد الآن</button>
+      <button id="exportBtn" class="secondary">تنزيل نسخة احتياطية كاملة</button>
+    </div>
+    <p class="mut">النسخة الاحتياطية قد تحتوي مفاتيح مزودين مشفرة؛ احفظها في مكان خاص ولا ترفعها إلى GitHub.</p>
+    <p id="status">جاهز.</p>
+    <pre id="out">{}</pre>
+  </section>
+
+  <section class="card">
+    <h2>بعد الاستيراد</h2>
+    <ol class="steps">
+      <li>افتح <a href="/" style="color:#8fd0ff">واجهة الشركة</a>؛ في وضع المالك الواحد اترك رمز المالك فارغًا في إعدادات الاتصال.</li>
+      <li>راجع المشاريع والمهام والمستندات؛ المهام المنتظرة ستبقى كما هي ولن تعمل ما دامت الحلقة متوقفة.</li>
+      <li>عندما تتأكد، اضغط «تشغيل الحلقة» هنا. بعد ذلك تستطيع إغلاق جهازك تمامًا.</li>
+    </ol>
+  </section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const setStatus=(text,cls="")=>{const e=$("status");e.textContent=text;e.className=cls};
+const show=data=>{$("out").textContent=JSON.stringify(data,null,2)};
+function token(){return $("token").value.trim()}
+async function api(path,opt={}){
+  const t=token();
+  const r=await fetch(path,{...opt,headers:{"Content-Type":"application/json","x-owner-token":t,...(opt.headers||{})}});
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(data.error||("HTTP "+r.status));
+  return data;
+}
+async function withBusy(btn,label,fn){
+  btn.disabled=true;const old=btn.textContent;btn.textContent=label;
+  try{return await fn()}finally{btn.disabled=false;btn.textContent=old}
+}
+$("importBtn").onclick=()=>withBusy($("importBtn"),"جارٍ الاستيراد…",async()=>{
+  try{
+    const f=$("file").files[0]; if(!f) throw new Error("اختر ملف company-import.json");
+    setStatus("جارٍ قراءة الحزمة…");
+    const bundle=JSON.parse(await f.text());
+    setStatus("جارٍ رفع الحزمة إلى Durable Object…");
+    const result=await api("/api/admin/import",{method:"POST",body:JSON.stringify({bundle,pauseLoop:$("pause").checked})});
+    show(result); setStatus("✅ تم الاستيراد وحُفظت حالة الشركة في Cloudflare.","ok");
+  }catch(e){show({error:e.message});setStatus("❌ فشل الاستيراد: "+e.message,"bad")}
+});
+$("statusBtn").onclick=()=>withBusy($("statusBtn"),"جارٍ الفحص…",async()=>{
+  try{
+    const [health,loop]=await Promise.all([api("/api/health"),api("/api/admin/loop")]);
+    show({health,loop}); setStatus(health.ok?"✅ الخدمة ترد بنجاح.":"⚠️ الخدمة ردت لكن الصحة غير مكتملة.",health.ok?"ok":"warn");
+  }catch(e){show({error:e.message});setStatus("❌ فشل الفحص: "+e.message,"bad")}
+});
+$("resumeBtn").onclick=()=>withBusy($("resumeBtn"),"جارٍ التشغيل…",async()=>{
+  try{const r=await api("/api/admin/loop",{method:"POST",body:JSON.stringify({enabled:true})});show(r);setStatus("✅ الحلقة تعمل؛ الشركة ستكمل من نقاط الحفظ حتى وأنت مغلق جهازك.","ok")}
+  catch(e){show({error:e.message});setStatus("❌ "+e.message,"bad")}
+});
+$("pauseBtn").onclick=()=>withBusy($("pauseBtn"),"جارٍ الإيقاف…",async()=>{
+  try{const r=await api("/api/admin/loop",{method:"POST",body:JSON.stringify({enabled:false})});show(r);setStatus("⏸️ الحلقة متوقفة والحالة محفوظة.","warn")}
+  catch(e){show({error:e.message});setStatus("❌ "+e.message,"bad")}
+});
+$("wakeBtn").onclick=()=>withBusy($("wakeBtn"),"جارٍ الاستيقاظ…",async()=>{
+  try{const r=await api("/api/admin/wake",{method:"POST",body:"{}"});show(r);setStatus("✅ نُفذ استيقاظ واحد من الحلقة.","ok")}
+  catch(e){show({error:e.message});setStatus("❌ "+e.message,"bad")}
+});
+$("exportBtn").onclick=()=>withBusy($("exportBtn"),"جارٍ تجهيز النسخة…",async()=>{
+  try{
+    const bundle=await api("/api/admin/export");
+    const blob=new Blob([JSON.stringify(bundle)],{type:"application/json;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="company-cloudflare-backup-"+new Date().toISOString().replace(/[:.]/g,"-")+".json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    show({ok:true,note:"بدأ تنزيل النسخة الاحتياطية. لا ترفعها إلى GitHub أو مكان عام."});
+    setStatus("✅ بدأ تنزيل النسخة الاحتياطية الكاملة.","ok");
+  }catch(e){show({error:e.message});setStatus("❌ "+e.message,"bad")}
+});
+</script>
+</body>
+</html>
