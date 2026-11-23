@@ -71,13 +71,25 @@ jobs:
           chmod +x android/gradlew
           cd android
           if ! ./gradlew assembleRelease --no-daemon 2>&1 | tee /tmp/gradle.log; then
+            FAILTXT=$(awk '/What went wrong/,/^\* Try:/' /tmp/gradle.log | head -40)
+            [ -z "$FAILTXT" ] && FAILTXT=$(tail -50 /tmp/gradle.log)
+            echo "::error title=Gradle build failed::$(echo "$FAILTXT" | tr '\n' '|' | cut -c1-1500)"
             {
               echo ""
-              echo "### ❌ Gradle build failed — last 80 lines"
+              echo "### ❌ Gradle build failed"
               echo '```'
               tail -80 /tmp/gradle.log
               echo '```'
             } >> "$GITHUB_STEP_SUMMARY"
+            # احتياطي: رفع السجل الكامل إلى فرع منفصل لقراءته لاحقًا
+            cd "$GITHUB_WORKSPACE"
+            cp /tmp/gradle.log gradle-failure.log
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git checkout -q -b ci-log-tmp
+            git add -f gradle-failure.log
+            git commit -q -m "gradle failure log run $GITHUB_RUN_ID" || true
+            git push -q origin ci-log-tmp --force || true
             exit 1
           fi
 

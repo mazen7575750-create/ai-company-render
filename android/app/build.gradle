@@ -5,11 +5,11 @@ android {
     compileSdk = rootProject.ext.compileSdkVersion
     signingConfigs {
         release {
-            storeType "PKCS12"
-            storeFile file("../../keystore.p12")
-            storePassword "moallem-2026"
-            keyAlias "moallem"
-            keyPassword "moallem-2026"
+            storeType = "PKCS12"
+            storeFile = file("../../keystore.p12")
+            storePassword = "moallem-2026"
+            keyAlias = "moallem"
+            keyPassword = "moallem-2026"
         }
     }
     defaultConfig {
