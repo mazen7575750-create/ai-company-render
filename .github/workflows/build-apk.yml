@@ -1,0 +1,81 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - mohfaz.html
+      - capacitor.config.json
+      - android/**
+      - package.json
+      - package-lock.json
+      - keystore.p12
+      - .github/workflows/build-apk.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prepare web assets
+        run: mkdir -p www && cp mohfaz.html www/mohfaz.html
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Ensure Android SDK 36
+        run: |
+          if [ ! -d "$ANDROID_HOME/platforms/android-36" ]; then
+            yes | sdkmanager "platforms;android-36" || true
+          fi
+
+      - name: Stamp version from mohfaz.html
+        run: |
+          VER=$(grep -oP 'APP_VERSION = "\K[^"]+' mohfaz.html | head -1)
+          VC=$(echo "$VER" | awk -F. '{print ($1$2$3$4)+0}')
+          sed -i "s/versionCode 1/versionCode ${VC:-1}/" android/app/build.gradle
+          sed -i "s/versionName \"1.0\"/versionName \"${VER}\"/" android/app/build.gradle
+          echo "VER=$VER" >> "$GITHUB_ENV"
+          echo "Building version $VER (code $VC)"
+
+      - name: Build release APK
+        run: chmod +x android/gradlew && cd android && ./gradlew assembleRelease --no-daemon
+
+      - name: Publish release with APK
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          APK=android/app/build/outputs/apk/release/app-release.apk
+          OUT=moallem-${VER}.apk
+          cp "$APK" "$OUT"
+          ls -la "$OUT"
+          TAG="v${VER}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$OUT" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" "$OUT" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+              --title "المعلم ${TAG}" \
+              --notes "ثبّت هذا APK مرة واحدة فقط — كل تحديثات التطبيق تصل تلقائيًا للجهاز عند الفتح بوجود إنترنت."
+          fi
+          echo "Release ready: $TAG"
