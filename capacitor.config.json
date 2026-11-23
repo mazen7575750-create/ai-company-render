@@ -1,0 +1,22 @@
+{
+  "appId": "com.moallem.app",
+  "appName": "المعلم",
+  "webDir": ".",
+  "server": {
+    "url": "https://mazen7575750-create.github.io/ai-company-render/mohfaz.html",
+    "cleartext": false,
+    "allowNavigation": [
+      "*.github.io",
+      "dictionary.cambridge.org",
+      "api.moonshot.cn",
+      "api.deepseek.com",
+      "openrouter.ai",
+      "api.llm7.io",
+      "*.googleapis.com",
+      "generativelanguage.googleapis.com",
+      "dict.youdao.com",
+      "translate.google.com",
+      "api.dictionaryapi.dev"
+    ]
+  }
+}
