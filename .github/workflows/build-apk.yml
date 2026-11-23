@@ -30,7 +30,7 @@ jobs:
           cache: npm
 
       - name: Setup Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -38,11 +38,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Prepare web assets
-        run: mkdir -p www && cp mohfaz.html www/mohfaz.html
-
-      - name: Sync Capacitor
-        run: npx cap sync android
+      - name: Prepare Android web assets
+        run: |
+          set -euo pipefail
+          mkdir -p android/app/src/main/assets/public
+          cp capacitor.config.json android/app/src/main/assets/capacitor.config.json
+          cp mohfaz.html android/app/src/main/assets/public/mohfaz.html
+          if [ ! -f android/app/src/main/assets/capacitor.plugins.json ]; then
+            echo "### ❌ capacitor.plugins.json missing from repo" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          ls -la android/app/src/main/assets/ android/app/src/main/assets/public/
 
       - name: Ensure Android SDK 36
         run: |
@@ -60,13 +66,36 @@ jobs:
           echo "Building version $VER (code $VC)"
 
       - name: Build release APK
-        run: chmod +x android/gradlew && cd android && ./gradlew assembleRelease --no-daemon
+        run: |
+          set -euo pipefail
+          chmod +x android/gradlew
+          cd android
+          if ! ./gradlew assembleRelease --no-daemon 2>&1 | tee /tmp/gradle.log; then
+            {
+              echo ""
+              echo "### ❌ Gradle build failed — last 80 lines"
+              echo '```'
+              tail -80 /tmp/gradle.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
 
       - name: Publish release with APK
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           APK=android/app/build/outputs/apk/release/app-release.apk
+          if [ ! -f "$APK" ]; then
+            {
+              echo "### ❌ APK output not found"
+              echo '```'
+              find android -name "*.apk" || true
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
           OUT=moallem-${VER}.apk
           cp "$APK" "$OUT"
           ls -la "$OUT"
@@ -79,3 +108,4 @@ jobs:
               --notes "ثبّت هذا APK مرة واحدة فقط — كل تحديثات التطبيق تصل تلقائيًا للجهاز عند الفتح بوجود إنترنت."
           fi
           echo "Release ready: $TAG"
+          echo "### ✅ APK published: $TAG" >> "$GITHUB_STEP_SUMMARY"
