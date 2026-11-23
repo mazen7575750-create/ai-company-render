@@ -1,0 +1,123 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, "arena/*"]
+    paths:
+      - mohfaz.html
+      - capacitor.config.json
+      - android/**
+      - package.json
+      - package-lock.json
+      - keystore.p12
+      - .github/workflows/build-apk.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prepare Android web assets
+        run: |
+          set -euo pipefail
+          mkdir -p android/app/src/main/assets/public
+          cp capacitor.config.json android/app/src/main/assets/capacitor.config.json
+          cp mohfaz.html android/app/src/main/assets/public/mohfaz.html
+          if [ ! -f android/app/src/main/assets/capacitor.plugins.json ]; then
+            echo "### ❌ capacitor.plugins.json missing from repo" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          ls -la android/app/src/main/assets/ android/app/src/main/assets/public/
+
+      - name: Ensure Android SDK 36
+        run: |
+          if [ ! -d "$ANDROID_HOME/platforms/android-36" ]; then
+            yes | sdkmanager "platforms;android-36" || true
+          fi
+
+      - name: Stamp version from mohfaz.html
+        run: |
+          VER=$(grep -oP 'APP_VERSION = "\K[^"]+' mohfaz.html | head -1)
+          VC=$(echo "$VER" | awk -F. '{print ($1$2$3$4)+0}')
+          sed -i "s/versionCode 1/versionCode ${VC:-1}/" android/app/build.gradle
+          sed -i "s/versionName \"1.0\"/versionName \"${VER}\"/" android/app/build.gradle
+          echo "VER=$VER" >> "$GITHUB_ENV"
+          echo "Building version $VER (code $VC)"
+
+      - name: Build release APK
+        run: |
+          set -euo pipefail
+          chmod +x android/gradlew
+          cd android
+          if ! ./gradlew assembleRelease --no-daemon 2>&1 | tee /tmp/gradle.log; then
+            FAILTXT=$(awk '/What went wrong/,/^\* Try:/' /tmp/gradle.log | head -40)
+            [ -z "$FAILTXT" ] && FAILTXT=$(tail -50 /tmp/gradle.log)
+            echo "::error title=Gradle build failed::$(echo "$FAILTXT" | tr '\n' '|' | cut -c1-1500)"
+            {
+              echo ""
+              echo "### ❌ Gradle build failed"
+              echo '```'
+              tail -80 /tmp/gradle.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            # احتياطي: رفع السجل الكامل إلى فرع منفصل لقراءته لاحقًا
+            cd "$GITHUB_WORKSPACE"
+            cp /tmp/gradle.log gradle-failure.log
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git checkout -q -b ci-log-tmp
+            git add -f gradle-failure.log
+            git commit -q -m "gradle failure log run $GITHUB_RUN_ID" || true
+            git push -q origin ci-log-tmp --force || true
+            exit 1
+          fi
+
+      - name: Publish release with APK
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/release/app-release.apk
+          if [ ! -f "$APK" ]; then
+            {
+              echo "### ❌ APK output not found"
+              echo '```'
+              find android -name "*.apk" || true
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          OUT=moallem-${VER}.apk
+          cp "$APK" "$OUT"
+          ls -la "$OUT"
+          TAG="v${VER}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$OUT" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" "$OUT" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+              --title "المعلم ${TAG}" \
+              --notes "ثبّت هذا APK مرة واحدة فقط — كل تحديثات التطبيق تصل تلقائيًا للجهاز عند الفتح بوجود إنترنت."
+          fi
+          echo "Release ready: $TAG"
+          echo "### ✅ APK published: $TAG" >> "$GITHUB_STEP_SUMMARY"

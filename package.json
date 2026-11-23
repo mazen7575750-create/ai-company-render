@@ -4,7 +4,16 @@
   "private": true,
   "type": "module",
   "main": "server.mjs",
-  "scripts": { "start": "node server.mjs" },
-  "engines": { "node": ">=20" },
-  "dependencies": {}
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/cli": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  }
 }

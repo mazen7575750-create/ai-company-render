@@ -1,53 +1,53 @@
-# بناء تطبيق APK — مرة واحدة فقط ثم التحديث تلقائيًا للأبد 📱
+# تطبيق APK — التحميل والبناء التلقائي 📱
+
+## 🔗 حمّل APK جاهزاً (الأسهل)
+من صفحة الإصدارات:
+**https://github.com/mazen7575750-create/ai-company-render/releases**
+
+- يُبنى **تلقائياً** على GitHub Actions عند كل تعديل مهم في التطبيق.
+- ثبّته مرة واحدة فقط — بعدها كل تحديثات التطبيق تصل جهازه **تلقائياً عند الفتح** (بوجود إنترنت).
+
+> ملاحظة: نفس توقيع الـ APK (`keystore.p12`) يُستخدم في كل البناءات،
+> لذلك التحديثات تُثبَّت فوق القديمة بدون حذف التطبيق.
 
 ## الفكرة
-الـ APK مجرد "نافذة" تفتح رابط التطبيق المباشر على GitHub Pages.
-أي تحديث ترفعه للمستودع يظهر لجميع مستخدمي التطبيق فورًا — **بدون إعادة إرسال أي رابط وبدون إعادة بناء APK**.
+الـ APK مجرد "نافذة" تفتح رابط التطبيق المباشر على GitHub Pages:
 
-- رابط التطبيق المباشر:
-  **https://mazen7575750-create.github.io/ai-company-render/mohfaz.html**
+**https://mazen7575750-create.github.io/ai-company-render/mohfaz.html**
 
-## المتطلبات (مجانية)
-- [Node.js](https://nodejs.org)
-- [Android Studio](https://developer.android.com/studio) (مجاني)
+أي تحديث ترفعه للمستودع يظهر لجميع المستخدمين فورًا — بدون إعادة إرسال أي رابط.
 
-## خطوات البناء (مرة واحدة)
+## البناء التلقائي (معمل تلقائي GitHub Actions)
+سير العمل `.github/workflows/build-apk.yml` يعمل عند:
+- كل دمج في `main` يغيّر `mohfaz.html` أو ملفات أندرويد، أو
+- تشغيل يدوي من تبويب **Actions → Build APK → Run workflow**
+
+النتيجة: إصدار (Release) بنفس رقم `APP_VERSION` يحتوي ملف
+`moallem-<الإصدار>.apk` جاهز للتحميل.
+
+## بناء APK على جهازك (اختياري — لو أردت)
+المتطلبات: [Node.js](https://nodejs.org) + [Android Studio](https://developer.android.com/studio) (مجاني)
 
 ```bash
-# 1) استنسخ المستودع
 git clone https://github.com/mazen7575750-create/ai-company-render.git
 cd ai-company-render
-
-# 2) ثبّت حزم Capacitor (مجانية ومفتوحة المصدر)
-npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/app
-
-# 3) أضف مشروع أندرويد (يُنشأ مرة واحدة فقط)
-npx cap add android
-
-# 4) زامن الملفات
+npm ci
+mkdir -p www && cp mohfaz.html www/
 npx cap sync android
-
-# 5) افتح المشروع في Android Studio
-npx cap open android
+npx cap open android     # ثم في Android Studio: Build → Build APK(s)
 ```
 
-داخل Android Studio:
-1. **Build → Build APK(s)**
-2. الملف الناتج:
-   `android/app/build/outputs/apk/debug/app-debug.apk`
-3. للنشر النهائي: **Build → Generate Signed App Bundle / APK** (توقيع رقمي — يُبنى مرة واحدة).
-
-> ملاحظة: `capacitor.config.json` مضبوط مسبقًا على رابط GitHub Pages —
-> **لا تغيّره**، ولهذا يحصل كل من يثبّت التطبيق على أحدث نسخة تلقائيًا.
+الملف الناتج: `android/app/build/outputs/apk/release/app-release.apk`
 
 ## بعد البناء — كيف تحدّث التطبيق للمستخدمين (خطوتان)
 
-1. عدّل `mohfaz.html` وارفعه.
+1. عدّل `mohfaz.html` وارفعه على `main`.
 2. حدّث الرقم في **مكانين بنفس القيمة**:
-   - `mohfaz.html` → السطر: `const APP_VERSION = "..."`
+   - `mohfaz.html` → `const APP_VERSION = "..."`
    - `version.json` → حقل `"version"`
    ثم ارفع الملفين. **ينتهي الأمر** — الأجهزة تتحدث تلقائيًا عند الفتح،
    وزر 🔄 داخل التطبيق يعرض التحديث يدويًا أيضًا.
+   (وسيُبنى APK جديد تلقائيًا للتحميل.)
 
 ## مشكلات محتملة وحلولها
 | المشكلة | الحل |
@@ -56,4 +56,4 @@ npx cap open android
 | النت مقطوع | التطبيق يعمل من المخزَّن — التحديث ينتظر عودة النت |
 | iOS | لا يعمل APK — استخدم Safari → مشاركة → إضافة إلى الشاشة الرئيسية |
 | `window.open` معطّل داخل الـ WebView | الكود يكتشف Capacitor تلقائيًا ويفتح متصفح النظام عبر `App.openUrl` |
-| نسيت تحديث `version.json` | التطبيق لن يتحدث (أو سيعرض زر التحديث فقط) — التزم بمطابقة الرقمين |
+| نسيت تحديث `version.json` | التطبيق لن يُحدِّث — التزم بمطابقة الرقمين معًا |
